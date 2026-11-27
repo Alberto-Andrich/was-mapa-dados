@@ -306,7 +306,7 @@ function montar(M){
     S.alvo=S.pts.find(p=>p.eu)||null;
     map.addImage('mk',icone(k,false),{pixelRatio:PR});map.addImage('mk-g',icone(k,true),{pixelRatio:PR});
     map.addImage('ct-cid',marcaCitado('cid'),{pixelRatio:PR});map.addImage('ct-poi',marcaCitado('poi'),{pixelRatio:PR});
-    const fcP={type:'FeatureCollection',features:S.pts.map(p=>({type:'Feature',id:p.i,properties:{n:p.d.n,eu:p.eu?1:0,o:p.eu?1e4:p.i},geometry:{type:'Point',coordinates:p.xy}}))};
+    const fcP={type:'FeatureCollection',features:S.pts.filter(p=>!cfg.pol||Math.abs(p.xy[1])<84.95).map(p=>({type:'Feature',id:p.i,properties:{n:p.d.n,eu:p.eu?1:0,o:p.eu?1e4:p.i},geometry:{type:'Point',coordinates:p.xy}}))};
     map.addSource('mk',{type:'geojson',data:fcP});
     map.addLayer({id:'mk',type:'symbol',source:'mk',layout:{'icon-image':['case',['==',['get','eu'],1],'mk-g','mk'],'icon-allow-overlap':true,'icon-ignore-placement':true,'symbol-sort-key':['get','o']}});
     map.addLayer({id:'mk-sel',type:'symbol',source:'mk',filter:['==',['id'],-1],layout:{'icon-image':'mk-g','icon-allow-overlap':true,'icon-ignore-placement':true}});
@@ -317,7 +317,7 @@ function montar(M){
     // tudo o que a página cita
     S.cit=(cfg.pts||[]).map((q,i)=>({i,xy:[nx(q[0]),q[1]],n:lo(q[2]),t:q[3]||'poi',d:lo(q[4]),x:lo(q[5])}));
     S.ordC=cfg.ord?S.cit.map(p=>p.i):S.cit.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]).map(p=>p.i);
-    const cit=S.cit.map(q=>({type:'Feature',id:q.i,properties:{n:q.n,t:q.t},geometry:{type:'Point',coordinates:q.xy}}));
+    const cit=S.cit.filter(q=>!cfg.pol||Math.abs(q.xy[1])<84.95).map(q=>({type:'Feature',id:q.i,properties:{n:q.n,t:q.t},geometry:{type:'Point',coordinates:q.xy}}));
     if(cit.length){map.addSource('ct',{type:'geojson',data:{type:'FeatureCollection',features:cit}});
       map.addLayer({id:'ct',type:'symbol',source:'ct',minzoom:cfg.globo?0:3,layout:{'icon-image':['concat','ct-',['get','t']],'icon-allow-overlap':true,'icon-ignore-placement':true}});
       map.addLayer({id:'ct-sel',type:'circle',source:'ct',filter:['==',['id'],-1],paint:{'circle-radius':11,'circle-color':'rgba(255,255,255,.18)','circle-stroke-color':'#fff','circle-stroke-width':2}},'ct');
