@@ -1,7 +1,8 @@
 /* WAS · Fichas básicas das áreas protegidas do Mapa da aventura (v1, 27/11/2026)
    Gancho: abrirArea(f) chama window.__wasFichaArea(f.properties, corpoEl, coords).
    Dados: <BASE>fichas/indice.json  ({"CA-AB":[q,...],...})  e  <BASE>fichas/CA-AB.json ({"q":{...}}).
-   Cada lugar: pv (províncias), km, cr (criação), fim (extinção), iucn, site, wp, f (fotos [arquivo,autor,licença]), t {pt,en,es:{r,h,ff,at[]}} */
+   Cada lugar: pv (províncias), km, cr (criação), fim (extinção), iucn, site, wp, f (fotos [arquivo,autor,licença]), t {pt,en,es:{r,h,ff,at[]}}
+   ou, nas fichas automáticas, t {pt,en,es:'parágrafo'} com ta=1 (e fn='c' quando há dados do CPCAD). v2, 27/11/2026 */
 (function(){
   if(window.__wasFichaArea) return;
   const BASE=()=>window.__wasFichasBase||(typeof GHB!=='undefined'?GHB:'https://cdn.jsdelivr.net/gh/Alberto-Andrich/was-mapa-dados@main/v1/');
@@ -10,13 +11,13 @@
   const T={
     pt:{area:'Área',cria:'Criação',fim:'Extinção',iucn:'Categoria IUCN',hist:'História',ff:'Fauna e flora',at:'Atrativos',mais:'Saiba mais',site:'Site oficial',wp:'Wikipédia',foto:'Foto',ant:'Foto anterior',prox:'Próxima foto',de:'de',
         basica:'Ficha básica com dados do Wikidata. A WAS ainda vai escrever a história, a fauna e a flora e os atrativos deste lugar.',
-        fonte:'Dados: Wikidata. Texto da WAS a partir da Wikipédia e de fontes oficiais.',fonteB:'Dados: Wikidata (CC0).',carregando:'Carregando a ficha…'},
+        fonte:'Dados: Wikidata. Texto da WAS a partir da Wikipédia e de fontes oficiais.',fonteB:'Dados: Wikidata (CC0).',fonteC:'Dados: Wikidata (CC0) e cadastro oficial de áreas protegidas do Canadá (CPCAD, Licença de Governo Aberto do Canadá). Texto da WAS a partir desses dados.',fonteCW:'Dados: Wikidata (CC0). Texto da WAS a partir desses dados.',carregando:'Carregando a ficha…'},
     en:{area:'Area',cria:'Established',fim:'Abolished',iucn:'IUCN category',hist:'History',ff:'Wildlife and plants',at:'Highlights',mais:'Learn more',site:'Official website',wp:'Wikipedia',foto:'Photo',ant:'Previous photo',prox:'Next photo',de:'of',
         basica:'Basic profile with data from Wikidata. WAS has not yet written the history, wildlife and highlights of this place.',
-        fonte:'Data: Wikidata. WAS text based on Wikipedia and official sources.',fonteB:'Data: Wikidata (CC0).',carregando:'Loading…'},
+        fonte:'Data: Wikidata. WAS text based on Wikipedia and official sources.',fonteB:'Data: Wikidata (CC0).',fonteC:'Data: Wikidata (CC0) and the Canadian Protected and Conserved Areas Database (CPCAD, Open Government Licence – Canada). WAS text based on these data.',fonteCW:'Data: Wikidata (CC0). WAS text based on these data.',carregando:'Loading…'},
     es:{area:'Superficie',cria:'Creación',fim:'Extinción',iucn:'Categoría UICN',hist:'Historia',ff:'Fauna y flora',at:'Atractivos',mais:'Más información',site:'Sitio oficial',wp:'Wikipedia',foto:'Foto',ant:'Foto anterior',prox:'Foto siguiente',de:'de',
         basica:'Ficha básica con datos de Wikidata. La WAS todavía va a escribir la historia, la fauna y la flora y los atractivos de este lugar.',
-        fonte:'Datos: Wikidata. Texto de la WAS a partir de Wikipedia y de fuentes oficiales.',fonteB:'Datos: Wikidata (CC0).',carregando:'Cargando…'}};
+        fonte:'Datos: Wikidata. Texto de la WAS a partir de Wikipedia y de fuentes oficiales.',fonteB:'Datos: Wikidata (CC0).',fonteC:'Datos: Wikidata (CC0) y registro oficial de áreas protegidas de Canadá (CPCAD, Licencia de Gobierno Abierto de Canadá). Texto de la WAS a partir de estos datos.',fonteCW:'Datos: Wikidata (CC0). Texto de la WAS a partir de estos datos.',carregando:'Cargando…'}};
   const PV={AB:['Alberta','Alberta','Alberta'],BC:['Colúmbia Britânica','British Columbia','Columbia Británica'],MB:['Manitoba','Manitoba','Manitoba'],NB:['Nova Brunswick','New Brunswick','Nuevo Brunswick'],
     NL:['Terra Nova e Labrador','Newfoundland and Labrador','Terranova y Labrador'],NS:['Nova Escócia','Nova Scotia','Nueva Escocia'],NT:['Territórios do Noroeste','Northwest Territories','Territorios del Noroeste'],
     NU:['Nunavut','Nunavut','Nunavut'],ON:['Ontário','Ontario','Ontario'],PE:['Ilha do Príncipe Eduardo','Prince Edward Island','Isla del Príncipe Eduardo'],QC:['Quebec','Quebec','Quebec'],
@@ -56,7 +57,7 @@
     vp.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();e.stopPropagation();ir(i+(e.key==='ArrowRight'?1:-1))}});
     vp.querySelectorAll('img').forEach(im=>im.addEventListener('error',()=>{im.remove()},{once:true}))}
   // ---- ficha ----
-  function montar(p,c,d,l){const X=T[l],li=LI[l],t=d.t&&(d.t[l]||d.t.pt);
+  function montar(p,c,d,l){const X=T[l],li=LI[l];let t=d.t&&(d.t[l]||d.t.pt);if(typeof t==='string')t={r:t};
     const meta=c.querySelector('.meta');if(meta){const pais=meta.textContent.split(' · ')[0];const pv=(d.pv||[]).map(k=>PV[k]?PV[k][li]:'').filter(Boolean).join(' / ');meta.textContent=(pv?pv+', ':'')+pais}
     const fatos=[];const a=km(d.km||p.km,l);if(a)fatos.push([X.area,a]);if(d.cr)fatos.push([X.cria,data(d.cr,l)]);if(d.fim)fatos.push([X.fim,data(d.fim,l)]);if(d.iucn&&IUCN[d.iucn])fatos.push([X.iucn,IUCN[d.iucn][li]]);
     let h=fatos.length?'<dl class="fc-fatos">'+fatos.map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+v+'</dd></div>').join('')+'</dl>':'';
@@ -66,7 +67,7 @@
     const wpw=(l==='pt'&&p.w&&/^pt:/.test(p.w))?p.w:(d.wp||p.w||'');const wl=wpw?'https://'+wpw.slice(0,wpw.indexOf(':'))+'.wikipedia.org/wiki/'+encodeURIComponent(wpw.slice(wpw.indexOf(':')+1)):'';
     const lk=[];if(d.site)lk.push('<a href="'+esc(d.site)+'" target="_blank" rel="noopener">'+X.site+'</a>');if(wl)lk.push('<a href="'+esc(wl)+'" target="_blank" rel="noopener">'+X.wp+'</a>');
     if(lk.length)h+='<p class="fc-links">'+X.mais+': '+lk.join(' · ')+'</p>';
-    h+='<p class="fc-fonte">'+(t?X.fonte:X.fonteB)+'</p>';
+    h+='<p class="fc-fonte">'+(d.ta?(d.fn==='c'?X.fonteC:X.fonteCW):t?X.fonte:X.fonteB)+'</p>';
     const box=document.createElement('div');box.className='fc-corpo';box.innerHTML=h;
     const aviso=[...c.children].find(e=>e.tagName==='P'&&!e.classList.contains('chapeu')&&!e.classList.contains('meta'));
     if(aviso)aviso.replaceWith(box);else{const ac=c.querySelector('.acoes');ac?c.insertBefore(box,ac):c.appendChild(box)}
