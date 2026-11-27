@@ -233,12 +233,12 @@ function montar(M){
   // v8: mapas polares (cfg.pol) ficam sempre em globo, porque o plano corta tudo além de 85° de latitude
   const proj=z0=>cfg.pol?{type:'vertical-perspective'}:({type:['interpolate',['linear'],['zoom'],z0+0.9,'vertical-perspective',z0+2.3,'mercator']});
   // v8: no globo do MapLibre o número do zoom muda com a latitude do centro (perto do polo o mesmo tamanho tem zoom menor)
-  const zAt=lat=>zMin()+(cfg.pol?Math.log2(Math.max(Math.cos(Math.max(-85.05,Math.min(85.05,lat||0))*Math.PI/180),0.06)):0);M.zAt=zAt;
+  const zAt=lat=>Math.max(-2,zMin()+(cfg.pol?Math.log2(Math.max(Math.cos(Math.max(-85.05,Math.min(85.05,lat||0))*Math.PI/180),0.06)):0));M.zAt=zAt;
   const toque=matchMedia('(pointer:coarse)').matches&&!matchMedia('(pointer:fine)').matches;
   const mac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
   const map=new maplibregl.Map({container:cont,
     style:{version:8,projection:proj(zMin()),sky:{'atmosphere-blend':['interpolate',['linear'],['zoom'],0,0.55,5,0.2,7,0]},glyphs:GHB+'fonts/{fontstack}/{range}.pbf',sources:{},layers:[{id:'fundo',type:'background',paint:{'background-color':'#0a1622'}}]},
-    center:cfg.c?cfg.c.slice(0,2):[0,15],zoom:zAt(cfg.c?cfg.c[1]:15),minZoom:cfg.pol?zMin()-4.2:zMin(),maxZoom:11,renderWorldCopies:true,
+    center:cfg.c?cfg.c.slice(0,2):[0,15],zoom:zAt(cfg.c?cfg.c[1]:15),minZoom:cfg.pol?Math.max(-2,zMin()-4.2):zMin(),maxZoom:11,renderWorldCopies:true,
     cooperativeGestures:toque,dragRotate:false,pitchWithRotate:false,touchPitch:false,clickTolerance:6,
     attributionControl:{compact:true,customAttribution:'NASA · Natural Earth · WAS'},
     locale:{'CooperativeGesturesHandler.WindowsHelpText':t('Use Ctrl + roda do mouse para aproximar o mapa'),'CooperativeGesturesHandler.MacHelpText':t('Use ⌘ + roda do mouse para aproximar o mapa'),'CooperativeGesturesHandler.MobileHelpText':t('Use dois dedos para mover o mapa')}
@@ -347,7 +347,7 @@ function montar(M){
     const centro=S.alvo?S.alvo.xy:cfg.c?cfg.c.slice(0,2):null;
     if(centro) map.jumpTo({center:centro,zoom:zAt(centro[1])});
     setTimeout(()=>{if(M.mexeu) return;reduz?map.jumpTo(loc):map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))},reduz?0:1300);
-  }).catch(e=>{(window.__wmmErr=window.__wmmErr||[]).push(String(e&&e.stack||e));car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove()});
+  }).catch(e=>{(window.__wmmErr=window.__wmmErr||[]).push(String(e&&e.stack||e));car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove();const kk=M.fig.querySelector('.wmm-key');if(kk) kk.remove()});
 }
 
 // v8: o globo do MapLibre não desenha nada além de 85° de latitude. Nos mapas polares, o trecho final das rotas e os pontos
