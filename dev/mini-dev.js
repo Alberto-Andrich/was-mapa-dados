@@ -137,9 +137,9 @@ html.wmm-trava,html.wmm-trava body{overflow:hidden!important}
 .wmm-f .cap{font-size:11px;color:#8e9aa6;padding:5px 16px 0;line-height:1.35}
 .wmm-f .cap a{color:#8e9aa6}
 .wmm-f .cp{padding:12px 16px 14px;display:flex;flex-direction:column;gap:8px}
-/* v30 (Alberto, 27/11): categoria em destaque na ficha, para ficar claro entre quais itens se navega */
-.wmm-f .kk{align-self:flex-start;font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#fff;display:inline-flex;align-items:center;gap:8px;padding:5px 11px 5px 9px;border-radius:999px;background:rgba(255,255,255,.07);border:1.5px solid #8a96a3}
-.wmm-f .kk i{width:10px;height:10px;display:inline-block;border-radius:2px}
+/* v33 (Alberto, 27/11): categoria em destaque na ficha, sem moldura de botão, com o ícone da camada no mapa em tamanho bem visível */
+.wmm-f .kk{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:10px}
+.wmm-f .kk img{height:28px;width:auto;display:block;flex:none}
 .wmm-f h3{margin:0;font-size:21px;line-height:1.15;color:#fff;font-weight:700}
 .wmm-f .mt{font-size:14px;color:#aeb8c2;margin:-2px 0 0}
 .wmm-f p{margin:0;font-size:15px;line-height:1.55;color:#dfe5ea}
@@ -189,6 +189,7 @@ function forma(k,x,o){const [w,h]=DIMS[k],cor=CAT[k][1];
   else{const n={X:[3,4,3,2],Z:[3,3,2,3],H:[3,3,2,3]}[k]||[3,3,3,3];x.fillStyle=E;poli(x,k,o,o,w,h);x.fill();
     if(k==='Z'){const g=x.createLinearGradient(0,o+n[0],0,o+h-n[2]);[[0,'#ffd23f'],[.26,'#ffd23f'],[.26,cor],[1,cor]].forEach(([a,c])=>g.addColorStop(a,c));x.fillStyle=g}else x.fillStyle=cor;
     poli(x,k,o+n[3],o+n[0],w-n[1]-n[3],h-n[0]-n[2]);x.fill()}}
+const ICOU={};function icoURL(k){if(ICOU[k]) return ICOU[k];const [w,h]=DIMS[k],e=1.6,p=3,c=document.createElement('canvas');c.width=Math.ceil((w+2*p)*e*2);c.height=Math.ceil((h+2*p)*e*2);const x=c.getContext('2d');x.scale(e*2,e*2);forma(k,x,p);return ICOU[k]=c.toDataURL()}
 function icone(k,brilho,esc){const [w0,h0]=DIMS[k],pad=brilho?22:8,W=w0+2*pad,H=h0+2*pad;const [c,x]=tela(W,H),[s,sx]=tela(W,H);forma(k,sx,pad);
   if('DBG'.includes(k)){
     if(brilho){x.save();x.shadowColor='rgba(255,255,255,.55)';x.shadowBlur=14*PR;x.shadowOffsetX=1e4*PR;x.fillStyle='#000';caixa(x,k,pad-4-1e4,pad-4,w0+8,h0+8,4);x.fill();x.restore()}
@@ -420,7 +421,7 @@ function montar(M){
     const kk=document.createElement('div');kk.className='wmm-key';
     let kh=S.so?'':'<span><i class="sq" style="background:'+CAT[k][1]+'"></i>'+esc(t(CAT[k][0]))+(cfg.kl?' ('+esc(lo(cfg.kl))+')':'')+'</span>';
     if(cit.length) kh+='<span><i class="sq" style="background:#fff;outline:2px solid #14181d"></i>'+esc(lo(cfg.kt)||t('Citado nesta página'))+'</span>';
-    (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);if(!nm) return;const c=l.c||'#ff5a4a';kh+='<span><i class="ln" style="'+(l.t==='dash'?'background:repeating-linear-gradient(90deg,'+c+' 0 6px,transparent 6px 10px)':'background:'+c)+'"></i>'+esc(nm)+'</span>'});
+    const lvis={};(cfg.lin||[]).forEach(l=>{const nm=lo(l.n);if(!nm) return;const c=l.c||'#ff5a4a';const lk=nm+'|'+c.toLowerCase();if(lvis[lk]) return;lvis[lk]=1;kh+='<span><i class="ln" style="'+(l.t==='dash'?'background:repeating-linear-gradient(90deg,'+c+' 0 6px,transparent 6px 10px)':'background:'+c)+'"></i>'+esc(nm)+'</span>'});
     if(rot&&cfg.rot) rot.rotas.filter(r=>cfg.rot.includes(r.id)).forEach(r=>{kh+='<span><i class="ln" style="background:'+(corR[r.c]||'#ffcf6b')+'"></i>'+esc(r.n)+'</span>'});
     (cfg.ar||[]).filter(a=>a.lg).forEach(a=>{kh+='<span><i class="sq" style="background:'+(a.c||'#d9b44a')+'55;outline:1.5px solid '+(a.c||'#d9b44a')+';width:20px;border-radius:6px"></i>'+esc(lo(a.lg))+'</span>'});
     (cfg.kx||[]).forEach(x=>{kh+='<span><i class="'+(x[0]==='ln'?'ln':'sq')+'" style="background:'+x[1]+'"></i>'+esc(lo(x[2]))+'</span>'});
@@ -725,7 +726,7 @@ function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   let h='<button type="button" class="x" aria-label="'+esc(t('Fechar'))+'">×</button>';
   if(d.foto) h+='<img src="'+esc(d.foto)+'" alt="" loading="lazy">'+(d.fa?'<div class="cap">'+esc(t('Foto:'))+' '+esc(d.fa)+(d.fl?', '+esc(d.fl):'')+(d.fp?' · <a href="'+esc(d.fp)+'" target="_blank" rel="noopener">Commons</a>':'')+'</div>':'');
   if(pg&&!aqui) h+='<div class="fguia"><a href="'+PFX+'/destinations/'+esc(pg)+'">'+esc(t('Ler o guia completo'))+'</a></div>';
-  h+='<div class="cp"><div class="kk" style="border-color:'+CAT[k][1]+'"><i style="background:'+CAT[k][1]+'"></i>'+esc(t(CAT[k][0]))+'</div>'+(aqui?'<span class="aq">'+esc(t('Esta página'))+'</span>':'')+
+  h+='<div class="cp"><div class="kk"><img src="'+icoURL(k)+'" alt="">'+esc(t(CAT[k][0]))+'</div>'+(aqui?'<span class="aq">'+esc(t('Esta página'))+'</span>':'')+
     '<h3>'+esc(d.n)+'</h3>'+(meta?'<div class="mt">'+esc(meta)+'</div>':'')+(tx?'<p>'+esc(tx)+'</p>':'')+(ext?'<div class="mt">'+esc(ext)+'</div>':'')+
     '</div>';
   h+=navH(S.gP,gi,i);
