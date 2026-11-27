@@ -634,13 +634,14 @@ const DG=Math.PI/180;
 function dist(a,b){const d=Math.abs(((a[0]-b[0])%360+540)%360-180)*DG,p1=a[1]*DG,p2=b[1]*DG;
   return Math.acos(Math.min(1,Math.sin(p1)*Math.sin(p2)+Math.cos(p1)*Math.cos(p2)*Math.cos(d)))/DG}
 function hemiG(itens,xy,pol,lab){// itens: [{i,xy}] já ordenados; separa por hemisfério quando há os dois
+  // v39 (Alberto, 27/11): só mapas polares separam Ártico/Antártica; antes qualquer mapa com lugares ao norte e ao sul do equador ganhava o rótulo 'Antártica'
   const N=itens.filter(p=>p.xy[1]>=0),S_=itens.filter(p=>p.xy[1]<0);
-  if(!N.length||!S_.length) return [{lab:lab||'',ids:itens.map(p=>p.i),volta:1}];
+  if(!pol||!N.length||!S_.length) return [{lab:lab||'',ids:itens.map(p=>p.i),volta:1}];
   const gs=[{lab:t('Ártico'),ids:N.map(p=>p.i),volta:1},{lab:t('Antártica'),ids:S_.map(p=>p.i),volta:1}];
   return xy&&xy[1]<0?gs.reverse():gs}
 function gruposP(S,cfg,k){const os=S.pts.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]);
   if(!(cfg.pol||k==='P')) return [{lab:'',ids:os.map(p=>p.i),volta:1}];
-  const ref=cfg.globo||(S.alvo&&S.alvo.xy)||cfg.c;return hemiG(os,ref)}
+  const ref=cfg.globo||(S.alvo&&S.alvo.xy)||cfg.c;return hemiG(os,ref,1)}
 function gruposC(S,cfg){const L=cfg.lin||[],gs=L.map(l=>({lab:lo(l.lg)||lo(l.n)||'',c:l.c||'#ff5a4a',it:[]})),sobra=[];
   const rot=L.map(l=>{const o=[];const p=l.p||[];for(let a=0;a<p.length;a++){o.push(p[a]);if(a<p.length-1) for(let s=1;s<6;s++) o.push([p[a][0]+(p[a+1][0]-p[a][0])*s/6,p[a][1]+(p[a+1][1]-p[a][1])*s/6])}return o});
   // v23: limiar de 'perto da rota' proporcional ao tamanho das rotas (em mapas locais 1,5° pegava todos os pontos)
