@@ -20,9 +20,9 @@ T = {}
 for f in sorted(glob.glob(f'{TX}/ca_np_*.py')):
     s = importlib.util.spec_from_file_location('m', f); m = importlib.util.module_from_spec(s); s.loader.exec_module(m); T.update(m.T)
 # seções (história, fauna e flora, atrativos) escritas pela WAS para fichas automáticas: textos/ca_sec_*.py definem S[q] = {pt:{h,ff,at}, en:..., es:...}
-S = {}
+S = {}; KMX = {}
 for f in sorted(glob.glob(f'{TX}/ca_sec_*.py')):
-    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S)
+    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S); KMX.update(getattr(m, 'KM', {}))
 def autor(a):
     a = re.sub(r'https?://\S+', '', a or '').strip(' ,;-·')
     return a[:70]
@@ -222,6 +222,7 @@ for q, r in rows.items():
             km = cp['ha'] / 100; d['km'] = round(km, 2) if km < 1 else round(km, 1) if km < 100 else round(km); NCP['km'] += 1
         if 'cr' not in d and cp['ano']: d['cr'] = str(cp['ano']); NCP['cr'] += 1
         if 'iucn' not in d and cp['iucn']: d['iucn'] = cp['iucn']; NCP['iucn'] += 1
+    if q in KMX: d['km'] = KMX[q]
     t = T.get(q)
     if not t:
         d['t'] = apresentacao(A[q][1], d, cp, r[8].replace('_', ' ') if r[8] else None); d['ta'] = 1
@@ -238,6 +239,9 @@ for q, r in rows.items():
 os.makedirs(f'{R}/v1/fichas', exist_ok=True)
 for k, v in out.items():
     json.dump(v, open(f'{R}/v1/fichas/{k}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
-json.dump({k: sorted(v) for k, v in sorted(idx.items())}, open(f'{R}/v1/fichas/indice.json', 'w'), separators=(',', ':'))
+ip = f'{R}/v1/fichas/indice.json'
+I = {k: v for k, v in (json.load(open(ip)) if os.path.exists(ip) else {}).items() if not k.startswith('CA-')}  # mantém os outros países
+I.update({k: sorted(v) for k, v in idx.items()})
+json.dump(dict(sorted(I.items())), open(ip, 'w'), separators=(',', ':'))
 print({k: len(v) for k, v in sorted(out.items())}, 'seções', len(S), 'textos', sum(1 for v in out.values() for d in v.values() if 't' in d), 'com fotos', sum(1 for v in out.values() for d in v.values() if 'f' in d), dict(NCP),
   {k: sum(1 for v in out.values() for d in v.values() if k in d) for k in ('km', 'cr', 'iucn', 'pv')})
