@@ -273,7 +273,7 @@ function montar(M){
     const Y=85.0511;
     [['O',-180,0,'relO'],['L',0,180,'relL']].forEach(([s,a,b,u])=>{map.addSource('relevo'+s,{type:'image',url:URLS[u][0],coordinates:[[a,Y],[b,Y],[b,-Y],[a,-Y]]});
       map.addLayer({id:'relevo'+s,type:'raster',source:'relevo'+s,paint:{'raster-opacity':['interpolate',['linear'],['zoom'],4.5,1,7,0],'raster-fade-duration':0,'raster-resampling':'linear'}})});
-    const cal=[];[[-82.8,.25],[-83.8,.5],[-84.5,.8],[-84.95,1]].forEach(([a,o])=>{for(let l=-180;l<180;l+=30)cal.push({type:'Feature',properties:{o},geometry:{type:'Polygon',coordinates:[[[l,a],[l+30,a],[l+30,-85.06],[l,-85.06],[l,a]]]}})});
+    const cal=[];(cfg.pol?[[-84.75,.5],[-84.95,1]]:[[-82.8,.25],[-83.8,.5],[-84.5,.8],[-84.95,1]]).forEach(([a,o])=>{for(let l=-180;l<180;l+=30)cal.push({type:'Feature',properties:{o},geometry:{type:'Polygon',coordinates:[[[l,a],[l+30,a],[l+30,-85.06],[l,-85.06],[l,a]]]}})});
     map.addSource('calota',{type:'geojson',data:{type:'FeatureCollection',features:cal}});
     map.addLayer({id:'calota',type:'fill',source:'calota',maxzoom:cfg.pol?24:4,paint:{'fill-color':cfg.pol?'#d2d8dd':'#bcc1c7','fill-opacity':['get','o'],'fill-antialias':false}});
     map.addSource('lagos',{type:'geojson',data:base.lakes});map.addLayer({id:'lagos',type:'fill',source:'lagos',paint:{'fill-color':'#225373'}});
@@ -286,7 +286,9 @@ function montar(M){
     const linhas=[];
     if(rot&&cfg.rot) rot.rotas.filter(r=>cfg.rot.includes(r.id)).forEach(r=>{linhas.push({type:'Feature',properties:{c:corR[r.c]||'#ffcf6b',n:r.n,d:r.c==='RA'?1:0},geometry:{type:'LineString',coordinates:r.pts}});leg.push([r.n,corR[r.c],1])});
     (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);linhas.push({type:'Feature',properties:{c:l.c||'#ff5a4a',n:nm,d:l.t==='dash'?1:0},geometry:{type:'LineString',coordinates:suave(l.p,8)}});if(nm&&!l.nl) leg.push([lo(l.lg)||nm,l.c||'#ff5a4a',1])});
-    if(linhas.length){map.addSource('lin',{type:'geojson',data:{type:'FeatureCollection',features:linhas}});
+    // nos mapas polares, o trecho além de 85° S/N sai da camada (o MapLibre o achataria na borda) e vai para a capa SVG
+    const corta=f=>{if(!cfg.pol) return f;const out=[];let cur=[];f.geometry.coordinates.forEach(p=>{if(Math.abs(p[1])>84.95){if(cur.length>1) out.push(cur);cur=[]}else cur.push(p)});if(cur.length>1) out.push(cur);return {type:'Feature',properties:f.properties,geometry:{type:'MultiLineString',coordinates:out}}};
+    if(linhas.length){map.addSource('lin',{type:'geojson',data:{type:'FeatureCollection',features:linhas.map(corta)}});
       map.addLayer({id:'lin-s',type:'line',source:'lin',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#05080c','line-opacity':.55,'line-width':['interpolate',['linear'],['zoom'],1,3.6,5,4.6,9,6.5]}});
       map.addLayer({id:'lin',type:'line',source:'lin',filter:['==',['get','d'],0],layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':['get','c'],'line-width':['interpolate',['linear'],['zoom'],1,2,5,2.6,9,3.8]}});
       map.addLayer({id:'lin-d',type:'line',source:'lin',filter:['==',['get','d'],1],layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':['get','c'],'line-dasharray':[2.2,1.6],'line-width':['interpolate',['linear'],['zoom'],1,2,5,2.6,9,3.5]}});
