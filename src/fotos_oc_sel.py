@@ -16,7 +16,7 @@ cat = {q: (r[7] or '') for q, r in WD.items()}
 p18 = {q: [fn(i) for i in (r[6] or '').split('¦') if i] for q, r in WD.items()}
 nome = {}
 for x in json.load(open(f'{R}/v1/mapa-areas-protegidas.json')):
-    if x[5] not in ('NZ', 'FJ', 'SB', 'WS', 'TO', 'KI', 'TV', 'CK', 'NU'): continue
+    if x[5] not in ('NZ', 'FJ', 'SB', 'WS', 'TO', 'KI', 'TV', 'CK', 'NU', 'PG', 'NC', 'PF', 'PW', 'FM', 'VU', 'PN'): continue
     q = str(x[0]); r = WD.get(q) or []
     nome[q] = x[6].split(':', 1)[1].replace('_', ' ') if x[6] and x[6].startswith('en:') else (r[9] if len(r) > 9 and r[9] else x[1])
     nome[q] = re.sub(r'\(.*?\)', ' ', nome[q])
@@ -35,7 +35,7 @@ for q in set(nomesn) | set(nomesc):
     if n: maiores[q] = [m for m in todos if m != n and f' {n} ' in f' {m} ']
 RUIM = re.compile(r'\b(map|maps|locator|logo|seal|diagram|chart|flag|coat of arms|plaque|brochure|stamp|postcard|boundary|topographic|location)\b|\.svg$|\.pdf$|\.tif|\bBHL\d|^Book - |\(Plate [A-Z0-9]+\)|^Page:|\bscan\b|specimen|herbarium', re.I)
 MEH = re.compile(r'\b(sign|signs|signage|entrance|ceremony|meeting|parking|toilet|toilets|kiosk|staff|volunteer|volunteers|officials|carpark|car park)\b', re.I)
-AUW = re.compile(r' (new zealand|aotearoa|northland|auckland|waikato|bay of plenty|gisborne|hawke s bay|taranaki|manawatu|whanganui|wellington|tasman|nelson|marlborough|west coast|canterbury|otago|southland|fiordland|stewart island|rakiura|subantarctic|auckland islands|campbell island|kermadec|fiji|samoa|tonga|kiribati|phoenix islands|tuvalu|funafuti|cook islands|niue|solomon islands|guadalcanal|honiara|pacific|national park|marine reserve|nz) ')
+AUW = re.compile(r' (new zealand|aotearoa|northland|auckland|waikato|bay of plenty|gisborne|hawke s bay|taranaki|manawatu|whanganui|wellington|tasman|nelson|marlborough|west coast|canterbury|otago|southland|fiordland|stewart island|rakiura|subantarctic|auckland islands|campbell island|kermadec|fiji|samoa|tonga|kiribati|phoenix islands|tuvalu|funafuti|cook islands|niue|solomon islands|guadalcanal|honiara|rennell|papua new guinea|png|new guinea|new caledonia|nouvelle calédonie|nouvelle caledonie|grande terre|french polynesia|polynésie|polynesie|marquesas|marquises|nuku hiva|moorea|tahiti|palau|koror|babeldaob|micronesia|pohnpei|kosrae|yap|vanuatu|espiritu santo|banks islands|pitcairn|henderson|line islands|pacific|national park|marine reserve|nz) ')
 LIC = re.compile(r'(public domain|^pd|cc0|cc[ -]by|no restrictions|attribution)', re.I)
 
 EXCLUIR = {'Inscription commemorating the rebuilding of the walls of Jerusalem - IAA - Israel Museum.jpeg'}  # curadoria manual

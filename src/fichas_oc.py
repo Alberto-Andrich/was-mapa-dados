@@ -9,7 +9,10 @@ TX = os.environ.get('FICHAS_TEXTOS', '/mnt/project-files/mapa-aventura/fichas-ar
 IUCNQ = {'Q14545608':'Ia','Q14545620':'Ib','Q14545628':'II','Q14545633':'III','Q14545639':'IV','Q14545646':'V','Q14545652':'VI'}
 PAISES = {'NZ': ('Nova Zelândia', 'New Zealand', 'Nueva Zelanda', 'na'), 'FJ': ('Fiji', 'Fiji', 'Fiyi', 'em'), 'SB': ('Ilhas Salomão', 'Solomon Islands', 'Islas Salomón', 'nas'),
   'WS': ('Samoa', 'Samoa', 'Samoa', 'em'), 'TO': ('Tonga', 'Tonga', 'Tonga', 'em'), 'KI': ('Kiribati', 'Kiribati', 'Kiribati', 'em'), 'TV': ('Tuvalu', 'Tuvalu', 'Tuvalu', 'em'),
-  'CK': ('Ilhas Cook', 'Cook Islands', 'Islas Cook', 'nas'), 'NU': ('Niue', 'Niue', 'Niue', 'em')}
+  'CK': ('Ilhas Cook', 'Cook Islands', 'Islas Cook', 'nas'), 'NU': ('Niue', 'Niue', 'Niue', 'em'),
+  'PG': ('Papua-Nova Guiné', 'Papua New Guinea', 'Papúa Nueva Guinea', 'em'), 'NC': ('Nova Caledônia', 'New Caledonia', 'Nueva Caledonia', 'na'),
+  'PF': ('Polinésia Francesa', 'French Polynesia', 'Polinesia Francesa', 'na'), 'PW': ('Palau', 'Palau', 'Palaos', 'em'),
+  'FM': ('Micronésia', 'Micronesia', 'Micronesia', 'na'), 'VU': ('Vanuatu', 'Vanuatu', 'Vanuatu', 'em'), 'PN': ('Ilhas Pitcairn', 'Pitcairn Islands', 'Islas Pitcairn', 'nas')}
 # regiões da Nova Zelândia: rótulo en do Wikidata -> (código, pt, en, es, preposição pt)
 REG = {'Northland Region': ('NTL', 'Northland', 'Northland', 'Northland', 'em'), 'Auckland Region': ('AUK', 'Auckland', 'Auckland', 'Auckland', 'em'),
   'Waikato': ('WKO', 'Waikato', 'Waikato', 'Waikato', 'em'), 'Waikato Region': ('WKO', 'Waikato', 'Waikato', 'Waikato', 'em'),
@@ -47,13 +50,34 @@ TIPOS = [(r'National Park', 'Parque Nacional', 'm', 'national park', 'Parque Nac
  (r'Wilderness Area', 'Área Selvagem', 'f', 'wilderness area', 'Área Silvestre', 'f', 'área selvagem', 'área silvestre'),
  (r'Conservation Park', 'Parque de Conservação', 'm', 'conservation park', 'Parque de Conservación', 'm', 'parque de conservação', 'parque de conservación'),
  (r'Marine Park|Marae Moana', 'Parque Marinho', 'm', 'marine park', 'Parque Marino', 'm', 'parque marinho', 'parque marino'),
+ (r'Nature Reserve', 'Reserva Natural', 'f', 'nature reserve', 'Reserva Natural', 'f', 'reserva natural', 'reserva natural'),
+ (r'Wildlife Management Area', 'Área de Manejo de Fauna', 'f', 'wildlife management area', 'Área de Manejo de Fauna', 'f', 'área de manejo de fauna', 'área de manejo de fauna'),
+ (r'Wildlife Sanctuary', 'Santuário de Vida Selvagem', 'm', 'wildlife sanctuary', 'Santuario de Vida Silvestre', 'm', 'santuário de vida selvagem', 'santuario de vida silvestre'),
+ (r'Marine Sanctuary', 'Santuário Marinho', 'm', 'marine sanctuary', 'Santuario Marino', 'm', 'santuário marinho', 'santuario marino'),
+ (r'Forest Reserve', 'Reserva Florestal', 'f', 'forest reserve', 'Reserva Forestal', 'f', 'reserva florestal', 'reserva forestal'),
+ (r'Provincial Park', 'Parque Provincial', 'm', 'provincial park', 'Parque Provincial', 'm', 'parque provincial', 'parque provincial'),
+ (r'Biosphere Reserve', 'Reserva da Biosfera', 'f', 'biosphere reserve', 'Reserva de la Biosfera', 'f', 'reserva da biosfera', 'reserva de la biosfera'),
+ (r'Conservation Zone', 'Zona de Conservação', 'f', 'conservation zone', 'Zona de Conservación', 'f', 'zona de conservação', 'zona de conservación'),
+ (r'Marine Conservation Area', 'Área de Conservação Marinha', 'f', 'marine conservation area', 'Área de Conservación Marina', 'f', 'área de conservação marinha', 'área de conservación marina'),
  (r'Conservation Area|Protected Area', 'Área de Conservação', 'f', 'conservation area', 'Área de Conservación', 'f', 'área de conservação', 'área de conservación')]
 def tipo(n):
     for t in TIPOS:
         if re.search(t[0], n): return t
     return ('', 'Área Protegida', 'f', 'protected area', 'Área Protegida', 'f', 'área protegida', 'área protegida')
-NOMES = {863815: ('Área Protegida das Ilhas Fénix', 'Área Protegida de las Islas Fénix'), 38121092: ('Marae Moana', 'Marae Moana'), 116769625: ('Parque Marinho de Uso Múltiplo Nukutuluea, de Niue', 'Parque Marino de Uso Múltiple Nukutuluea, de Niue'), 108195527: ("Parque Nacional do Lago Lanoto'o", "Parque Nacional del Lago Lanoto'o")}
+NOMES = {863815: ('Área Protegida das Ilhas Fénix', 'Área Protegida de las Islas Fénix'), 38121092: ('Marae Moana', 'Marae Moana'), 116769625: ('Parque Marinho de Uso Múltiplo Nukutuluea, de Niue', 'Parque Marino de Uso Múltiple Nukutuluea, de Niue'), 108195527: ("Parque Nacional do Lago Lanoto'o", "Parque Nacional del Lago Lanoto'o"),
+  379759: ('Ilha Henderson', 'Isla Henderson'), 1330981: ('Área das Lagoas da Nova Caledônia', 'Área de las Lagunas de Nueva Caledonia'), 93346940: ('Laguna de Moorea', 'Laguna de Moorea'),
+  93346951: ('Área dos Lagos do Grande Sul da Nova Caledônia', 'Área de los Lagos del Gran Sur de Nueva Caledonia'), 17215490: ('Laguna Sul das Ilhas Rochosas', 'Laguna Sur de las Islas Rocosas'),
+  852433: ('Rennell Oriental', 'Rennell Oriental'), 3111560: ('Domínio de Gouaro Deva', 'Dominio de Gouaro Deva'), 22678507: ('Atol Ant', 'Atolón Ant'),
+  17355419: ('Parque Natural do Mar de Coral', 'Parque Natural del Mar del Coral'), 139377344: ('Santuário Marinho Nacional de Palau', 'Santuario Marino Nacional de Palaos'),
+  4848762: ('Santuário do Rio Baiyer', 'Santuario del Río Baiyer'), 6918722: ('Reserva de Motu One', 'Reserva de Motu One'), 23583794: ('Floresta Yela Ka', 'Bosque Yela Ka'),
+  27222538: ('Santuário de Vida Selvagem da Ilha Malden', 'Santuario de Vida Silvestre de la Isla Malden'), 27222540: ('Santuário de Vida Selvagem da Ilha Starbuck', 'Santuario de Vida Silvestre de la Isla Starbuck'),
+  27222575: ('Santuário de Vida Selvagem da Ilha Vostok', 'Santuario de Vida Silvestre de la Isla Vostok'), 61673738: ('Santuário da Iguana-de-crista de Yaduataba', 'Santuario de la Iguana Crestada de Yaduataba'),
+  5682243: ('Reserva Natural de Hatutu', 'Reserva Natural de Hatutu'), 5348699: ('Reserva Natural da Ilha Eiao', 'Reserva Natural de la Isla Eiao'), 4304782: ('Reserva Natural de Motane', 'Reserva Natural de Motane'),
+  24573944: ('Área de Importância para a Biodiversidade de Oroluk', 'Área de Importancia para la Biodiversidad de Oroluk'),
+  65096182: ('Nowon e Votwos de Ureparapara', 'Nowon y Votwos de Ureparapara')}
 q_atual = [0]
+# artigos especiais (pt, es); '' = sem artigo
+ARTX = {22678507: ('O', 'El'), 852433: ('', ''), 65096182: ('', ''), 379759: ('A', 'La'), 93346940: ('A', 'La')}
 def nomes(x, r):
     en = (r[9] if r and r[9] else None) or (x[6].split(':', 1)[1].replace('_', ' ') if x[6] and x[6].startswith('en:') else x[1])
     t = tipo(en); base = re.sub(r'\s*' + (t[0] or '$^') + r'\s*', ' ', en).strip(' -')
@@ -85,8 +109,9 @@ def apresentacao(pt, en, es, t, d, pais, reg):
     elif pais == 'NZ' and reg: onde_pt, onde_en, onde_es = 'nas ilhas periféricas da Nova Zelândia', "in New Zealand's outlying islands", 'en las islas periféricas de Nueva Zelanda'
     else: onde_pt, onde_en, onde_es = f'{P[3]} {P[0]}', f'in {"the " if P[1].endswith("Islands") else ""}{P[1]}', f'en {"las " if P[2].startswith("Islas") else ""}{P[2]}'
     art = 'O' if (t[2] == 'm' and not pt.startswith(('Área', 'Reserva'))) or pt.startswith(('Parque', 'Santuário')) else 'A'
+    art = ARTX.get(q_atual[0], (art,))[0]
     um = 'um' if t[2] == 'm' else 'uma'
-    s = [f'{art} {pt} fica {onde_pt}.' if pt.lower().startswith(t[6]) else f'{art} {pt} é {um} {t[6]} {onde_pt}.']
+    s = [f'{art} {pt} fica {onde_pt}.'.strip() if pt.lower().startswith(t[6]) else f'{art} {pt} é {um} {t[6]} {onde_pt}.'.strip()]
     prot = 'protegido' if art == 'O' else 'protegida'
     if km and ano: s.append(f'Tem {tam(km, "pt")} e está {prot} desde {ano}.')
     elif km: s.append(f'Tem {tam(km, "pt")}.')
@@ -101,8 +126,9 @@ def apresentacao(pt, en, es, t, d, pais, reg):
     if iu in IUCNF: s.append(IUCNF[iu][1])
     o['en'] = ' '.join(s)
     art = 'El' if (t[5] == 'm' and not es.startswith('Reserva')) or es.startswith(('Parque', 'Santuario', 'Área')) else 'La'
+    art = ARTX.get(q_atual[0], (None, art))[1]
     um = 'un' if t[5] == 'm' or t[7].startswith('área') else 'una'
-    s = [f'{art} {es} está {onde_es}.' if es.lower().startswith(t[7]) else f'{art} {es} es {um} {t[7]} {onde_es}.']
+    s = [f'{art} {es} está {onde_es}.'.strip() if es.lower().startswith(t[7]) else f'{art} {es} es {um} {t[7]} {onde_es}.'.strip()]
     prot = 'protegido' if art == 'El' and not es.startswith('Área') else 'protegida'
     if km and ano: s.append(f'Tiene {tam(km, "es")} y está {prot} desde {ano}.')
     elif km: s.append(f'Tiene {tam(km, "es")}.')
