@@ -601,6 +601,7 @@ function gruposC(S,cfg){const L=cfg.lin||[],gs=L.map(l=>({lab:lo(l.lg)||lo(l.n)|
   const rot=L.map(l=>{const o=[];const p=l.p||[];for(let a=0;a<p.length;a++){o.push(p[a]);if(a<p.length-1) for(let s=1;s<6;s++) o.push([p[a][0]+(p[a+1][0]-p[a][0])*s/6,p[a][1]+(p[a+1][1]-p[a][1])*s/6])}return o});
   // v23: limiar de 'perto da rota' proporcional ao tamanho das rotas (em mapas locais 1,5° pegava todos os pontos)
   let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;rot.forEach(r=>r.forEach(v=>{x0=Math.min(x0,v[0]);x1=Math.max(x1,v[0]);y0=Math.min(y0,v[1]);y1=Math.max(y1,v[1])}));
+  const bb=cfg.bb;if(bb&&bb.length===4){x0=bb[0];x1=bb[1];y0=bb[2];y1=bb[3]}
   const LIM=x1>x0?Math.min(1.5,Math.max(0.05,Math.hypot(x1-x0,y1-y0)*0.04)):1.5;
   S.cit.forEach((c,o)=>{const q=(cfg.pts||[])[c.i]||[];let us=q[6];
     if(us==null){us=[];rot.forEach((r,ri)=>{let m=1e9,mi=0;r.forEach((v,vi)=>{const d=dist(v,c.xy);if(d<m){m=d;mi=vi}});if(m<LIM) us.push([ri,mi])})}
