@@ -328,7 +328,7 @@ function alertas(){
 
 /* ================= RENDER ================= */
 let app = document.getElementById('wasrot');
-if(!app){ app=document.createElement('div'); app.id='wasrot'; const ft=document.querySelector('[data-wasrot-antes]')||document.querySelector('.footer-was, footer, [class*="FOOTER" i]'); if(ft&&ft.parentNode) ft.parentNode.insertBefore(app,ft); else document.body.appendChild(app); }
+if(!app){ app=document.createElement('div'); app.id='wasrot'; const ft=document.querySelector('footer.footer-section')||document.querySelector('footer'); if(ft&&ft.parentNode) ft.parentNode.insertBefore(app,ft); else document.body.appendChild(app); }
 function topo(){
   if(!T) return '';
   return `<div class="topo"><div class="topo-in">
