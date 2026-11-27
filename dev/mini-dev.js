@@ -354,7 +354,8 @@ function montar(M){
 // perto do polo (Polo Sul, 88°23′ S etc.) são desenhados numa camada SVG por cima, reprojetada a cada quadro.
 function capaPolar(M){const {map,S,box}=M,NS='http://www.w3.org/2000/svg',LIM=84.7,fora=y=>Math.abs(y)>=LIM;
   const sv=document.createElementNS(NS,'svg');sv.setAttribute('class','wmm-pol');box.insertBefore(sv,box.querySelector('.wmm-leg'));
-  const occ=ll=>{try{return map.transform.isLocationOccluded&&map.transform.isLocationOccluded(new maplibregl.LngLat(ll[0],ll[1]))}catch(e){return false}};
+  const cl=p=>[p[0],Math.max(-89.99,Math.min(89.99,p[1]))];
+  const occ=ll=>{ll=cl(ll);try{return map.transform.isLocationOccluded&&map.transform.isLocationOccluded(new maplibregl.LngLat(ll[0],ll[1]))}catch(e){return false}};
   const segs=[];(M.linhas||[]).forEach(f=>{const c=f.geometry.coordinates;let cur=null;
     c.forEach((p,i)=>{const dentro=fora(p[1])||(c[i+1]&&fora(c[i+1][1]))||(c[i-1]&&fora(c[i-1][1]));if(dentro){if(!cur){cur={p:[],c:f.properties.c,d:f.properties.d};segs.push(cur)}cur.p.push(p)}else cur=null})});
   const pts=[];S.pts.forEach(p=>{if(fora(p.xy[1])) pts.push({xy:p.xy,n:p.d.n,cor:CAT[S.cfg.k][1],f:()=>abre(M,p.i,false)})});
@@ -365,8 +366,8 @@ function capaPolar(M){const {map,S,box}=M,NS='http://www.w3.org/2000/svg',LIM=84
   const marcas=pts.map(q=>{const g=document.createElementNS(NS,'g');g.setAttribute('class','m');g.innerHTML='<rect x="-6" y="-6" width="12" height="12" fill="'+q.cor+'" stroke="#14181d" stroke-width="2"/><text x="11" y="4.5"></text>';
     g.querySelector('text').textContent=q.n;g.addEventListener('click',e=>{e.stopPropagation();M.clicou=0;q.f()});g2.appendChild(g);return [q,g]});
   const desenha=()=>{const z=map.getZoom()-M.zAt(map.getCenter().lat),w=z<1?2.2:z<3?2.8:3.6;
-    linhas.forEach(([sg,a,b])=>{let d='';sg.p.forEach((p,i)=>{if(occ(p)){return}const q=map.project(p);d+=(d&&!occ(sg.p[i-1]||p)?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1)});a.setAttribute('d',d);b.setAttribute('d',d);a.setAttribute('stroke-width',w+2.4);b.setAttribute('stroke-width',w)});
-    marcas.forEach(([q,g])=>{if(occ(q.xy)){g.style.display='none';return}g.style.display='';const p=map.project(q.xy);g.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')')})};
+    linhas.forEach(([sg,a,b])=>{let d='';sg.p.forEach((p,i)=>{if(occ(p)){return}const q=map.project(cl(p));d+=(d&&!occ(sg.p[i-1]||p)?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1)});a.setAttribute('d',d);b.setAttribute('d',d);a.setAttribute('stroke-width',w+2.4);b.setAttribute('stroke-width',w)});
+    marcas.forEach(([q,g])=>{if(occ(q.xy)){g.style.display='none';return}g.style.display='';const p=map.project(cl(q.xy));g.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')')})};
   map.on('render',desenha);desenha()}
 
 function vistaLocal(M){const S=M.S,cfg=S.cfg,map=M.map;let bb=cfg.bb;
