@@ -35,9 +35,12 @@ for q in set(nomesn) | set(nomesc):
     if n: maiores[q] = [m for m in todos if m != n and f' {n} ' in f' {m} ']
 RUIM = re.compile(r'\b(map|maps|locator|logo|seal|diagram|chart|flag|coat of arms|plaque|brochure|stamp|postcard|boundary|topographic|location)\b|\.svg$|\.pdf$|\.tif|\bBHL\d|^Book - |\(Plate [A-Z0-9]+\)|^Page:|\bscan\b|specimen|herbarium', re.I)
 MEH = re.compile(r'\b(sign|signs|signage|entrance|ceremony|meeting|parking|toilet|toilets|kiosk|staff|volunteer|volunteers|officials|carpark|car park)\b', re.I)
+AUW = re.compile(r' (australia|australian|new south wales|victoria|queensland|tasmania|northern territory|canberra|sydney|melbourne|brisbane|perth|adelaide|hobart|darwin|cairns|kimberley|pilbara|outback|great barrier reef|blue mountains|kangaroo island|national park|nature reserve|conservation park|state forest|marine park|wa|nsw|qld|vic|tas|sa|nt|act) ')
 LIC = re.compile(r'(public domain|^pd|cc0|cc[ -]by|no restrictions|attribution)', re.I)
 
+EXCLUIR = {'Inscription commemorating the rebuilding of the walls of Jerusalem - IAA - Israel Museum.jpeg'}  # curadoria manual
 def pontos(q, f, m, e18):
+    if f in EXCLUIR: return None
     autor, lic, w, h, av, cats = m
     if not lic or re.search(r'NC|ND', lic) or not LIC.search(lic): return None
     if RUIM.search(f) or re.search(r'\bsign\b', f, re.I) or (w or 0) < 800: return None
@@ -53,6 +56,7 @@ def pontos(q, f, m, e18):
         else:
             core = ' '.join(t for t in n.split() if t not in GENFRACO)
             if not core or f' {core} ' not in txt: return None
+    if not e18 and not catok and not AUW.search(' ' + norm((cats or '').replace('|', ' ')) + ' '): return None
     s = 0
     if e18: s += 50
     av = (av or '').lower()
