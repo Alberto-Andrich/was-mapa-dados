@@ -223,7 +223,9 @@ for q, r in rows.items():
         if 'cr' not in d and cp['ano']: d['cr'] = str(cp['ano']); NCP['cr'] += 1
         if 'iucn' not in d and cp['iucn']: d['iucn'] = cp['iucn']; NCP['iucn'] += 1
     if q in KMX: d['km'] = KMX[q]
-    if q in CRX and 'cr' not in d: d['cr'] = CRX[q]
+    if q in CRX:
+        if CRX[q]: d['cr'] = CRX[q]
+        else: d.pop('cr', None)
     t = T.get(q)
     if not t:
         d['t'] = apresentacao(A[q][1], d, cp, r[8].replace('_', ' ') if r[8] else None); d['ta'] = 1
