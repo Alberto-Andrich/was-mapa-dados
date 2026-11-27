@@ -131,8 +131,8 @@ function carregaML(){if(window.maplibregl) return Promise.resolve();if(carregaML
 .wmm-f .ac a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;background:#b90000;color:#fff;text-decoration:none;font-size:15px;font-weight:600}
 .wmm-f .ac a:hover{background:#d10000}
 .wmm-f{display:flex;flex-direction:column}.wmm-f>*{flex-shrink:0}.wmm-f .cp{flex:1 0 auto}
-.wmm-f .nv{position:sticky;bottom:0;margin-top:auto;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 12px;background:#0d1117;border-top:1px solid #222a34}
-.wmm-f .nv button{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 14px;border:1px solid #39434f;color:#fff;font-size:14px;display:flex;align-items:center;gap:6px}
+.wmm-f .nv{position:sticky;bottom:0;margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 10px;background:#0d1117;border-top:1px solid #222a34}
+.wmm-f .nv button{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 11px;border:1px solid #39434f;color:#fff;font-size:14px;display:flex;align-items:center;gap:6px}
 .wmm-f .nv button:hover{background:#1d2631}.wmm-f .nv button.zm{width:44px;height:44px;padding:0;justify-content:center;background:#b90000;border-color:#b90000;border-radius:5px;margin-left:auto}.wmm-f .nv button.zm:hover{background:#d10000}.wmm-f .nv.so1{justify-content:flex-end}.wmm-f .nv:not(.so1) button.zm{margin-left:0}.wmm-f .nv button:focus-visible{outline:2px solid #64aaff}
 .wmm-f .nv span{font-size:13px;color:#aeb8c2;min-width:56px;text-align:center;line-height:1.3}.wmm-f .nv span b{display:block;font-weight:600;color:#fff;font-size:12.5px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wmm-f .nv span b i{display:inline-block;width:12px;height:3px;margin:0 6px 3px 0;vertical-align:middle}
 .wmm-f .x{all:unset;cursor:pointer;position:absolute;right:6px;top:6px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(10,14,19,.75);color:#fff;font-size:22px;z-index:2}
@@ -579,7 +579,7 @@ function abreR(M,ri,voa,gi){const {S,map}=M,cfg=S.cfg,l=(cfg.lin||[])[ri];if(!l)
     if(cfg.pol&&!M.plano){const R=Math.PI/180;let X=0,Y=0,Z=0;cs.forEach(p=>{const a=p[0]*R,b=p[1]*R;X+=Math.cos(b)*Math.cos(a);Y+=Math.cos(b)*Math.sin(a);Z+=Math.sin(b)});
       const n=Math.hypot(X,Y,Z)||1,cl=[Math.atan2(Y,X)/R,Math.asin(Z/n)/R];let dmax=0;
       cs.forEach(p=>{const a=p[0]*R,b=p[1]*R,c0=cl[0]*R,c1=cl[1]*R;const d=Math.acos(Math.max(-1,Math.min(1,Math.sin(b)*Math.sin(c1)+Math.cos(b)*Math.cos(c1)*Math.cos(a-c0))))/R;dmax=Math.max(dmax,d)});
-      const rel=map.getZoom()-M.zAt(map.getCenter().lat),z=M.zAt(cl[1])+Math.min(rel,(S.cfg.gzc==null?1.1:S.cfg.gzc))-Math.max(0,Math.log2(dmax/25));
+      const rel=map.getZoom()-M.zAt(map.getCenter().lat),z=M.zAt(cl[1])+Math.min(rel,(S.cfg.gzc==null?1.1:S.cfg.gzc))-Math.max(0,Math.log2(dmax/40));
       try{map.flyTo({center:cl,zoom:Math.max(z,map.getMinZoom()),padding:voaPara(M),duration:1400,essential:true})}catch(e){}return}
     try{map.fitBounds([[W,Sx],[E,N]],{padding:voaPara(M),maxZoom:7,duration:1300,essential:true})}catch(e){}}}}
 
