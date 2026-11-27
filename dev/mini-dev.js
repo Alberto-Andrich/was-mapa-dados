@@ -347,7 +347,7 @@ function montar(M){
     const centro=S.alvo?S.alvo.xy:cfg.c?cfg.c.slice(0,2):null;
     if(centro) map.jumpTo({center:centro,zoom:zAt(centro[1])});
     setTimeout(()=>{if(M.mexeu) return;reduz?map.jumpTo(loc):map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))},reduz?0:1300);
-  }).catch(e=>{car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove()});
+  }).catch(e=>{(window.__wmmErr=window.__wmmErr||[]).push(String(e&&e.stack||e));car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove()});
 }
 
 // v8: o globo do MapLibre não desenha nada além de 85° de latitude. Nos mapas polares, o trecho final das rotas e os pontos
