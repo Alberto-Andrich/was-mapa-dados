@@ -190,6 +190,10 @@ const ICO={
 const mercY=l=>0.5-Math.log(Math.tan(Math.PI/4+Math.max(-85.05,Math.min(85.05,l))*Math.PI/360))/(2*Math.PI);
 const yLat=y=>360/Math.PI*Math.atan(Math.exp((0.5-y)*2*Math.PI))-90;
 // curva suave (Catmull-Rom centrípeta) para os traçados citados: rotas sempre vetoriais e limpas (regra de 26/11)
+// v8: suavização no plano polar (azimutal), para rotas que passam pelo polo não darem voltas
+function suaveP(pts,n){const sg=pts.reduce((a,p)=>a+p[1],0)<0?-1:1,R=Math.PI/180;
+  const ida=pts.map(p=>{const r=90-sg*p[1],a=p[0]*R;return [r*Math.cos(a),r*Math.sin(a)]});
+  return suave(ida,n).map(([x,y])=>{const r=Math.hypot(x,y);return [r<1e-6?0:Math.atan2(y,x)/R,sg*(90-r)]}).map((p,i,a)=>{if(i&&Math.abs(p[0]-a[i-1][0])>180){p[0]+=p[0]<a[i-1][0]?360:-360}return p})}
 function suave(pts,n){if(pts.length<3) return pts;const o=[],P=[pts[0]].concat(pts,[pts[pts.length-1]]);
   for(let i=1;i<P.length-2;i++){const [p0,p1,p2,p3]=[P[i-1],P[i],P[i+1],P[i+2]];
     const d=(a,b)=>Math.pow(Math.hypot(b[0]-a[0],b[1]-a[1]),0.5)||1e-6,t1=d(p0,p1),t2=t1+d(p1,p2),t3=t2+d(p2,p3);
@@ -285,7 +289,7 @@ function montar(M){
     const corR={RM:'#5ec8ff',RT:'#ffcf6b',RA:'#ff8fb1',RH:'#e0a96d'},leg=[];
     const linhas=[];
     if(rot&&cfg.rot) rot.rotas.filter(r=>cfg.rot.includes(r.id)).forEach(r=>{linhas.push({type:'Feature',properties:{c:corR[r.c]||'#ffcf6b',n:r.n,d:r.c==='RA'?1:0},geometry:{type:'LineString',coordinates:r.pts}});leg.push([r.n,corR[r.c],1])});
-    (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);linhas.push({type:'Feature',properties:{c:l.c||'#ff5a4a',n:nm,d:l.t==='dash'?1:0},geometry:{type:'LineString',coordinates:suave(l.p,8)}});if(nm&&!l.nl) leg.push([lo(l.lg)||nm,l.c||'#ff5a4a',1])});
+    (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);linhas.push({type:'Feature',properties:{c:l.c||'#ff5a4a',n:nm,d:l.t==='dash'?1:0},geometry:{type:'LineString',coordinates:cfg.pol?suaveP(l.p,8):suave(l.p,8)}});if(nm&&!l.nl) leg.push([lo(l.lg)||nm,l.c||'#ff5a4a',1])});
     // nos mapas polares, o trecho além de 85° S/N sai da camada (o MapLibre o achataria na borda) e vai para a capa SVG
     const corta=f=>{if(!cfg.pol) return f;const out=[];let cur=[];f.geometry.coordinates.forEach(p=>{if(Math.abs(p[1])>84.95){if(cur.length>1) out.push(cur);cur=[]}else cur.push(p)});if(cur.length>1) out.push(cur);return {type:'Feature',properties:f.properties,geometry:{type:'MultiLineString',coordinates:out}}};
     if(linhas.length){map.addSource('lin',{type:'geojson',data:{type:'FeatureCollection',features:linhas.map(corta)}});
