@@ -19,9 +19,9 @@ def carregar(n, padrao):
     return json.load(open(p)) if os.path.exists(p) else padrao
 PAD = carregar('padus-us.json', {})
 FOTOS = carregar('fotos-commons-us.json', {})
-S = {}
+S = {}; KMX = {}; CRX = {}
 for f in sorted(glob.glob(f'{TX}/us_sec_*.py')):
-    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S)
+    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S); KMX.update(getattr(m, 'KM', {})); CRX.update(getattr(m, 'CR', {}))
 
 def norm(s):
     s = unicodedata.normalize('NFD', (s or '').lower()); s = ''.join(c for c in s if unicodedata.category(c) != 'Mn')
@@ -214,6 +214,10 @@ for q, x in A.items():
             km = p['km']; d['km'] = round(km, 2) if km < 1 else round(km, 1) if km < 100 else round(km); N['km'] += 1
         if 'cr' not in d and p['ano']: d['cr'] = str(p['ano']); N['cr'] += 1
         if p['iucn'] and d.get('iucn') != p['iucn']: d['iucn'] = p['iucn']; N['iucn'] += 1  # PAD-US é a fonte oficial
+    if q in KMX: d['km'] = KMX[q]
+    if q in CRX:
+        if CRX[q]: d['cr'] = CRX[q]
+        else: d.pop('cr', None)
     fs = FOTOS.get(str(q)) or []
     if fs: d['f'] = [[f[0], autor(f[1]), lic(f[2])] for f in fs[:5]]
     d['t'] = apresentacao(x[1], nome_en, d, p); d['ta'] = 1
