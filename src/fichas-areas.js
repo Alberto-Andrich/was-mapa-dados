@@ -96,7 +96,7 @@
    '.wasmapa .fc-fatos div{background:rgba(255,255,255,.05);border-radius:5px;padding:8px 10px;min-width:0}'+
    '.wasmapa .fc-fatos dt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9aa3ad;margin:0 0 2px}'+
    '.wasmapa .fc-fatos dd{margin:0;font-weight:600;color:#fff;font-size:14.5px;overflow-wrap:anywhere}'+
-   '.wasmapa .fc-at{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}.wasmapa .fc-at li{font-size:14.5px;line-height:1.45}'+
+   '.wasmapa .fc-at{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}.wasmapa .ficha .fc-at li{font-size:14.5px;line-height:1.45}'+
    '.wasmapa .fc-basica{color:#c6ced6}.wasmapa .fc-links{font-size:13.5px}.wasmapa .fc-fonte{font-size:11.5px;color:#8a949e}'+
    '.wasmapa .fc-espera{opacity:.55;transition:opacity .2s}';
   document.head.appendChild(st);

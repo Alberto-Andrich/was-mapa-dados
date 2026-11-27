@@ -15,7 +15,7 @@ for l in open(f'{R}/fontes/fichas/wikidata-ca.tsv', encoding='utf8').read().spli
 fotos = json.load(open(f'{R}/fontes/fichas/fotos-commons-ca.json'))
 f2 = f'{R}/fontes/fichas/fotos-commons-ca-v2.json'
 if os.path.exists(f2):
-    v2 = json.load(open(f2)); fotos.update({k: v for k, v in v2.items() if v or k not in fotos})
+    fotos = json.load(open(f2))  # busca seletiva substitui a primeira
 T = {}
 for f in sorted(glob.glob(f'{TX}/ca_np_*.py')):
     s = importlib.util.spec_from_file_location('m', f); m = importlib.util.module_from_spec(s); s.loader.exec_module(m); T.update(m.T)
@@ -30,6 +30,32 @@ def vizinho(q):
     x, y = A[q][2], A[q][3]
     best = min(conh, key=lambda c: (c[0]-x)**2 + (c[1]-y)**2)
     return best[2][0]
+import unicodedata
+def norm(s):
+    s = unicodedata.normalize('NFD', (s or '').lower()); s = ''.join(c for c in s if unicodedata.category(c) != 'Mn')
+    return ' ' + ' '.join(re.sub(r'[^a-z0-9]+', ' ', s).split()) + ' '
+GEN = re.compile(r' (provincial|national|park|parks|reserve|marine|wilderness|area|ecological|conservation|protected|territorial|wildland|nature|preserve|historic|site|and|of|the|de|du|des|la|le|parc|ecologique|state|parque|nacional|e|reserva) ')
+def core(s):
+    s = norm(s)
+    for _ in range(3): s = GEN.sub(' ', s)
+    return ' ' + ' '.join(s.split()) + ' '
+CORES = {}
+for x in A.values():
+    nm = (x[6].split(':', 1)[1].replace('_', ' ') if x[6] else x[1])
+    c = core(re.sub(r'\(.*?\)', ' ', nm))
+    if len(c.strip()) >= 3: CORES.setdefault(c, set()).add(x[0])
+def foto_ok(q, nome, fn):
+    c = core(re.sub(r'\(.*?\)', ' ', nome)); f = norm(fn.rsplit('.', 1)[0])
+    for cb, qs in CORES.items():
+        if cb != c and c.strip() and c in cb and q not in qs and cb in f: return False
+    return True
+# curadoria manual (27/11): fotos de outro lugar, prédios, veículos, gráficos
+EXCLUIR = {'WBNP Angus sinkhole.jpg@1001900', 'Gazebo a.jpg', 'Beached dead pilot whale.jpg', 'Cap-Rouge c 1900.jpg', 'Emerald Lake, B.C.jpg@903323',
+  'Captain Molly Kool Heritage Centre.jpg', 'Sable Island Sentinel-2.jpg', 'Aulavik office.jpg', 'Terra Nova NP Visitor Centre.jpg'}
+EXCLUIR_PREF = ['Parks Canada Jeep', 'SN-2 at sable Island', 'Effects of climate change on the vegetation', 'Historic postcards and souvenir bag']
+SEM_FOTO = {1161253}  # Glacier (Canadá): a busca trouxe fotos do Glacier dos EUA
+def excluida(q, f):
+    return f in EXCLUIR or f'{f}@{q}' in EXCLUIR or any(f.startswith(p) for p in EXCLUIR_PREF) or q in SEM_FOTO
 out = {}; idx = {}
 for q, r in rows.items():
     pv = [PROV[p] for p in r[1].split(',') if p in PROV]
@@ -43,7 +69,8 @@ for q, r in rows.items():
     if r[4] in IUCN: d['iucn'] = IUCN[r[4]]
     if r[7]: d['site'] = r[7]
     if r[8]: d['wp'] = 'en:' + r[8]
-    fs = fotos.get(str(q)) or []
+    nome = r[8].replace('_', ' ') if r[8] else A[q][1]
+    fs = [f for f in (fotos.get(str(q)) or []) if foto_ok(q, nome, f[0]) and not excluida(q, f[0])]
     if fs: d['f'] = [[f[0], autor(f[1]), lic(f[2])] for f in fs[:5]]
     t = T.get(q)
     if t:
