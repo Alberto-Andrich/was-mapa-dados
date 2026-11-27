@@ -411,7 +411,7 @@ function montar(M){
     if(centro) map.jumpTo({center:centro,zoom:zAt(centro[1])});
     // v22 (Alberto 27/11 11h57): mapas de lugares e destinos já abrem com o lugar da página selecionado e a ficha aberta (cfg.sel: índice em cfg.pts; -1 desliga)
     const autoSel=()=>{if(M.mexeu||S.so||cfg.sel===-1||(M.f&&!M.f.hidden)) return;const sg=slug(decodeURIComponent(location.pathname.split('/').filter(Boolean).pop()||''));let j=cfg.sel!=null?cfg.sel:S.cit.findIndex(c=>slug(c.n)===sg||(cfg.c&&cfg.c[2]&&slug(c.n)===slug(lo(cfg.c[2])||'')));
-      if(j>=0&&S.cit[j]) abreC(M,j,false);else if(S.alvo&&!S.alvo.sem&&S.alvo.i!=null) abre(M,S.alvo.i,false)};
+      if(j>=0&&S.cit[j]) abreC(M,j,false);else if(S.alvo&&S.alvo.i!=null){if(S.alvo.sem&&!S.alvo.d.txt){const md=document.querySelector('meta[name="description"]');S.alvo.d.txt=md?md.content:''}abre(M,S.alvo.i,false)}};
     setTimeout(()=>{if(M.mexeu) return;if(reduz){map.jumpTo(loc);autoSel()}else{map.once('moveend',()=>setTimeout(autoSel,150));map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))}},reduz?0:1300);
   }).catch(e=>{(window.__wmmErr=window.__wmmErr||[]).push(String(e&&e.stack||e));car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove();const kk=M.fig.querySelector('.wmm-key');if(kk) kk.remove()});
 }
