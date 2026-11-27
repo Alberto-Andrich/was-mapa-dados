@@ -218,6 +218,29 @@ const yLat=y=>360/Math.PI*Math.atan(Math.exp((0.5-y)*2*Math.PI))-90;
 function suaveP(pts,n){const sg=pts.reduce((a,p)=>a+p[1],0)<0?-1:1,R=Math.PI/180;
   const ida=pts.map(p=>{const r=90-sg*p[1],a=p[0]*R;return [r*Math.cos(a),r*Math.sin(a)]});
   return suave(ida,n).map(([x,y])=>{const r=Math.hypot(x,y);return [r<1e-6?0:Math.atan2(y,x)/R,sg*(90-r)]}).map((p,i,a)=>{if(i&&Math.abs(p[0]-a[i-1][0])>180){p[0]+=p[0]<a[i-1][0]?360:-360}return p})}
+// v25 (REGRA 27/11 do Alberto): nenhuma rota com quinas, em todos os mapas. Mesmo método do mapa principal (suavizar.py):
+// reamostra a passo uniforme (km), média gaussiana dos vetores 3D na esfera, pontas fixas, meia-volta (porto e volta) vira ponto fixo.
+function suaveG(pts){if(!pts||pts.length<3) return pts;const R=Math.PI/180;
+  const km=(a,b)=>{const p1=a[1]*R,p2=b[1]*R,dl=(b[0]-a[0])*R,dp=p2-p1,h=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;return 12742*Math.asin(Math.min(1,Math.sqrt(h)))};
+  const vv=p=>{const lo=p[0]*R,la=p[1]*R;return [Math.cos(la)*Math.cos(lo),Math.cos(la)*Math.sin(lo),Math.sin(la)]};
+  const ll=(v,ref)=>{const n=Math.hypot(v[0],v[1],v[2])||1;let lo=Math.atan2(v[1]/n,v[0]/n)/R;const la=Math.asin(Math.max(-1,Math.min(1,v[2]/n)))/R;while(lo-ref>180)lo-=360;while(lo-ref<-180)lo+=360;return [lo,la]};
+  const u=[];let pv=null;for(const q of pts){let x=q[0];if(pv!=null){while(x-pv>180)x-=360;while(x-pv<-180)x+=360}u.push([x,q[1]]);pv=x}
+  const xs=u.map(p=>p[0]),ys=u.map(p=>p[1]),lm=(Math.max(...ys)+Math.min(...ys))/2;
+  const diag=Math.hypot((Math.max(...xs)-Math.min(...xs))*111*Math.cos(lm*R),(Math.max(...ys)-Math.min(...ys))*111);
+  const L=Math.max(15,Math.min(250,diag*0.02));
+  const cs=[0];for(let i=1;i<u.length;i++) cs.push(cs[i-1]+km(u[i-1],u[i]));
+  let s=L/8;if(cs[cs.length-1]/s>6000) s=cs[cs.length-1]/6000;
+  const ret=[];for(let i=1;i<u.length-1;i++){let a=0,b=u.length-1;for(let j=i-1;j>=0;j--) if(cs[i]-cs[j]>=L*0.7){a=j;break}for(let j=i+1;j<u.length;j++) if(cs[j]-cs[i]>=L*0.7){b=j;break}
+    if(a===i||b===i) continue;const c=Math.cos(u[i][1]*R),h1=Math.atan2(u[i][1]-u[a][1],(u[i][0]-u[a][0])*c),h2=Math.atan2(u[b][1]-u[i][1],(u[b][0]-u[i][0])*c);
+    const t=Math.abs(((h2-h1+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI)/R;if(t>140&&(!ret.length||cs[i]-cs[ret[ret.length-1]]>L)) ret.push(i)}
+  const cortes=[...new Set([0,u.length-1].concat(ret))].sort((a,b)=>a-b);
+  const ream=w=>{const o=[w[0].slice()];let resto=0;for(let k=1;k<w.length;k++){const a=w[k-1],b=w[k],d=km(a,b);if(!d) continue;let t=s-resto;while(t<d){const f=t/d;o.push([a[0]+f*(b[0]-a[0]),a[1]+f*(b[1]-a[1])]);t+=s}resto=d-(t-s)}
+    if(km(o[o.length-1],w[w.length-1])>s*0.2) o.push(w[w.length-1].slice());else o[o.length-1]=w[w.length-1].slice();return o};
+  const gauss=r=>{const n=r.length;if(n<3) return r;const sg=L/2,K=Math.ceil(2*sg/s),V=r.map(vv),o=[r[0]];
+    for(let i=1;i<n-1;i++){const k=Math.min(K,i,n-1-i);let x=0,y=0,z=0,sw=0;for(let j=i-k;j<=i+k;j++){const w=Math.exp(-0.5*((j-i)*s/sg)**2);x+=w*V[j][0];y+=w*V[j][1];z+=w*V[j][2];sw+=w}o.push(ll([x,y,z],r[i][0]))}
+    o.push(r[n-1]);return o};
+  let out=[];for(let k=1;k<cortes.length;k++){const tr=gauss(ream(u.slice(cortes[k-1],cortes[k]+1)));out=out.length?out.concat(tr.slice(1)):tr}
+  return out}
 function suave(pts,n){if(pts.length<3) return pts;const o=[],P=[pts[0]].concat(pts,[pts[pts.length-1]]);
   for(let i=1;i<P.length-2;i++){const [p0,p1,p2,p3]=[P[i-1],P[i],P[i+1],P[i+2]];
     const d=(a,b)=>Math.pow(Math.hypot(b[0]-a[0],b[1]-a[1]),0.5)||1e-6,t1=d(p0,p1),t2=t1+d(p1,p2),t3=t2+d(p2,p3);
@@ -323,7 +346,7 @@ function montar(M){
     const corR={RM:'#5ec8ff',RT:'#ffcf6b',RA:'#ff8fb1',RH:'#e0a96d'},leg=[];
     const linhas=[];
     if(rot&&cfg.rot) rot.rotas.filter(r=>cfg.rot.includes(r.id)).forEach(r=>{linhas.push({type:'Feature',properties:{c:corR[r.c]||'#ffcf6b',n:r.n,d:r.c==='RA'?1:0},geometry:{type:'LineString',coordinates:r.pts}});leg.push([r.n,corR[r.c],1])});
-    (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);linhas.push({type:'Feature',id:linhas.length,properties:{c:l.c||'#ff5a4a',n:nm,d:l.t==='dash'?1:0,r:linhas.length},geometry:{type:'LineString',coordinates:cfg.pol?suaveP(l.p,8):suave(l.p,8)}});if(nm&&!l.nl) leg.push([lo(l.lg)||nm,l.c||'#ff5a4a',1])});
+    (cfg.lin||[]).forEach(l=>{const nm=lo(l.n);linhas.push({type:'Feature',id:linhas.length,properties:{c:l.c||'#ff5a4a',n:nm,d:l.t==='dash'?1:0,r:linhas.length},geometry:{type:'LineString',coordinates:l.cru?(cfg.pol?suaveP(l.p,8):suave(l.p,8)):suaveG(l.p)}});if(nm&&!l.nl) leg.push([lo(l.lg)||nm,l.c||'#ff5a4a',1])});
     // nos mapas polares, o trecho além de 85° S/N sai da camada (o MapLibre o achataria na borda) e vai para a capa SVG
     const corta=f=>{if(!cfg.pol) return f;const out=[];let cur=[];f.geometry.coordinates.forEach(p=>{if(Math.abs(p[1])>84.95){if(cur.length>1) out.push(cur);cur=[]}else cur.push(p)});if(cur.length>1) out.push(cur);return {type:'Feature',properties:f.properties,geometry:{type:'MultiLineString',coordinates:out}}};
     // v10 (27/11, Huni Kuin): rios finos (cfg.rio), áreas (cfg.ar) e rótulos de texto (cfg.tx), para não perder nada dos mapas antigos
