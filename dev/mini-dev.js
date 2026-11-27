@@ -340,7 +340,7 @@ function montar(M){
       // v15 (Alberto 27/11 10h18): rota clicável, com destaque da rota aberta e área de toque larga
       map.addLayer({id:'lin-sel',type:'line',source:'lin',filter:['==',['get','r'],-1],layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#ffffff','line-opacity':.35,'line-width':['interpolate',['linear'],['zoom'],1,7,5,9,9,12]}},'lin-s');
       map.addLayer({id:'lin-hit',type:'line',source:'lin',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#000','line-opacity':0.001,'line-width':16}});
-      map.addLayer({id:'lin-n',type:'symbol',source:'lin',minzoom:(cfg.globo||cfg.pl)?3.2:5,layout:{'symbol-placement':'line','text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'symbol-spacing':320,'text-max-angle':30},paint:{'text-color':['get','c'],'text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}})}
+      map.addLayer({id:'lin-n',type:'symbol',source:'lin',minzoom:(cfg.globo||cfg.pl)?3.2:5,layout:{'symbol-placement':'line','text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'symbol-spacing':420,'text-max-angle':12,'text-keep-upright':true,'text-padding':4},paint:{'text-color':['get','c'],'text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}})}
 
     // pontos da camada do assunto
     const bloco=CAMF[k][1]?cam[CAMF[k][1]]:cam,lista=(bloco&&bloco.pontos)||(Array.isArray(bloco)?bloco:[]);
@@ -407,7 +407,10 @@ function montar(M){
     const reduz=matchMedia('(prefers-reduced-motion:reduce)').matches;
     const centro=S.alvo?S.alvo.xy:cfg.c?cfg.c.slice(0,2):null;
     if(centro) map.jumpTo({center:centro,zoom:zAt(centro[1])});
-    setTimeout(()=>{if(M.mexeu) return;reduz?map.jumpTo(loc):map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))},reduz?0:1300);
+    // v22 (Alberto 27/11 11h57): mapas de lugares e destinos já abrem com o lugar da página selecionado e a ficha aberta (cfg.sel: índice em cfg.pts; -1 desliga)
+    const autoSel=()=>{if(M.mexeu||S.so||cfg.sel===-1||(M.f&&!M.f.hidden)) return;const sg=slug(decodeURIComponent(location.pathname.split('/').filter(Boolean).pop()||''));let j=cfg.sel!=null?cfg.sel:S.cit.findIndex(c=>slug(c.n)===sg||(cfg.c&&cfg.c[2]&&slug(c.n)===slug(lo(cfg.c[2])||'')));
+      if(j>=0&&S.cit[j]) abreC(M,j,false);else if(S.alvo&&!S.alvo.sem&&S.alvo.i!=null) abre(M,S.alvo.i,false)};
+    setTimeout(()=>{if(M.mexeu) return;if(reduz){map.jumpTo(loc);autoSel()}else{map.once('moveend',()=>setTimeout(autoSel,150));map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))}},reduz?0:1300);
   }).catch(e=>{(window.__wmmErr=window.__wmmErr||[]).push(String(e&&e.stack||e));car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove();const kk=M.fig.querySelector('.wmm-key');if(kk) kk.remove()});
 }
 
