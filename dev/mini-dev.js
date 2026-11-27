@@ -573,7 +573,12 @@ function abreR(M,ri,voa,gi){const {S,map}=M,cfg=S.cfg,l=(cfg.lin||[])[ri];if(!l)
   map.setFilter('mk-sel',['==',['id'],-1]);if(map.getLayer('ct-sel')) map.setFilter('ct-sel',['==',['id'],-1]);if(map.getLayer('lin-sel')) map.setFilter('lin-sel',['==',['get','r'],ri]);
   if(voa){const cs=l.p.filter(p=>!cfg.pol||Math.abs(p[1])<84.95);if(cs.length){let W=1e9,E=-1e9,Sx=1e9,N=-1e9;cs.forEach(p=>{const x=nx(p[0]);W=Math.min(W,x);E=Math.max(E,x);Sx=Math.min(Sx,p[1]);N=Math.max(N,p[1])});
     if(E-W>180&&!cfg.pol){const xs=cs.map(p=>((nx(p[0])%360)+360)%360);W=Math.min(...xs);E=Math.max(...xs)}
-    try{map.fitBounds([[W,Sx],[E,N]],{padding:voaPara(M),maxZoom:cfg.pol?Math.max(map.getZoom(),3):7,duration:1300,essential:true})}catch(e){}}}}
+    if(cfg.pol&&!M.plano){const R=Math.PI/180;let X=0,Y=0,Z=0;cs.forEach(p=>{const a=p[0]*R,b=p[1]*R;X+=Math.cos(b)*Math.cos(a);Y+=Math.cos(b)*Math.sin(a);Z+=Math.sin(b)});
+      const n=Math.hypot(X,Y,Z)||1,cl=[Math.atan2(Y,X)/R,Math.asin(Z/n)/R];let dmax=0;
+      cs.forEach(p=>{const a=p[0]*R,b=p[1]*R,c0=cl[0]*R,c1=cl[1]*R;const d=Math.acos(Math.max(-1,Math.min(1,Math.sin(b)*Math.sin(c1)+Math.cos(b)*Math.cos(c1)*Math.cos(a-c0))))/R;dmax=Math.max(dmax,d)});
+      const rel=map.getZoom()-M.zAt(map.getCenter().lat),z=M.zAt(cl[1])+Math.min(rel,(S.cfg.gzc==null?1.1:S.cfg.gzc))-Math.max(0,Math.log2(dmax/25));
+      try{map.flyTo({center:cl,zoom:Math.max(z,map.getMinZoom()),padding:voaPara(M),duration:1400,essential:true})}catch(e){}return}
+    try{map.fitBounds([[W,Sx],[E,N]],{padding:voaPara(M),maxZoom:7,duration:1300,essential:true})}catch(e){}}}}
 
 function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   caixaF(M);if(map.getLayer('ct-sel')) map.setFilter('ct-sel',['==',['id'],-1]);
