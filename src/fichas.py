@@ -160,10 +160,11 @@ IUCNF = {
   'IV': ('Na classificação da IUCN, está na categoria IV: o manejo é voltado a habitats e espécies específicos.', 'Under the IUCN system it is category IV: management focuses on particular habitats and species.', 'En la clasificación de la UICN está en la categoría IV: la gestión se centra en hábitats y especies concretos.'),
   'V': ('Na classificação da IUCN, é uma paisagem protegida, onde natureza e uso humano tradicional convivem.', 'Under the IUCN system it is a protected landscape, where nature and traditional human use coexist.', 'En la clasificación de la UICN es un paisaje protegido, donde conviven la naturaleza y el uso humano tradicional.'),
   'VI': ('Na classificação da IUCN, está na categoria VI: conservação com uso sustentável dos recursos naturais.', 'Under the IUCN system it is category VI: conservation combined with sustainable use of natural resources.', 'En la clasificación de la UICN está en la categoría VI: conservación con uso sostenible de los recursos naturales.')}
-def apresentacao(nome, d, cp):
-    t = tipo(nome, cp); pv = d.get('pv') or []
+def apresentacao(nome, d, cp, nome_en=None):
+    t = tipo(nome_en or nome, cp); pv = d.get('pv') or []
     km = d.get('km'); ano = (d.get('cr') or '')[:4] or None; g = gestao((cp or {}).get('gestao'), pv)
     nm = re.sub(r'^the ', '', nome, flags=re.I)
+    ne = ' '.join(re.sub(r'^the ', '', re.sub(r' \(.*?\)$', '', nome_en or nome), flags=re.I).split())
     out = {}
     # PT
     art, um = ('O', 'um') if t[2] == 'm' else ('A', 'uma')
@@ -179,7 +180,7 @@ def apresentacao(nome, d, cp):
     # EN
     onde = PVL[pv[0]][1] + ', Canada' if len(pv) == 1 else 'in Canada'
     a = 'an' if t[3][0] in 'aeiou' else 'a'
-    s = [f'{nm} is {a} {t[3]} {onde}.']
+    s = [f'{ne} is {a} {t[3]} {onde}.']
     if km and ano: s.append(f'It covers {tam(km, "en")} and has been protected since {ano}' + (f'. It is managed {g[1]}.' if g else '.'))
     elif km: s.append(f'It covers {tam(km, "en")}' + (f' and is managed {g[1]}.' if g else '.'))
     elif ano: s.append(f'It has been protected since {ano}' + (f' and is managed {g[1]}.' if g else '.'))
@@ -189,7 +190,7 @@ def apresentacao(nome, d, cp):
     # ES
     art, um = ('El', 'un') if t[5] == 'm' else ('La', 'un' if t[4].startswith('área') else 'una')
     onde = PVL[pv[0]][2] + ', Canadá' if len(pv) == 1 else 'en Canadá'
-    s = [f'{art} {nm} es {um} {t[4]} {onde}.']
+    s = [f'{art} {ne} es {um} {t[4]} {onde}.']
     prot = 'protegido' if t[5] == 'm' else 'protegida'
     if km and ano: s.append(f'Tiene {tam(km, "es")} y está {prot} desde {ano}' + (f', bajo la gestión {g[2]}.' if g else '.'))
     elif km: s.append(f'Tiene {tam(km, "es")}' + (f' y está bajo la gestión {g[2]}.' if g else '.'))
@@ -223,7 +224,7 @@ for q, r in rows.items():
         if 'iucn' not in d and cp['iucn']: d['iucn'] = cp['iucn']; NCP['iucn'] += 1
     t = T.get(q)
     if not t:
-        d['t'] = apresentacao(A[q][1], d, cp); d['ta'] = 1
+        d['t'] = apresentacao(A[q][1], d, cp, r[8].replace('_', ' ') if r[8] else None); d['ta'] = 1
         if q in S:
             d['t'] = {l: dict(r=d['t'][l], **{k: v for k, v in S[q][l].items() if v}) for l in ('pt', 'en', 'es')}; d.pop('ta')
     if t:
