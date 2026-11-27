@@ -493,7 +493,7 @@ function radar(M,xy){if(!xy) return;const el=document.createElement('div');el.cl
 function barraZoom(M,b){const map=M.map;const z=document.createElement('div');z.className='wmm-zs';z.tabIndex=0;z.setAttribute('role','slider');z.setAttribute('aria-orientation','vertical');z.setAttribute('aria-label',t('Nível de zoom'));z.title=t('Nível de zoom');
  z.innerHTML='<i class="tr"></i><i class="fi"></i><i class="th"></i>';b.appendChild(z);
  const fi=z.querySelector('.fi'),th=z.querySelector('.th');
- let ez=null,tz=0;const z0=map.getZoom();const lim=()=>{if(ez==null&&tz++<20){try{const c=camExt(M);if(c&&isFinite(c.zoom)) ez=c.zoom;else M.zsErr=JSON.stringify(c)}catch(e){M.zsErr=String(e)}}if(ez==null&&tz>=20) ez=z0;const a0=map.getMinZoom(),c0=map.getMaxZoom();if(ez==null) return [a0,c0];const a=Math.max(a0,ez-1.5);return [a,Math.min(c0,Math.max(ez+5,a+3))]};
+ let ez=null,tz=0;const z0=map.getZoom();const lim=()=>{if(ez==null&&tz++<20){try{const c=camExt(M);if(c&&isFinite(c.zoom)) ez=c.zoom}catch(_){}}if(ez==null&&tz>=20) ez=z0;const a0=map.getMinZoom(),c0=map.getMaxZoom();if(ez==null) return [a0,c0];const a=Math.max(a0,ez-1.5);return [a,Math.min(c0,Math.max(ez+5,a+3))]};
  const atu=()=>{const [a,c]=lim(),f=Math.max(0,Math.min(1,(map.getZoom()-a)/((c-a)||1)));th.style.bottom='calc((100% - 20px)*'+f.toFixed(4)+')';fi.style.height='calc((100% - 20px)*'+f.toFixed(4)+')';z.setAttribute('aria-valuemin',a.toFixed(1));z.setAttribute('aria-valuemax',c.toFixed(1));z.setAttribute('aria-valuenow',map.getZoom().toFixed(1))};
  const vai=(ev,anima)=>{const r=z.getBoundingClientRect(),f=1-Math.max(0,Math.min(1,(ev.clientY-r.top-10)/((r.height-20)||1))),[a,c]=lim(),nz=a+f*(c-a);M.mexeu=1;anima?map.easeTo({zoom:nz,duration:350}):map.jumpTo({zoom:nz})};
  let arr=false;
@@ -548,7 +548,7 @@ function eventos(M){const {map,S,box}=M;const cv=map.getCanvas();let dica=null;
 
 function fecha(M){if(!M.f||M.f.hidden) return;M.f.hidden=true;M.S.aberto=-1;if(M.map.getLayer('lin-sel')) M.map.setFilter('lin-sel',['==',['get','r'],-1]);M.map.setFilter('mk-sel',['==',['id'],-1]);if(M.map.getLayer('ct-sel')) M.map.setFilter('ct-sel',['==',['id'],-1])}
 function caixaF(M){if(!M.f){M.f=document.createElement('div');M.f.className='wmm-f';M.f.setAttribute('role','dialog');M.box.appendChild(M.f);M.f.addEventListener('click',e=>e.stopPropagation())}return M.f}
-function voaPara(M,xy){const {map,box}=M,w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f.offsetHeight,fw=M.f.offsetWidth;
+function voaPara(M,xy){const {map,box}=M,w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f?M.f.offsetHeight:0,fw=M.f?M.f.offsetWidth:0;
   const pad=est?{top:20,bottom:Math.min(fh+16,M.cont.clientHeight*.6),left:20,right:20}:{top:20,bottom:20,left:76,right:fw+28};
   return pad}
 // o que a própria página diz do lugar citado: o cartão com o mesmo nome (texto e foto) ou a frase que o menciona (27/11)
@@ -668,7 +668,7 @@ function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   M.f.querySelector('.x').onclick=()=>fecha(M);
   navL(M,S.gP,gi,i,(j)=>abre(M,j,true),()=>zmVai(M,p.xy));
   map.setFilter('mk-sel',['==',['id'],i]);
-  if(voa){const w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f.offsetHeight,fw=M.f.offsetWidth;
+  if(voa){const w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f?M.f.offsetHeight:0,fw=M.f?M.f.offsetWidth:0;
     const pad=est?{top:20,bottom:Math.min(fh+16,M.cont.clientHeight*.6),left:20,right:20}:{top:20,bottom:20,left:76,right:fw+28};
     const z=S.cfg.pol?M.zAt(p.xy[1])+Math.max(S.cfg.gzc==null?1.1:S.cfg.gzc,map.getZoom()-M.zAt(map.getCenter().lat)):Math.max(Math.min(5,Math.max(2,Math.log2(w/512*360/70))),map.getMinZoom()+0.3);
     map.flyTo({center:p.xy,zoom:z,padding:pad,duration:1500,essential:true});radar(M,p.xy)}}
