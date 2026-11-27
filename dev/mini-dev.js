@@ -27,7 +27,7 @@ const TX={
  'Aqui':['Here','Aquí'],'Voltar para perto':['Back to the area','Volver a la zona'],
  'Aproximar':['Zoom in','Acercar'],'Afastar':['Zoom out','Alejar'],
  'Anterior':['Previous','Anterior'],'Próximo':['Next','Siguiente'],'de':['of','de'],
- 'Fechar':['Close','Cerrar'],'Ler na página':['Read on this page','Leer en esta página'],'Globo':['Globe','Globo'],'Plano':['Flat','Plano'],'No plano, o trecho perto do polo não aparece. Use o globo para ver a rota inteira.':['The flat map cannot show the area near the pole. Use the globe to see the whole route.','En el plano no aparece el tramo cerca del polo. Use el globo para ver la ruta entera.'],'Ler o guia completo':['Read the full guide','Leer la guía completa'],
+ 'Fechar':['Close','Cerrar'],'Ártico':['Arctic','Ártico'],'Antártica':['Antarctica','Antártida'],'Outros lugares':['Other places','Otros lugares'],'Ler na página':['Read on this page','Leer en esta página'],'Globo':['Globe','Globo'],'Plano':['Flat','Plano'],'No plano, o trecho perto do polo não aparece. Use o globo para ver a rota inteira.':['The flat map cannot show the area near the pole. Use the globe to see the whole route.','En el plano no aparece el tramo cerca del polo. Use el globo para ver la ruta entera.'],'Ler o guia completo':['Read the full guide','Leer la guía completa'],
  'Esta página':['This page','Esta página'],
  'Ver no Mapa da aventura':['View on the Adventure Map','Ver en el Mapa de la aventura'],
  'Foto:':['Photo:','Foto:'],'Cidade':['Town','Ciudad'],'Citado nesta página':['Mentioned on this page','Citado en esta página'],
@@ -133,7 +133,7 @@ function carregaML(){if(window.maplibregl) return Promise.resolve();if(carregaML
 .wmm-f .nv{position:sticky;bottom:0;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 12px;background:#0d1117;border-top:1px solid #222a34}
 .wmm-f .nv button{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 14px;border:1px solid #39434f;color:#fff;font-size:14px;display:flex;align-items:center;gap:6px}
 .wmm-f .nv button:hover{background:#1d2631}.wmm-f .nv button:focus-visible{outline:2px solid #64aaff}
-.wmm-f .nv span{font-size:13px;color:#aeb8c2;min-width:56px;text-align:center}
+.wmm-f .nv span{font-size:13px;color:#aeb8c2;min-width:56px;text-align:center;line-height:1.3}.wmm-f .nv span b{display:block;font-weight:600;color:#fff;font-size:12.5px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wmm-f .nv span b i{display:inline-block;width:12px;height:3px;margin:0 6px 3px 0;vertical-align:middle}
 .wmm-f .x{all:unset;cursor:pointer;position:absolute;right:6px;top:6px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(10,14,19,.75);color:#fff;font-size:22px;z-index:2}
 .wmm-f .x:focus-visible{outline:2px solid #64aaff}
 .wmm-alvo{width:0;height:0;pointer-events:none}
@@ -306,11 +306,14 @@ function montar(M){
     const bloco=CAMF[k][1]?cam[CAMF[k][1]]:cam,lista=(bloco&&bloco.pontos)||(Array.isArray(bloco)?bloco:[]);
     const gs=cfg.g&&cfg.g.length?new Set(cfg.g):null;
     const alvoN=cfg.p?slug(cfg.p):null;
-    lista.forEach(d=>{if(d.x==null||d.y==null) return;const eu=alvoN&&(slug(d.npt||d.n)===alvoN||slug(d.n)===alvoN);
+    // mapa polar mostra só a camada do próprio hemisfério (cfg.hem 'N'|'S'|'*' força outra escolha): nada de Svalbard no mapa da Antártica
+    const hem=cfg.hem||((cfg.pol||k==='P')&&cfg.globo?(cfg.globo[1]<0?'S':'N'):'*');
+    lista.forEach(d=>{if(d.x==null||d.y==null) return;if(hem!=='*'&&(hem==='S'?d.y>=0:d.y<0)) return;const eu=alvoN&&(slug(d.npt||d.n)===alvoN||slug(d.n)===alvoN);
       if(gs&&!eu&&!(d.g||[]).some(g=>gs.has(g))) return;S.pts.push({d,xy:[d.x,d.y],eu})});
     if(!S.pts.some(p=>p.eu)&&cfg.c){S.pts.push({d:{n:cfg.c[2]||'',x:cfg.c[0],y:cfg.c[1]},xy:cfg.c.slice(0,2),eu:true,sem:true})}
     S.pts.forEach((p,i)=>p.i=i);
-    S.ordem=S.pts.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]).map(p=>p.i);
+    // REGRA 27/11 (Alberto): Anterior/Próximo nunca intercalam hemisférios nem expedições. Ver gruposP/gruposC.
+    S.gP=gruposP(S,cfg,k);S.ordem=[].concat(...S.gP.map(g=>g.ids));
     S.alvo=S.pts.find(p=>p.eu)||null;
     map.addImage('mk',icone(k,false),{pixelRatio:PR});map.addImage('mk-g',icone(k,true),{pixelRatio:PR});
     map.addImage('ct-cid',marcaCitado('cid'),{pixelRatio:PR});map.addImage('ct-poi',marcaCitado('poi'),{pixelRatio:PR});
@@ -324,7 +327,7 @@ function montar(M){
 
     // tudo o que a página cita
     S.cit=(cfg.pts||[]).map((q,i)=>({i,xy:[nx(q[0]),q[1]],n:lo(q[2]),t:q[3]||'poi',d:lo(q[4]),x:lo(q[5])}));
-    S.ordC=cfg.ord?S.cit.map(p=>p.i):S.cit.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]).map(p=>p.i);
+    S.gC=gruposC(S,cfg);S.ordC=S.cit.map(p=>p.i);
     const cit=S.cit.filter(q=>!cfg.pol||Math.abs(q.xy[1])<84.95).map(q=>({type:'Feature',id:q.i,properties:{n:q.n,t:q.t},geometry:{type:'Point',coordinates:q.xy}}));
     if(cit.length){map.addSource('ct',{type:'geojson',data:{type:'FeatureCollection',features:cit}});
       map.addLayer({id:'ct',type:'symbol',source:'ct',minzoom:cfg.globo?0:3,layout:{'icon-image':['concat','ct-',['get','t']],'icon-allow-overlap':true,'icon-ignore-placement':true}});
@@ -380,7 +383,7 @@ function capaPolar(M){const {map,S,box}=M,NS='http://www.w3.org/2000/svg',LIM=84
   const marcas=pts.map(q=>{const g=document.createElementNS(NS,'g');g.setAttribute('class','m');g.innerHTML='<rect x="-6" y="-6" width="12" height="12" fill="'+q.cor+'" stroke="#14181d" stroke-width="2"/><text x="11" y="4.5"></text>';
     g.querySelector('text').textContent=q.n;g.addEventListener('click',e=>{e.stopPropagation();M.clicou=0;q.f()});g2.appendChild(g);return [q,g]});
   const desenha=()=>{if(M.plano) return;
-    caps.forEach(cp=>cp.el.forEach(([a,e])=>{let d='',vis=0;for(let l=-180;l<=180;l+=3){const ll=[l,cp.sg*a];if(occ(ll)) continue;const q=map.project(ll);d+=(d?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1);vis++}e.setAttribute('d',vis>8?d+'Z':'');e.setAttribute('fill',cp.cor)}));
+    caps.forEach(cp=>cp.el.forEach(([a,e])=>{let d='',vis=0;for(let l=-180;l<=180;l+=3){const ll=[l,cp.sg*a];if(occ(ll)) continue;const q=map.project(ll);d+=(d?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1);vis++}e.setAttribute('d',vis>8?d+'Z':'');e.style.fill=cp.cor}));
     const z=map.getZoom()-M.zAt(map.getCenter().lat),w=z<1?2.2:z<3?2.8:3.6;
     linhas.forEach(([sg,a,b])=>{let d='';sg.p.forEach((p,i)=>{if(occ(p)){return}const q=map.project(cl(p));d+=(d&&!occ(sg.p[i-1]||p)?'L':'M')+q.x.toFixed(1)+' '+q.y.toFixed(1)});a.setAttribute('d',d);b.setAttribute('d',d);a.setAttribute('stroke-width',w+2.4);b.setAttribute('stroke-width',w)});
     marcas.forEach(([q,g])=>{if(occ(q.xy)){g.style.display='none';return}g.style.display='';const p=map.project(cl(q.xy));g.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')')})};
@@ -458,35 +461,74 @@ function doPagina(M,nome){const n=sem(nome).trim();if(!n) return {};const re=new
   for(const p of document.querySelectorAll('section p, section figcaption, section li')){if(fora(p)) continue;const tx=p.textContent;if(!re.test(sem(tx))) continue;
     const fr=tx.split(/(?<=[.!?])\s+/).find(x=>re.test(sem(x)));if(fr&&fr.length>20) return {tx:fr.trim(),alvo:p}}
   return {}}
-function abreC(M,j,voa){const {S,map}=M,c=S.cit[j];if(!c) return;S.aberto=-1;const f=caixaF(M);
-  const info=doPagina(M,c.n),tx=c.x||info.tx||'',pos=S.ordC.indexOf(j),mt=c.d||info.meta||'';let txc=tx;
+// ---- REGRA DE NAVEGAÇÃO DAS FICHAS (Alberto, 27/11) ----
+// As fichas andam em GRUPOS, nunca misturados:
+//  - pontos da camada: num mapa polar (ou camada Polos) com lugares nos dois hemisférios, um grupo por hemisfério
+//    (o do mapa primeiro); Anterior/Próximo dão a volta DENTRO do hemisfério. Fora disso, um grupo só, oeste→leste.
+//  - lugares citados: um grupo por expedição/rota (na ordem de cfg.lin), em ordem AO LONGO DA ROTA; o ponto entra
+//    na rota que passa a até ~170 km dele (ou na indicada em pts[i][6]: índice da rota, lista de índices ou -1 = nenhuma).
+//    Um ponto que serve a duas rotas (largada comum, o polo) aparece nas duas. Os que não são de rota ficam num grupo
+//    final, separado por hemisfério quando há os dois. Próximo no fim de uma expedição passa para a seguinte (o rótulo
+//    da expedição aparece no contador).
+const DG=Math.PI/180;
+function dist(a,b){const d=Math.abs(((a[0]-b[0])%360+540)%360-180)*DG,p1=a[1]*DG,p2=b[1]*DG;
+  return Math.acos(Math.min(1,Math.sin(p1)*Math.sin(p2)+Math.cos(p1)*Math.cos(p2)*Math.cos(d)))/DG}
+function hemiG(itens,xy,pol,lab){// itens: [{i,xy}] já ordenados; separa por hemisfério quando há os dois
+  const N=itens.filter(p=>p.xy[1]>=0),S_=itens.filter(p=>p.xy[1]<0);
+  if(!N.length||!S_.length) return [{lab:lab||'',ids:itens.map(p=>p.i),volta:1}];
+  const gs=[{lab:t('Ártico'),ids:N.map(p=>p.i),volta:1},{lab:t('Antártica'),ids:S_.map(p=>p.i),volta:1}];
+  return xy&&xy[1]<0?gs.reverse():gs}
+function gruposP(S,cfg,k){const os=S.pts.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]);
+  if(!(cfg.pol||k==='P')) return [{lab:'',ids:os.map(p=>p.i),volta:1}];
+  const ref=cfg.globo||(S.alvo&&S.alvo.xy)||cfg.c;return hemiG(os,ref)}
+function gruposC(S,cfg){const L=cfg.lin||[],gs=L.map(l=>({lab:lo(l.lg)||lo(l.n)||'',c:l.c||'#ff5a4a',it:[]})),sobra=[];
+  const rot=L.map(l=>{const o=[];const p=l.p||[];for(let a=0;a<p.length;a++){o.push(p[a]);if(a<p.length-1) for(let s=1;s<6;s++) o.push([p[a][0]+(p[a+1][0]-p[a][0])*s/6,p[a][1]+(p[a+1][1]-p[a][1])*s/6])}return o});
+  S.cit.forEach((c,o)=>{const q=(cfg.pts||[])[c.i]||[];let us=q[6];
+    if(us==null){us=[];rot.forEach((r,ri)=>{let m=1e9,mi=0;r.forEach((v,vi)=>{const d=dist(v,c.xy);if(d<m){m=d;mi=vi}});if(m<1.5) us.push([ri,mi])})}
+    else us=[].concat(us).filter(x=>x>=0&&x<L.length).map(ri=>{let m=1e9,mi=0;rot[ri].forEach((v,vi)=>{const d=dist(v,c.xy);if(d<m){m=d;mi=vi}});return [ri,mi]});
+    if(!us.length) sobra.push(Object.assign({o},c));else us.forEach(([ri,mi])=>gs[ri].it.push({i:c.i,o,mi}))});
+  const out=gs.filter(g=>g.it.length).map(g=>({lab:g.lab,c:g.c,ids:g.it.sort((a,b)=>a.mi-b.mi||a.o-b.o).map(x=>x.i)}));
+  const so=cfg.ord?sobra:sobra.slice().sort((a,b)=>a.xy[0]-b.xy[0]||b.xy[1]-a.xy[1]);
+  if(so.length) hemiG(so,cfg.globo||cfg.c,cfg.pol,out.length?t('Outros lugares'):'').forEach(g=>{g.volta=0;out.push(g)});
+  if(out.length===1) out[0].volta=1;return out}
+function qualG(gs,id,pref){if(pref!=null&&gs[pref]&&gs[pref].ids.includes(id)) return pref;const k=gs.findIndex(g=>g.ids.includes(id));return k<0?0:k}
+function navH(gs,gi,id){const g=gs[gi];if(!g) return '';const tot=gs.reduce((a,x)=>a+x.ids.length,0);if(tot<2) return '';
+  const pos=g.ids.indexOf(id),lab=g.lab?'<b>'+(g.c?'<i style="background:'+esc(g.c)+'"></i>':'')+esc(g.lab)+'</b>':'';
+  return '<div class="nv"><button type="button" data-v="-1">'+ICO.ant+esc(t('Anterior'))+'</button><span>'+lab+(pos+1)+' '+esc(t('de'))+' '+g.ids.length+'</span><button type="button" data-v="1">'+esc(t('Próximo'))+ICO.prox+'</button></div>'}
+function navL(M,gs,gi,id,abrir){M.f.querySelectorAll('.nv button').forEach(b=>b.onclick=()=>{const v=Number(b.dataset.v),g=gs[gi],n=g.ids.length;let p=g.ids.indexOf(id)+v,h=gi;
+  // grupos com volta (hemisférios da camada, ou grupo único) giram dentro de si; expedições seguem para a próxima/anterior
+  if(p<0||p>=n){if(g.volta||gs.length<2) p=(p+n)%n;else{h=(gi+v+gs.length)%gs.length;p=v>0?0:gs[h].ids.length-1}}
+  M.mexeu=1;abrir(gs[h].ids[p],h);const nb=M.f.querySelector('.nv button[data-v="'+b.dataset.v+'"]');if(nb) nb.focus()})}
+function abreC(M,j,voa,gi){const {S,map}=M,c=S.cit[j];if(!c) return;S.aberto=-1;const f=caixaF(M);
+  gi=qualG(S.gC,j,gi==null?S.gCi:gi);S.gCi=gi;
+  const info=doPagina(M,c.n),tx=c.x||info.tx||'',mt=c.d||info.meta||'';let txc=tx;
   if(txc.length>280){const a=txc.slice(0,280);txc=a.slice(0,Math.max(a.lastIndexOf('. ')+1,a.lastIndexOf(' ')))+(a.lastIndexOf('. ')>150?'':'…')}
   let h='<button type="button" class="x" aria-label="'+esc(t('Fechar'))+'">×</button>';
   if(info.img) h+='<img src="'+esc(info.img)+'" alt="" loading="lazy">';
   h+='<div class="cp"><div class="kk"><i style="background:#fff;outline:2px solid #14181d"></i>'+esc(c.t==='cid'?t('Cidade'):(lo(S.cfg.kt)||t('Citado nesta página')))+'</div>'+
     '<h3>'+esc(c.n)+'</h3>'+(mt?'<div class="mt">'+esc(mt)+'</div>':'')+(txc?'<p>'+esc(txc)+'</p>':'')+
     (info.alvo?'<div class="ac"><a href="#" class="ir">'+esc(t('Ler na página'))+'</a></div>':'')+'</div>';
-  if(S.ordC.length>1) h+='<div class="nv"><button type="button" data-v="-1">'+ICO.ant+esc(t('Anterior'))+'</button><span>'+(pos+1)+' '+esc(t('de'))+' '+S.ordC.length+'</span><button type="button" data-v="1">'+esc(t('Próximo'))+ICO.prox+'</button></div>';
+  h+=navH(S.gC,gi,j);
   f.innerHTML=h;f.hidden=false;f.scrollTop=0;
   f.querySelector('.x').onclick=()=>fecha(M);
   const ir=f.querySelector('.ir');if(ir) ir.onclick=e=>{e.preventDefault();info.alvo.scrollIntoView({behavior:'smooth',block:'center'});info.alvo.animate&&info.alvo.animate([{outline:'2px solid #b90000',outlineOffset:'6px'},{outline:'2px solid rgba(185,0,0,0)',outlineOffset:'6px'}],{duration:2600})};
-  f.querySelectorAll('.nv button').forEach(b=>b.onclick=()=>{const n=S.ordC.length,k=S.ordC[(pos+Number(b.dataset.v)+n)%n];M.mexeu=1;abreC(M,k,true);const nb=M.f.querySelector('.nv button[data-v="'+b.dataset.v+'"]');if(nb) nb.focus()});
+  navL(M,S.gC,gi,j,(k,g)=>abreC(M,k,true,g));
   map.setFilter('mk-sel',['==',['id'],-1]);map.setFilter('ct-sel',['==',['id'],j]);
   if(voa){map.flyTo({center:c.xy,zoom:S.cfg.globo?M.zAt(c.xy[1])+Math.max(S.cfg.gzc==null?1.1:S.cfg.gzc,map.getZoom()-M.zAt(map.getCenter().lat)):Math.max(map.getZoom(),Math.min(9,(M.local&&M.local.zoom)||7)),padding:voaPara(M,c.xy),duration:1300,essential:true});radar(M,c.xy)}}
 
 function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   caixaF(M);if(map.getLayer('ct-sel')) map.setFilter('ct-sel',['==',['id'],-1]);
-  const d=p.d,k=S.cfg.k,{meta,tx,ext}=textoFicha(k,d),pos=S.ordem.indexOf(i);
+  const d=p.d,k=S.cfg.k,{meta,tx,ext}=textoFicha(k,d),gi=qualG(S.gP,i,S.gPi);S.gPi=gi;
   const pg=LUGPAG[slug(d.npt||d.n)];const aqui=p.eu;
   let h='<button type="button" class="x" aria-label="'+esc(t('Fechar'))+'">×</button>';
   if(d.foto) h+='<img src="'+esc(d.foto)+'" alt="" loading="lazy">'+(d.fa?'<div class="cap">'+esc(t('Foto:'))+' '+esc(d.fa)+(d.fl?', '+esc(d.fl):'')+(d.fp?' · <a href="'+esc(d.fp)+'" target="_blank" rel="noopener">Commons</a>':'')+'</div>':'');
   h+='<div class="cp"><div class="kk"><i style="background:'+CAT[k][1]+'"></i>'+esc(t(CAT[k][0]))+'</div>'+(aqui?'<span class="aq">'+esc(t('Esta página'))+'</span>':'')+
     '<h3>'+esc(d.n)+'</h3>'+(meta?'<div class="mt">'+esc(meta)+'</div>':'')+(tx?'<p>'+esc(tx)+'</p>':'')+(ext?'<div class="mt">'+esc(ext)+'</div>':'')+
     (pg&&!aqui?'<div class="ac"><a href="'+PFX+'/destinations/'+esc(pg)+'">'+esc(t('Ler o guia completo'))+'</a></div>':'')+'</div>';
-  if(S.ordem.length>1) h+='<div class="nv"><button type="button" data-v="-1">'+ICO.ant+esc(t('Anterior'))+'</button><span>'+(pos+1)+' '+esc(t('de'))+' '+S.ordem.length+'</span><button type="button" data-v="1">'+esc(t('Próximo'))+ICO.prox+'</button></div>';
+  h+=navH(S.gP,gi,i);
   M.f.innerHTML=h;M.f.hidden=false;M.f.scrollTop=0;
   M.f.querySelector('.x').onclick=()=>fecha(M);
-  M.f.querySelectorAll('.nv button').forEach(b=>b.onclick=()=>{const n=S.ordem.length,j=S.ordem[(pos+Number(b.dataset.v)+n)%n];M.mexeu=1;abre(M,j,true);const nb=M.f.querySelector('.nv button[data-v="'+b.dataset.v+'"]');if(nb) nb.focus()});
+  navL(M,S.gP,gi,i,(j)=>abre(M,j,true));
   map.setFilter('mk-sel',['==',['id'],i]);
   if(voa){const w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f.offsetHeight,fw=M.f.offsetWidth;
     const pad=est?{top:20,bottom:Math.min(fh+16,M.cont.clientHeight*.6),left:20,right:20}:{top:20,bottom:20,left:20,right:fw+80};
