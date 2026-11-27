@@ -20,9 +20,9 @@ T = {}
 for f in sorted(glob.glob(f'{TX}/ca_np_*.py')):
     s = importlib.util.spec_from_file_location('m', f); m = importlib.util.module_from_spec(s); s.loader.exec_module(m); T.update(m.T)
 # seções (história, fauna e flora, atrativos) escritas pela WAS para fichas automáticas: textos/ca_sec_*.py definem S[q] = {pt:{h,ff,at}, en:..., es:...}
-S = {}; KMX = {}
+S = {}; KMX = {}; CRX = {}
 for f in sorted(glob.glob(f'{TX}/ca_sec_*.py')):
-    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S); KMX.update(getattr(m, 'KM', {}))
+    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S); KMX.update(getattr(m, 'KM', {})); CRX.update(getattr(m, 'CR', {}))
 def autor(a):
     a = re.sub(r'https?://\S+', '', a or '').strip(' ,;-·')
     return a[:70]
@@ -223,6 +223,7 @@ for q, r in rows.items():
         if 'cr' not in d and cp['ano']: d['cr'] = str(cp['ano']); NCP['cr'] += 1
         if 'iucn' not in d and cp['iucn']: d['iucn'] = cp['iucn']; NCP['iucn'] += 1
     if q in KMX: d['km'] = KMX[q]
+    if q in CRX and 'cr' not in d: d['cr'] = CRX[q]
     t = T.get(q)
     if not t:
         d['t'] = apresentacao(A[q][1], d, cp, r[8].replace('_', ' ') if r[8] else None); d['ta'] = 1
