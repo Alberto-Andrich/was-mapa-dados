@@ -433,7 +433,7 @@ function projecao(M){const {map,box,S}=M,cfg=S.cfg;const d=document.createElemen
     av.hidden=!(pl&&cfg.pol&&temPolo());if(M.pol) M.pol.style.display=pl?'none':'';map.triggerRepaint()});
   marca();box.appendChild(d);
   // v11 (27/11, Fernão Mendes Pinto): cfg.pl = abre no plano (rotas longas que o globo não mostra inteiras)
-  if(cfg.pl){const go=()=>{const b=d.querySelector('[data-p="p"]');if(b&&!M.plano) b.click()};map.loaded()?go():map.once('load',go)}}
+  if(cfg.pl){const go=()=>{const b=d.querySelector('[data-p="p"]');if(b&&!M.plano) b.click()};map.once('idle',go)}}
 
 function vistaLocal(M){const S=M.S,cfg=S.cfg,map=M.map;let bb=cfg.bb;
   if(M.plano){const xs=[],ys=[];(S.cit||[]).forEach(c=>{xs.push(c.xy[0]);ys.push(c.xy[1])});(M.linhas||[]).forEach(f=>f.geometry.coordinates.forEach(p=>{xs.push(nx(p[0]));ys.push(Math.max(-80,Math.min(82,p[1])))}));if(xs.length){// menor faixa de longitude que contém tudo (rotas que cruzam o antimeridiano não viram o mundo inteiro)
