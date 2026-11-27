@@ -19,6 +19,10 @@ if os.path.exists(f2):
 T = {}
 for f in sorted(glob.glob(f'{TX}/ca_np_*.py')):
     s = importlib.util.spec_from_file_location('m', f); m = importlib.util.module_from_spec(s); s.loader.exec_module(m); T.update(m.T)
+# seções (história, fauna e flora, atrativos) escritas pela WAS para fichas automáticas: textos/ca_sec_*.py definem S[q] = {pt:{h,ff,at}, en:..., es:...}
+S = {}
+for f in sorted(glob.glob(f'{TX}/ca_sec_*.py')):
+    sp = importlib.util.spec_from_file_location('s', f); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m); S.update(m.S)
 def autor(a):
     a = re.sub(r'https?://\S+', '', a or '').strip(' ,;-·')
     return a[:70]
@@ -219,7 +223,9 @@ for q, r in rows.items():
         if 'iucn' not in d and cp['iucn']: d['iucn'] = cp['iucn']; NCP['iucn'] += 1
     t = T.get(q)
     if not t:
-        d['t'] = apresentacao(A[q][1] if not r[8] or A[q][1].lower() == nome.lower() else A[q][1], d, cp); d['ta'] = 1
+        d['t'] = apresentacao(A[q][1], d, cp); d['ta'] = 1
+        if q in S:
+            d['t'] = {l: dict(r=d['t'][l], **{k: v for k, v in S[q][l].items() if v}) for l in ('pt', 'en', 'es')}; d.pop('ta')
     if t:
         for k in ('cr', 'fim', 'km'):
             if k in t: d[k] = t[k]
@@ -232,5 +238,5 @@ os.makedirs(f'{R}/v1/fichas', exist_ok=True)
 for k, v in out.items():
     json.dump(v, open(f'{R}/v1/fichas/{k}.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 json.dump({k: sorted(v) for k, v in sorted(idx.items())}, open(f'{R}/v1/fichas/indice.json', 'w'), separators=(',', ':'))
-print({k: len(v) for k, v in sorted(out.items())}, 'textos', sum(1 for v in out.values() for d in v.values() if 't' in d), 'com fotos', sum(1 for v in out.values() for d in v.values() if 'f' in d), dict(NCP),
+print({k: len(v) for k, v in sorted(out.items())}, 'seções', len(S), 'textos', sum(1 for v in out.values() for d in v.values() if 't' in d), 'com fotos', sum(1 for v in out.values() for d in v.values() if 'f' in d), dict(NCP),
   {k: sum(1 for v in out.values() for d in v.values() if k in d) for k in ('km', 'cr', 'iucn', 'pv')})
