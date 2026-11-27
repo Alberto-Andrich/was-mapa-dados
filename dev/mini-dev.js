@@ -576,7 +576,7 @@ function camPara(M,cs){const {map,S}=M,cfg=S.cfg;cs=cs.filter(p=>!cfg.pol||Math.
   if(cfg.pol&&!M.plano){const R=Math.PI/180;let X=0,Y=0,Z=0;cs.forEach(p=>{const a=p[0]*R,b=p[1]*R;X+=Math.cos(b)*Math.cos(a);Y+=Math.cos(b)*Math.sin(a);Z+=Math.sin(b)});
     const n=Math.hypot(X,Y,Z)||1,cl=[Math.atan2(Y,X)/R,Math.asin(Z/n)/R];let dmax=0;const c0=cl[0]*R,c1=cl[1]*R;
     cs.forEach(p=>{const a=p[0]*R,b=p[1]*R;dmax=Math.max(dmax,Math.acos(Math.max(-1,Math.min(1,Math.sin(b)*Math.sin(c1)+Math.cos(b)*Math.cos(c1)*Math.cos(a-c0))))/R)});
-    const fr=Math.max(.3,Math.min((w-pad.left-pad.right)/w,(h-pad.top-pad.bottom)/h)),z=M.zAt(cl[1])+Math.log2(fr*80/Math.max(dmax,2));
+    const fr=Math.max(.3,Math.min((w-pad.left-pad.right)/w,(h-pad.top-pad.bottom)/h)),z=M.zAt(cl[1])+Math.log2(fr*120/Math.max(dmax,2));
     return {center:cl,zoom:Math.max(z,map.getMinZoom())}}
   let W=1e9,E=-1e9,Sx=1e9,N=-1e9;cs.forEach(p=>{const x=nx(p[0]);W=Math.min(W,x);E=Math.max(E,x);Sx=Math.min(Sx,p[1]);N=Math.max(N,p[1])});
   if(E-W>180&&!cfg.pol){const xs=cs.map(p=>((nx(p[0])%360)+360)%360);W=Math.min(...xs);E=Math.max(...xs)}
