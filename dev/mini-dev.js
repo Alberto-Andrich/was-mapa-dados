@@ -134,7 +134,7 @@ function carregaML(){if(window.maplibregl) return Promise.resolve();if(carregaML
 .wmm-f .nv{position:sticky;bottom:0;margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 10px;background:#0d1117;border-top:1px solid #222a34}
 .wmm-f .nv button{all:unset;box-sizing:border-box;cursor:pointer;min-height:44px;padding:0 11px;border:1px solid #39434f;color:#fff;font-size:14px;display:flex;align-items:center;gap:6px}
 .wmm-f .nv button:hover{background:#1d2631}.wmm-f .nv button.zm{width:44px;height:44px;padding:0;justify-content:center;background:#b90000;border-color:#b90000;border-radius:5px;margin-left:auto}.wmm-f .nv button.zm:hover{background:#d10000}.wmm-f .nv.so1{justify-content:flex-end}.wmm-f .nv:not(.so1) button.zm{margin-left:0}.wmm-f .nv button:focus-visible{outline:2px solid #64aaff}
-.wmm.estreito .wmm-f .nv span b{display:none}.wmm.estreito .wmm-f .nv{gap:6px;padding:8px}.wmm.estreito .wmm-f .nv button{padding:0 8px}
+.wmm.estreito .wmm-f .nv span b{display:none}.wmm-f .nv .tl{font-style:normal}@media (max-width:399px){.wmm-f .nv .tl{display:none}.wmm-f .nv button{min-width:52px;justify-content:center}}.wmm.estreito .wmm-f .nv{gap:6px;padding:8px}.wmm.estreito .wmm-f .nv button{padding:0 8px}
 .wmm-f .nv span{flex:1 1 0;min-width:0;font-size:13px;color:#aeb8c2;white-space:nowrap;text-align:center;line-height:1.3}.wmm-f .nv span b{display:block;font-weight:600;color:#fff;font-size:12.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wmm-f .nv span b i{display:inline-block;width:12px;height:3px;margin:0 6px 3px 0;vertical-align:middle}
 .wmm-f .x{all:unset;cursor:pointer;position:absolute;right:6px;top:6px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(10,14,19,.75);color:#fff;font-size:22px;z-index:2}
 .wmm-f .x:focus-visible{outline:2px solid #64aaff}
@@ -541,7 +541,7 @@ const ZM='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f
 function zmB(lab){lab=t(lab||'Aproximar no mapa');return '<button type="button" class="zm" aria-label="'+esc(lab)+'" title="'+esc(lab)+'">'+ZM+'</button>'}
 function navH(gs,gi,id,zl){const g=gs[gi];const tot=g?gs.reduce((a,x)=>a+x.ids.length,0):0;if(!g||tot<2) return '<div class="nv so1">'+zmB(zl)+'</div>';
   const pos=g.ids.indexOf(id),lab=g.lab?'<b>'+(g.c?'<i style="background:'+esc(g.c)+'"></i>':'')+esc(g.lab)+'</b>':'';
-  return '<div class="nv"><button type="button" data-v="-1">'+ICO.ant+esc(t('Anterior'))+'</button><span>'+lab+(pos+1)+' '+esc(t('de'))+' '+g.ids.length+'</span><button type="button" data-v="1">'+esc(t('Próximo'))+ICO.prox+'</button>'+zmB(zl)+'</div>'}
+  return '<div class="nv"><button type="button" data-v="-1" aria-label="'+esc(t('Anterior'))+'">'+ICO.ant+'<em class="tl">'+esc(t('Anterior'))+'</em></button><span>'+lab+(pos+1)+' '+esc(t('de'))+' '+g.ids.length+'</span><button type="button" data-v="1" aria-label="'+esc(t('Próximo'))+'"><em class="tl">'+esc(t('Próximo'))+'</em>'+ICO.prox+'</button>'+zmB(zl)+'</div>'}
 function navL(M,gs,gi,id,abrir,zoom){const zb=M.f.querySelector('.nv .zm');if(zb) zb.onclick=()=>{M.mexeu=1;if(zoom) zoom()};M.f.querySelectorAll('.nv button[data-v]').forEach(b=>b.onclick=()=>{const v=Number(b.dataset.v),g=gs[gi],n=g.ids.length;let p=g.ids.indexOf(id)+v,h=gi;
   // grupos com volta (hemisférios da camada, ou grupo único) giram dentro de si; expedições seguem para a próxima/anterior
   if(p<0||p>=n){if(g.volta||gs.length<2) p=(p+n)%n;else{h=(gi+v+gs.length)%gs.length;p=v>0?0:gs[h].ids.length-1}}
