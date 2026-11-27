@@ -5,12 +5,15 @@ Saída: fontes/fichas/fotos-commons-au.json ({q: [[arquivo, autor, licença, w, 
 Mesmas regras dos EUA: só licenças livres sem NC/ND; nome distintivo da área no arquivo ou nas categorias; exclui mapas, logos, placas
 e nomes de áreas maiores que contêm o nome desta; prioriza a imagem do Wikidata (P18) e Featured, Quality e Valued."""
 import json, re, os, unicodedata
+from urllib.parse import unquote
+def fn(x): return unquote(x.split('Special:FilePath/',1)[-1]).replace('_',' ')
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 F = f'{R}/fontes/fichas'
-C = json.load(open(f'{F}/fotos-cand-au.json')); cand0, meta = C['cand'], C['meta']
+C = json.load(open(f'{F}/fotos-cand-au.json')); meta = C['meta']
+cand0 = {q: list(dict.fromkeys(fn(f) for f in (l or []))) for q, l in C['cand'].items()}
 WD = json.load(open(f'{F}/wikidata-au.json'))
 cat = {q: (r[6] or '') for q, r in WD.items()}
-p18 = {q: [i for i in (r[5] or '').split('¦') if i] for q, r in WD.items()}
+p18 = {q: [fn(i) for i in (r[5] or '').split('¦') if i] for q, r in WD.items()}
 nome = {}
 for x in json.load(open(f'{R}/v1/mapa-areas-protegidas.json')):
     if x[5] != 'AU': continue
@@ -37,7 +40,7 @@ LIC = re.compile(r'(public domain|^pd|cc0|cc[ -]by|no restrictions|attribution)'
 def pontos(q, f, m, e18):
     autor, lic, w, h, av, cats = m
     if not lic or re.search(r'NC|ND', lic) or not LIC.search(lic): return None
-    if RUIM.search(f) or (w or 0) < 800: return None
+    if RUIM.search(f) or re.search(r'\bsign\b', f, re.I) or (w or 0) < 800: return None
     txt = ' ' + norm(f.rsplit('.', 1)[0] + ' ' + (cats or '').replace('|', ' ')) + ' '
     n = nomesc.get(q) or nomesn.get(q, '')
     if not e18 and any(f' {x} ' in txt for x in maiores.get(q, [])): return None
@@ -79,6 +82,8 @@ for q, lst in cand0.items():
         if len(esc) >= 5: break
         pref = re.sub(r'[\d\W_]+', '', f)[:18].lower()
         if pref and any(re.sub(r'[\d\W_]+', '', e[0])[:18].lower() == pref for e in esc): continue
+        w1 = (re.findall(r'[a-z]{3,}', f.lower()) or [''])[0]
+        if w1 and w1 not in nomesn.get(q, '').split() and sum(1 for e in esc if (re.findall(r'[a-z]{3,}', e[0].lower()) or [''])[0] == w1) >= 2: continue
         if re.search('featured|quality|valued', (m[4] or '').lower()): nfeat += 1
         esc.append([f, m[0], m[1], m[2], m[3]])
     if esc: out[q] = esc
