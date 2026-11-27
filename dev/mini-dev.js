@@ -229,18 +229,21 @@ function montar(M){
   const zMin=()=>{const w=cont.clientWidth||600,h=cont.clientHeight||400;return Math.max(0.2,Math.log2(0.9*Math.min(w,h)*Math.PI/512))};
   // v8: mapas polares (cfg.pol) ficam sempre em globo, porque o plano corta tudo além de 85° de latitude
   const proj=z0=>cfg.pol?{type:'vertical-perspective'}:({type:['interpolate',['linear'],['zoom'],z0+0.9,'vertical-perspective',z0+2.3,'mercator']});
+  // v8: no globo do MapLibre o número do zoom muda com a latitude do centro (perto do polo o mesmo tamanho tem zoom menor)
+  const zAt=lat=>zMin()+(cfg.pol?Math.log2(Math.max(Math.cos((lat||0)*Math.PI/180),0.06)):0);M.zAt=zAt;
   const toque=matchMedia('(pointer:coarse)').matches&&!matchMedia('(pointer:fine)').matches;
   const mac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);
   const map=new maplibregl.Map({container:cont,
     style:{version:8,projection:proj(zMin()),sky:{'atmosphere-blend':['interpolate',['linear'],['zoom'],0,0.55,5,0.2,7,0]},glyphs:GHB+'fonts/{fontstack}/{range}.pbf',sources:{},layers:[{id:'fundo',type:'background',paint:{'background-color':'#0a1622'}}]},
-    center:cfg.c?cfg.c.slice(0,2):[0,15],zoom:zMin(),minZoom:zMin(),maxZoom:11,renderWorldCopies:true,
+    center:cfg.c?cfg.c.slice(0,2):[0,15],zoom:zAt(cfg.c?cfg.c[1]:15),minZoom:cfg.pol?zMin()-4.2:zMin(),maxZoom:11,renderWorldCopies:true,
     cooperativeGestures:toque,dragRotate:false,pitchWithRotate:false,touchPitch:false,clickTolerance:6,
     attributionControl:{compact:true,customAttribution:'NASA · Natural Earth · WAS'},
     locale:{'CooperativeGesturesHandler.WindowsHelpText':t('Use Ctrl + roda do mouse para aproximar o mapa'),'CooperativeGesturesHandler.MacHelpText':t('Use ⌘ + roda do mouse para aproximar o mapa'),'CooperativeGesturesHandler.MobileHelpText':t('Use dois dedos para mover o mapa')}
   });
   M.map=map;(window.__wmm=window.__wmm||[]).push(M);
   map.touchZoomRotate.disableRotation();map.scrollZoom.setWheelZoomRate(1/300);
-  const ajusta=()=>{estreitoM();const z=zMin();if(Math.abs(z-map.getMinZoom())>0.02){map.setMinZoom(z);try{map.setProjection(proj(z))}catch(e){}}};
+  const ajusta=()=>{estreitoM();if(cfg.pol){const z=zAt(map.getCenter().lat);if(Math.abs(z-map.getMinZoom())>0.02) map.setMinZoom(z);return}const z=zMin();if(Math.abs(z-map.getMinZoom())>0.02){map.setMinZoom(z);try{map.setProjection(proj(z))}catch(e){}}};
+  if(cfg.pol) map.on('moveend',ajusta);
   const estreitoM=()=>box.classList.toggle('estreito',box.clientWidth<640);
   if(window.ResizeObserver) new ResizeObserver(()=>{map.resize();ajusta()}).observe(box);
   map.once('idle',()=>box.querySelectorAll('.maplibregl-compact-show').forEach(e=>e.classList.remove('maplibregl-compact-show')));
@@ -336,14 +339,14 @@ function montar(M){
     if(S.alvo||cfg.c||!cfg.globo) radar(M,S.alvo?S.alvo.xy:(cfg.c||loc.center));
     const reduz=matchMedia('(prefers-reduced-motion:reduce)').matches;
     const centro=S.alvo?S.alvo.xy:cfg.c?cfg.c.slice(0,2):null;
-    if(centro) map.jumpTo({center:centro,zoom:map.getMinZoom()});
+    if(centro) map.jumpTo({center:centro,zoom:zAt(centro[1])});
     setTimeout(()=>{if(M.mexeu) return;reduz?map.jumpTo(loc):map.flyTo(Object.assign({},loc,{duration:3200,essential:true,curve:1.3}))},reduz?0:1300);
   }).catch(e=>{car.textContent='';box.classList.add('pronto');M.fig.classList.remove('wmm-on');box.remove()});
 }
 
 function vistaLocal(M){const S=M.S,cfg=S.cfg,map=M.map;let bb=cfg.bb;
   // v8: páginas polares e viagens oceânicas abrem em globo virado para o lugar (cfg.globo=[lng,lat], cfg.gz = quanto aproxima)
-  if(cfg.globo) return {center:[nx(cfg.globo[0]),cfg.globo[1]],zoom:map.getMinZoom()+(cfg.gz==null?0.5:cfg.gz)};
+  if(cfg.globo) return {center:[nx(cfg.globo[0]),cfg.globo[1]],zoom:M.zAt(cfg.globo[1])+(cfg.gz==null?0.5:cfg.gz)};
   if(!bb){const xs=[],ys=[];(cfg.pts||[]).forEach(p=>{xs.push(p[0]);ys.push(p[1])});(cfg.lin||[]).forEach(l=>l.p.forEach(p=>{xs.push(p[0]);ys.push(p[1])}));
     const a=S.alvo?S.alvo.xy:cfg.c;if(a){xs.push(a[0]);ys.push(a[1])}
     if(!xs.length) return {center:a||[0,15],zoom:5};
@@ -412,7 +415,7 @@ function abreC(M,j,voa){const {S,map}=M,c=S.cit[j];if(!c) return;S.aberto=-1;con
   const ir=f.querySelector('.ir');if(ir) ir.onclick=e=>{e.preventDefault();info.alvo.scrollIntoView({behavior:'smooth',block:'center'});info.alvo.animate&&info.alvo.animate([{outline:'2px solid #b90000',outlineOffset:'6px'},{outline:'2px solid rgba(185,0,0,0)',outlineOffset:'6px'}],{duration:2600})};
   f.querySelectorAll('.nv button').forEach(b=>b.onclick=()=>{const n=S.ordC.length,k=S.ordC[(pos+Number(b.dataset.v)+n)%n];M.mexeu=1;abreC(M,k,true);const nb=M.f.querySelector('.nv button[data-v="'+b.dataset.v+'"]');if(nb) nb.focus()});
   map.setFilter('mk-sel',['==',['id'],-1]);map.setFilter('ct-sel',['==',['id'],j]);
-  if(voa){map.flyTo({center:c.xy,zoom:S.cfg.globo?Math.max(map.getZoom(),map.getMinZoom()+(S.cfg.gzc==null?1.1:S.cfg.gzc)):Math.max(map.getZoom(),Math.min(9,(M.local&&M.local.zoom)||7)),padding:voaPara(M,c.xy),duration:1300,essential:true});radar(M,c.xy)}}
+  if(voa){map.flyTo({center:c.xy,zoom:S.cfg.globo?M.zAt(c.xy[1])+Math.max(S.cfg.gzc==null?1.1:S.cfg.gzc,map.getZoom()-M.zAt(map.getCenter().lat)):Math.max(map.getZoom(),Math.min(9,(M.local&&M.local.zoom)||7)),padding:voaPara(M,c.xy),duration:1300,essential:true});radar(M,c.xy)}}
 
 function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   caixaF(M);if(map.getLayer('ct-sel')) map.setFilter('ct-sel',['==',['id'],-1]);
@@ -430,7 +433,7 @@ function abre(M,i,voa){const {S,map,box}=M,p=S.pts[i];if(!p) return;S.aberto=i;
   map.setFilter('mk-sel',['==',['id'],i]);
   if(voa){const w=M.cont.clientWidth,est=box.classList.contains('estreito'),fh=M.f.offsetHeight,fw=M.f.offsetWidth;
     const pad=est?{top:20,bottom:Math.min(fh+16,M.cont.clientHeight*.6),left:20,right:20}:{top:20,bottom:20,left:20,right:fw+80};
-    const z=Math.max(Math.min(5,Math.max(2,Math.log2(w/512*360/70))),map.getMinZoom()+0.3);
+    const z=S.cfg.pol?M.zAt(p.xy[1])+Math.max(S.cfg.gzc==null?1.1:S.cfg.gzc,map.getZoom()-M.zAt(map.getCenter().lat)):Math.max(Math.min(5,Math.max(2,Math.log2(w/512*360/70))),map.getMinZoom()+0.3);
     map.flyTo({center:p.xy,zoom:z,padding:pad,duration:1500,essential:true});radar(M,p.xy)}}
 
 // ---------- início: só carrega quando a seção chega perto da tela ----------
