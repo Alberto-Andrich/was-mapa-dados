@@ -519,8 +519,9 @@ function vistaLocal(M){const S=M.S,cfg=S.cfg,map=M.map;let bb=cfg.bb;
     if(!xs.length) return {center:a||[0,15],zoom:5};
     bb=[Math.min(...xs),Math.max(...xs),Math.min(...ys),Math.max(...ys)]}
   const w=M.cont.clientWidth||600,h=M.cont.clientHeight||400,pad=Math.min(70,w*.1);
-  const dx=Math.max(bb[1]-bb[0],0.3),dy=Math.max(mercY(bb[2])-mercY(bb[3]),0.3/360);
-  const z=Math.min(10,Math.log2(Math.min((w-2*pad)/(512*dx/360),(h-2*pad)/(512*dy))));
+  // v40: mapas de área pequena (cfg.mz>11) enquadram o bbox inteiro, como o mapa antigo
+  const mn=cfg.mz>11?0.01:0.3,dx=Math.max(bb[1]-bb[0],mn),dy=Math.max(mercY(bb[2])-mercY(bb[3]),mn/360);
+  const z=Math.min(Math.max(10,(cfg.mz||11)-1),Math.log2(Math.min((w-2*pad)/(512*dx/360),(h-2*pad)/(512*dy))));
   return {center:[(bb[0]+bb[1])/2,yLat((mercY(bb[2])+mercY(bb[3]))/2)],zoom:Math.max(map.getMinZoom()+(M.plano?0:1),z)}}
 
 function radar(M,xy){if(!xy) return;const el=document.createElement('div');el.className='wmm-alvo';el.innerHTML='<i></i><i></i>';
