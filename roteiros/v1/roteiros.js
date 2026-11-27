@@ -482,7 +482,7 @@ function montarMini(){
   if(mini){ mini.remove(); mini=null; }
   const el=$('#mini'); if(!el||!window.L||getComputedStyle(el).display==='none') return;
   mini=L.map(el,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,tap:false,touchZoom:false});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',{subdomains:'abcd'}).addTo(mini);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{className:'base-sat'}).addTo(mini);
   if(T.paradas.length){ const ll=T.paradas.map(p=>[p.y,p.x]); L.polyline(ll,{color:'#ff4a4a',weight:2,opacity:.9}).addTo(mini); ll.forEach(c=>L.circleMarker(c,{radius:4,color:'#fff',weight:1.5,fillColor:'#b90000',fillOpacity:1}).addTo(mini)); mini.fitBounds(L.latLngBounds(ll).pad(.35),{maxZoom:7}); }
   else mini.setView([10,-20],1);
 }
@@ -538,9 +538,10 @@ let modoLivre=false, grpL={}, linhaT=null, pinos=null, rotasL=null;
 function montarMapa(){
   if(!window.L){ $('#mapa').innerHTML='<div class="vazio" style="margin:20px">O mapa precisa de internet para carregar.</div>'; return; }
   mapa=L.map('mapa',{worldCopyJump:true,minZoom:2,zoomSnap:.5}).setView([5,-20],2);
-  const esc1=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,attribution:'© OpenStreetMap · © CARTO'});
-  const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'Imagens © Esri'});
-  esc1.addTo(mapa); L.control.layers({'Mapa escuro':esc1,'Satélite':sat},null,{position:'topright'}).addTo(mapa);
+  const sat=L.layerGroup([L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,className:'base-sat',attribution:'Imagens © Esri, Maxar, Earthstar Geographics'}),
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,opacity:.85})]);
+  const ruas=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,className:'base-osm',attribution:'© colaboradores do OpenStreetMap'});
+  sat.addTo(mapa); L.control.layers({'Satélite':sat,'Ruas e trilhas':ruas},null,{position:'topright'}).addTo(mapa);
   L.control.scale({imperial:false}).addTo(mapa);
   grpL={}; D.layers.forEach(l=>grpL[l.k]=L.layerGroup());
   D.pts.forEach(p=>{ const L0=LAY[p.l]; const m=L.circleMarker([p.y,p.x],{radius:p.l==='PQ'?6:5,color:'#000',weight:1,fillColor:L0.cor,fillOpacity:.95});

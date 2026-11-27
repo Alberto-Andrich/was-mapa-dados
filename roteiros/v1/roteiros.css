@@ -14,7 +14,7 @@
 #wasrot .card{border:1px solid #bbb;background:#fff;color:#000;break-inside:avoid}
 #wasrot h1,#wasrot h2,#wasrot h3,#wasrot h4,#wasrot .dossie .tab td:first-child,#wasrot .lead{color:#000}
 #wasrot .tab td,#wasrot .tab th{border-color:#ccc;color:#000}
-#wasrot .sec,#wasrot .cap,#wasrot .kick{color:#444}}@media (max-width:700px){#wasrot .camadas{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#wasrot .camadas::-webkit-scrollbar{display:none}#wasrot .chip.cam{white-space:nowrap;flex:none}}
+#wasrot .sec,#wasrot .cap,#wasrot .kick{color:#444}}@media (max-width:700px){#wasrot .camadas{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#wasrot .camadas::-webkit-scrollbar{display:none}#wasrot .chip.cam{white-space:nowrap;flex:none}}#wasrot .leaflet-tile.base-sat,#wasrot .base-sat .leaflet-tile{filter:brightness(.72) saturate(1.05)}#wasrot .base-osm{filter:invert(.92) hue-rotate(180deg) brightness(.9) contrast(.9) saturate(.6)}#wasrot .leaflet-control-layers{background:#11161d!important;color:#fff!important;border:1px solid #2b3440!important;border-radius:4px!important}#wasrot .leaflet-control-layers-expanded{padding:8px 12px!important;font-size:14px}
 
 #wasrot{position:relative;overflow-x:clip;background:var(--bg);color:var(--txt);font-family:var(--fX);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 #wasrot *,#wasrot *:before,#wasrot *:after{box-sizing:border-box}
