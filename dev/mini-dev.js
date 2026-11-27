@@ -309,7 +309,7 @@ function montar(M){
       map.addLayer({id:'lin-s',type:'line',source:'lin',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#05080c','line-opacity':.55,'line-width':['interpolate',['linear'],['zoom'],1,3.6,5,4.6,9,6.5]}});
       map.addLayer({id:'lin',type:'line',source:'lin',filter:['==',['get','d'],0],layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':['get','c'],'line-width':['interpolate',['linear'],['zoom'],1,2,5,2.6,9,3.8]}});
       map.addLayer({id:'lin-d',type:'line',source:'lin',filter:['==',['get','d'],1],layout:{'line-cap':'butt','line-join':'round'},paint:{'line-color':['get','c'],'line-dasharray':[2.2,1.6],'line-width':['interpolate',['linear'],['zoom'],1,2,5,2.6,9,3.5]}});
-      map.addLayer({id:'lin-n',type:'symbol',source:'lin',minzoom:cfg.globo?3.2:5,layout:{'symbol-placement':'line','text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'symbol-spacing':320,'text-max-angle':30},paint:{'text-color':['get','c'],'text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}})}
+      map.addLayer({id:'lin-n',type:'symbol',source:'lin',minzoom:(cfg.globo||cfg.pl)?3.2:5,layout:{'symbol-placement':'line','text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'symbol-spacing':320,'text-max-angle':30},paint:{'text-color':['get','c'],'text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}})}
 
     // pontos da camada do assunto
     const bloco=CAMF[k][1]?cam[CAMF[k][1]]:cam,lista=(bloco&&bloco.pontos)||(Array.isArray(bloco)?bloco:[]);
@@ -330,7 +330,7 @@ function montar(M){
     map.addSource('mk',{type:'geojson',data:fcP});
     map.addLayer({id:'mk',type:'symbol',source:'mk',layout:{'icon-image':['case',['==',['get','eu'],1],'mk-g','mk'],'icon-allow-overlap':true,'icon-ignore-placement':true,'symbol-sort-key':['get','o']}});
     map.addLayer({id:'mk-sel',type:'symbol',source:'mk',filter:['==',['id'],-1],layout:{'icon-image':'mk-g','icon-allow-overlap':true,'icon-ignore-placement':true}});
-    map.addLayer({id:'mk-n',type:'symbol',source:'mk',minzoom:cfg.globo?0:3.4,layout:{'text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12.5,'text-anchor':'left','text-offset':[1.1,0],'text-optional':true,'symbol-sort-key':['-',0,['get','o']]},paint:{'text-color':'#fff','text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}});
+    map.addLayer({id:'mk-n',type:'symbol',source:'mk',minzoom:(cfg.globo||cfg.pl)?0:3.4,layout:{'text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12.5,'text-anchor':'left','text-offset':[1.1,0],'text-optional':true,'symbol-sort-key':['-',0,['get','o']]},paint:{'text-color':'#fff','text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.6}});
     // nome do lugar da página sempre visível
     map.addLayer({id:'mk-eu',type:'symbol',source:'mk',filter:['==',['get','eu'],1],layout:{'text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':14,'text-anchor':'left','text-offset':[1.2,0],'text-allow-overlap':true},paint:{'text-color':'#fff','text-halo-color':'rgba(4,7,11,.95)','text-halo-width':2}});
 
@@ -339,9 +339,9 @@ function montar(M){
     S.gC=gruposC(S,cfg);S.ordC=S.cit.map(p=>p.i);
     const cit=S.cit.filter(q=>!cfg.pol||Math.abs(q.xy[1])<84.95).map(q=>({type:'Feature',id:q.i,properties:{n:q.n,t:q.t},geometry:{type:'Point',coordinates:q.xy}}));
     if(cit.length){map.addSource('ct',{type:'geojson',data:{type:'FeatureCollection',features:cit}});
-      map.addLayer({id:'ct',type:'symbol',source:'ct',minzoom:cfg.globo?0:3,layout:{'icon-image':['concat','ct-',['get','t']],'icon-allow-overlap':true,'icon-ignore-placement':true}});
+      map.addLayer({id:'ct',type:'symbol',source:'ct',minzoom:(cfg.globo||cfg.pl)?0:3,layout:{'icon-image':['concat','ct-',['get','t']],'icon-allow-overlap':true,'icon-ignore-placement':true}});
       map.addLayer({id:'ct-sel',type:'circle',source:'ct',filter:['==',['id'],-1],paint:{'circle-radius':11,'circle-color':'rgba(255,255,255,.18)','circle-stroke-color':'#fff','circle-stroke-width':2}},'ct');
-      map.addLayer({id:'ct-n',type:'symbol',source:'ct',minzoom:cfg.globo?0:4.5,layout:{'text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'text-anchor':'left','text-offset':[0.9,0],'text-optional':true},paint:{'text-color':'#e9eef3','text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.5}})}
+      map.addLayer({id:'ct-n',type:'symbol',source:'ct',minzoom:(cfg.globo||cfg.pl)?0:4.5,layout:{'text-field':['get','n'],'text-font':['Open Sans Semibold'],'text-size':12,'text-anchor':'left','text-offset':[0.9,0],'text-optional':true},paint:{'text-color':'#e9eef3','text-halo-color':'rgba(4,7,11,.9)','text-halo-width':1.5}})}
 
     // legenda discreta
     const lg=document.createElement('div');lg.className='wmm-leg';lg.setAttribute('aria-hidden','true');
