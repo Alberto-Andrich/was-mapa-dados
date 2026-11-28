@@ -1,4 +1,4 @@
-/* WAS "Sugestão para você" 1.0.4 (também põe "Neste dia na aventura" e "Recordes e extremos" em Mundo WAS > Assuntos do momento) (28/11/2026).
+/* WAS "Sugestão para você" 1.0.4 (também põe "Neste dia na aventura" em Mundo WAS > Assuntos do momento) (28/11/2026).
    Sem login e sem dado pessoal: guarda NO NAVEGADOR do visitante (localStorage "wasSug1")
    só os endereços das páginas de conteúdo que ele abriu e uma pontuação para as páginas
    que elas citam. A sugestão é a página mais citada pelo que ele leu e que ele ainda não abriu.
@@ -6,7 +6,7 @@
 (function(){
 if(window.__wasSugestao)return;window.__wasSugestao=1;
 var K='wasSug1',LG=(location.pathname.match(/^\/(en|es)(?=\/|$)/)||[])[1]||'pt',PF=LG==='pt'?'':'/'+LG;
-var ND={pt:'Neste dia na aventura',en:'On this day in adventure',es:'Este día en la aventura'}[LG],RX={pt:'Recordes e extremos',en:'Records and extremes',es:'Récords y extremos'}[LG],NOVO={pt:'novo',en:'new',es:'nuevo'}[LG];
+var ND={pt:'Neste dia na aventura',en:'On this day in adventure',es:'Este día en la aventura'}[LG],NOVO={pt:'novo',en:'new',es:'nuevo'}[LG];
 var TX={pt:{h:'Sugestão para você',mundo:'Reportagem',explorers:'Explorador',destinations:'Destino',
  porque:'Ligada ao que você viu no site'},
  en:{h:'Suggested for you',mundo:'Story',explorers:'Explorer',destinations:'Destination',porque:'Linked to what you have seen on the site'},
@@ -81,11 +81,11 @@ function aplica(root){
 }
 function nesteDia(root){
  if(root.querySelector('a[data-nd-menu]'))return;
- function poe(ref,url,nome,attr){var cur=aqui===url;var a=document.createElement('a');a.href=PF+url;a.setAttribute(attr,'1');if(cur)a.setAttribute('aria-current','page');a.innerHTML='<span>'+esc(nome)+'</span><span class="wn-new">'+esc(NOVO)+'</span>';
-  var li=ref.closest('li');if(li&&li.parentNode){var n=document.createElement('li');n.appendChild(a);li.parentNode.insertBefore(n,li.nextSibling)}else ref.parentNode.insertBefore(a,ref.nextSibling);return a}
+ var url=PF+'/#neste-dia',cur=false;
+ function item(tag){var a=document.createElement('a');a.href=url;a.setAttribute('data-nd-menu','1');if(cur)a.setAttribute('aria-current','page');a.innerHTML='<span>'+esc(ND)+'</span><span class="wn-new">'+esc(NOVO)+'</span>';if(tag){var li=document.createElement('li');li.appendChild(a);return li}return a}
  var radar=root.querySelectorAll('a[href$="/radar"]');
- radar.forEach(function(r){var nd=poe(r,'/on-this-day',ND,'data-nd-menu');poe(nd,'/records',RX,'data-rx-menu')});
- if(aqui==='/on-this-day'||aqui==='/records'){var b=root.querySelector('.wn-i[data-p="foto"]');if(b)b.classList.add('wn-cur')}
+ radar.forEach(function(r){var li=r.closest('li');if(li&&li.parentNode)li.parentNode.insertBefore(item(true),li.nextSibling);else r.parentNode.insertBefore(item(false),r.nextSibling)});
+ if(cur){var b=root.querySelector('.wn-i[data-p="foto"]');if(b)b.classList.add('wn-cur')}
 }
 function liga(root){
  try{nesteDia(root)}catch(e){}
