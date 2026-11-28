@@ -288,15 +288,20 @@ function gestoGlobal(){if(GG) return;GG={x:null,y:null,M:null};const d=document;
   d.addEventListener('gestureend',e=>{if(!GG.on) return;e.preventDefault();if(GG.M) GG.M.gesto.fim();GG.M=null;GG.on=0},{passive:false,capture:true});
 }
 
-// v56: diagnóstico de gestos (só com ?wmmdiag na URL): painel fixo com os eventos que o navegador entrega e se a página bloqueou o zoom
+// v56/v57: diagnóstico de gestos (só com ?wmmdiag na URL): painel fixo com os eventos que o navegador entrega e se a página bloqueou o zoom
 if(/wmmdiag/.test(location.search)&&!window.__wmmDiag){window.__wmmDiag=1;const pn=document.createElement('pre');
-  pn.style.cssText='position:fixed;left:8px;bottom:8px;z-index:2147483647;max-width:min(560px,94vw);max-height:46vh;overflow:auto;margin:0;background:rgba(0,0,0,.88);color:#9f9;font:12px/1.35 monospace;padding:8px;border:1px solid #3a3;white-space:pre-wrap;pointer-events:none';
-  const L=[];const mv=document.querySelector('meta[name=viewport]');const cab='WAS diag v56 | '+navigator.userAgent.replace(/^.*?\) /,'').slice(0,60)+'\nviewport: '+(mv?mv.content:'(sem meta)')+' | toque:'+matchMedia('(pointer:coarse)').matches+'/'+matchMedia('(any-pointer:fine)').matches;
-  const vv=window.visualViewport;const pinta=()=>{pn.textContent=cab+'\nzoom da página (visualViewport.scale): '+(vv?vv.scale.toFixed(2):'?')+'\n'+L.join('\n')};
-  const sobre=e=>{const x=e.clientX!=null?e.clientX:(GG&&GG.x),y=e.clientY!=null?e.clientY:(GG&&GG.y);const el=x!=null?document.elementFromPoint(x,y):null;return el&&el.closest&&el.closest('.wmm')?'MAPA':'fora'};
-  const reg=e=>{const t=e.type;if(t==='wheel'&&!e.ctrlKey&&L.length&&/^wheel /.test(L[0])) return;setTimeout(()=>{L.unshift(t+(t==='wheel'?' ctrl='+e.ctrlKey+' dy='+Math.round(e.deltaY):'')+(e.scale!=null?' scale='+(+e.scale).toFixed(2):'')+(e.touches?' dedos='+e.touches.length:'')+(e.pointerType?' tipo='+e.pointerType:'')+' | '+sobre(e)+' | bloqueado='+e.defaultPrevented);L.length=Math.min(L.length,14);pinta()},0)};
-  ['wheel','gesturestart','gesturechange','gestureend','touchstart','touchmove','pointerdown'].forEach(k=>addEventListener(k,reg,{capture:true,passive:true}));
-  if(vv) vv.addEventListener('resize',pinta);const pr=()=>{document.body.appendChild(pn);pinta()};document.body?pr():addEventListener('DOMContentLoaded',pr)}
+  pn.style.cssText='position:fixed;left:8px;bottom:8px;z-index:2147483647;max-width:min(620px,94vw);max-height:50vh;overflow:auto;margin:0;background:rgba(0,0,0,.9);color:#9f9;font:12px/1.35 monospace;padding:8px;border:1px solid #3a3;white-space:pre-wrap;pointer-events:none';
+  const L=[];const mv=document.querySelector('meta[name=viewport]');const cab='WAS diag v57 | '+navigator.userAgent.replace(/^.*?\) /,'').slice(0,60)+'\nviewport: '+(mv?mv.content:'(sem meta)')+' | toque:'+matchMedia('(pointer:coarse)').matches+'/'+matchMedia('(any-pointer:fine)').matches;
+  const vv=window.visualViewport;let ult='';
+  const zm=()=>{const M=(window.__wmm||[]).find(m=>m.map&&m.box&&m.box.isConnected);return M?M.map.getZoom().toFixed(2):'?'};
+  const pinta=()=>{pn.textContent=cab+'\nzoom da PÁGINA: '+(vv?vv.scale.toFixed(2):'?')+' | zoom do MAPA: '+zm()+' | cursor: '+(GG&&GG.x!=null?Math.round(GG.x)+','+Math.round(GG.y):'?')+'\n'+L.join('\n')};
+  const sobre=(x,y)=>{if(x==null) return 'sem posição';const el=document.elementFromPoint(x,y);return el&&el.closest&&el.closest('.wmm')?'MAPA':'fora'};
+  const reg=e=>{const t=e.type;setTimeout(()=>{const x=e.clientX!=null?e.clientX:(e.touches&&e.touches[0]?e.touches[0].clientX:null),y=e.clientY!=null?e.clientY:(e.touches&&e.touches[0]?e.touches[0].clientY:null);
+    const lin=t+(t==='wheel'?' ctrl='+e.ctrlKey+' meta='+e.metaKey+' dx='+Math.round(e.deltaX)+' dy='+Math.round(e.deltaY)+' modo='+e.deltaMode:'')+(e.scale!=null?' scale='+(+e.scale).toFixed(2):'')+(e.touches?' dedos='+e.touches.length:'')+(e.pointerType?' tipo='+e.pointerType:'')+' | '+(x!=null?Math.round(x)+','+Math.round(y)+' ':'')+sobre(x,y)+' | bloqueado='+e.defaultPrevented;
+    if(lin===ult&&L.length){L[0]=L[0].replace(/ x(\d+)$/,(a,n)=>' x'+(+n+1));if(!/ x\d+$/.test(L[0])) L[0]+=' x2'}else{L.unshift(lin);ult=lin}L.length=Math.min(L.length,16);pinta()},0)};
+  ['wheel','gesturestart','gesturechange','gestureend','touchstart','touchmove','touchend','pointerdown','pointerup'].forEach(k=>addEventListener(k,reg,{capture:true,passive:true}));
+  if(vv){vv.addEventListener('resize',()=>{L.unshift('>> zoom da página mudou: '+vv.scale.toFixed(2));ult='';pinta()})}setInterval(pinta,500);
+  const pr=()=>{document.body.appendChild(pn);pinta()};document.body?pr():addEventListener('DOMContentLoaded',pr)}
 
 function MiniMapa(fig,cfg){
   const S={fig,cfg,pts:[],ordem:[],aberto:-1,alvo:null};
