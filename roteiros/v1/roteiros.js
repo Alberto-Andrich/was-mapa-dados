@@ -15,6 +15,9 @@ const LAY = {}; D.layers.forEach(l => LAY[l.k] = l);
 const REL = u => (u||'').replace('https://was-mirror.webflow.io','').replace('https://www.worldadventuresociety.org','');
 D.pts.forEach(p => { if(p.g) p.g = REL(p.g); if(p.pf) p.pf[1] = REL(p.pf[1]); });
 D.rotas.forEach(r => { r.link = REL(r.link); });
+const BASE = (()=>{ const s=[...document.scripts].map(x=>x.src).find(u=>/\/roteiros\.js(\?|$)/.test(u)); return s? s.replace(/roteiros\.js.*$/,'') : ''; })();
+const ABS = u => (!u || /^https?:/.test(u)) ? u : (BASE ? BASE+u : '');
+D.pts.forEach(p => { if(p.ft) p.ft = ABS(p.ft); });
 const PT = {}; D.pts.forEach((p,i) => { p.i = i; PT[p.l+'|'+p.n] = p; });
 const LOGO = 'https://cdn.prod.website-files.com/5c8fb586e1e6032286bcf1ef/5d1fe4f5946d402d7b64eafc_logo%20WAS%20WEBCLIP%20WEBFLOW.png';
 const SITE = 'https://was-mirror.webflow.io';
@@ -350,7 +353,8 @@ const MODELOS = [
   {id:'sval',nome:'Nos passos de Amundsen: Ártico norueguês',tipos:['cinema','expedicao'],quem:'grupo',pessoas:3,mes:6,intencao:'Documentário curto sobre o gelo que recua, filmado sob o sol da meia-noite, de Tromsø a Svalbard.',
     par:[['livre','Oslo',10.75,59.91,1,'Noruega'],['BA','Fiordes de Tromsø',2],['P','Svalbard',6]],t:'Cinematográfica · sol da meia-noite'},
   {id:'cerrado',nome:'Brasil Central de 4x4',tipos:['aventura','cultural'],quem:'grupo',pessoas:4,mes:7,intencao:'Rodar o Cerrado na seca: fervedouros do Jalapão, cânions da Chapada dos Veadeiros e as cavernas de Terra Ronca.',
-    par:[['livre','Brasília',-47.88,-15.79,0,'Brasil'],['PQ','Parque Nacional da Chapada dos Veadeiros',3],['AT','Terra Ronca',2],['O','Jalapão',4]],t:'Aventura · off-road e cavernas'},
+    par:[['livre','Brasília',-47.88,-15.79,0,'Brasil'],['PQ','Parque Nacional da Chapada dos Veadeiros',3],['AT','Terra Ronca',2],['O','Jalapão',4]],t:'Aventura · off-road e cavernas',
+    ft:'fotos/brasil-central-saltos-rio-preto.jpg',fa:'Marcelo Camargo/Agência Brasil',fl:'CC BY 3.0 BR',fn:'Saltos do Rio Preto, Chapada dos Veadeiros'},
   {id:'pat',nome:'Patagônia: Torres e Fitz Roy',tipos:['aventura','esportiva','fotografica'],quem:'dupla',pessoas:2,mes:2,intencao:'Fazer o W de Torres del Paine e caminhar até a Laguna de los Tres, de frente para o Fitz Roy.',
     par:[['livre','Punta Arenas',-70.91,-53.16,0,'Chile'],['TK','Circuito W de Torres del Paine',5],['PQ','Parque Nacional Los Glaciares',2],['CU','Monte Fitz Roy (Chaltén)',3]],t:'Trekking · Patagônia'}
 ];
@@ -365,7 +369,7 @@ function criarModelo(m){
   if(m.id==='sval') t.drone=true;
   return t;
 }
-function fotoModelo(m){ for(const sp of m.par){ const r=PT[sp[0]+'|'+sp[1]]; if(r&&r.ft) return r.ft; } return ''; }
+function fotoModelo(m){ if(m.ft) return {ft:ABS(m.ft),fa:m.fa,fl:m.fl}; for(const sp of m.par){ const r=PT[sp[0]+'|'+sp[1]]; if(r&&r.ft) return r; } return {ft:'',fa:'',fl:''}; }
 const CORR={RM:'#5ec8ff',RT:'#ffcf6b',RA:'#ff8fb1',RH:'#e0a96d'};
 
 function renderHome(){
@@ -388,7 +392,7 @@ function renderHome(){
       <button class="btn peq" data-act="abrir" data-id="${r.id}">Abrir</button><button class="ico-btn" data-act="apagar" data-id="${r.id}" title="Apagar este roteiro" aria-label="Apagar">${svg('lixo')}</button></div>`).join('')}</div></section>`:''}
     <section class="bloco-sec" id="sec-mod"><div class="cab">${qd('livro',1)}<h2>Modelos para adaptar</h2></div>
       <p class="intro">Cada modelo já vem com lugares, dias, trajeto e época. Tudo pode ser mudado.</p>
-      <div class="grade-mod">${MODELOS.map(m=>`<button class="mod" data-act="modelo" data-id="${m.id}"><div class="ft" style="background-image:url('${esc(fotoModelo(m))}')"></div><div class="cx"><span class="kick">${esc(m.t)}</span><h3>${esc(m.nome)}</h3><p>${esc(m.intencao)}</p><div class="tags">${m.tipos.map(t=>`<span class="tag">${TIPO_N[t]}</span>`).join('')}</div></div></button>`).join('')}</div></section>
+      <div class="grade-mod">${MODELOS.map(m=>{ const f=fotoModelo(m); return `<button class="mod" data-act="modelo" data-id="${m.id}"><div class="ft" style="background-image:url('${esc(f.ft)}')"></div><div class="cx"><span class="kick">${esc(m.t)}</span><h3>${esc(m.nome)}</h3><p>${esc(m.intencao)}</p><div class="tags">${m.tipos.map(t=>`<span class="tag">${TIPO_N[t]}</span>`).join('')}</div>${f.ft&&f.fa?`<span class="cr">Foto: ${esc(f.fa)} · ${esc(f.fl)}</span>`:''}</div></button>`; }).join('')}</div></section>
     <section class="bloco-sec" id="sec-rot"><div class="cab">${qd('rota',1)}<h2>Nos passos de um explorador</h2></div>
       <p class="intro">As ${D.rotas.length} rotas do Mapa da aventura. Ao escolher uma, o construtor cria um roteiro com o início e o fim da rota e com os lugares do mapa que ficam perto do caminho.</p>
       <div class="lista-rotas">${D.rotas.map(r=>`<button class="rota-c" data-act="rota" data-id="${r.id}"><span><i class="pt" style="background:${CORR[r.c]}"></i>${esc(D.cats[r.c])} · ${esc(r.per)}</span><b>${esc(r.n)}</b><span>${esc(r.quem)}</span></button>`).join('')}</div></section>

@@ -38,3 +38,5 @@
 #wasrot .toast{z-index:3000}
 #wasrot .leaflet-container img{max-width:none!important}
 #wasrot .leaflet-pane,#wasrot .leaflet-control{z-index:auto}
+
+#wasrot .mod .cr{margin-top:auto;padding-top:6px;font-size:11px;line-height:1.3;color:var(--sec);opacity:.75}
