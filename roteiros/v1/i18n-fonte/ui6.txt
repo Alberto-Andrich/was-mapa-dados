@@ -1,0 +1,267 @@
+PT:const fmt={h265:['4K H.265 (100 Mb/s)',.75],prores:['4K ProRes 422 HQ',5.3],raw:['Fotos RAW (por 100 fotos)',5],h264:['HD H.264 (50 Mb/s)',.37]};
+EN:const fmt={h265:['4K H.265 (100 Mb/s)',.75],prores:['4K ProRes 422 HQ',5.3],raw:['RAW photos (per 100 photos)',5],h264:['HD H.264 (50 Mb/s)',.37]};
+ES:const fmt={h265:['4K H.265 (100 Mb/s)',.75],prores:['4K ProRes 422 HQ',5.3],raw:['Fotos RAW (cada 100 fotos)',5],h264:['HD H.264 (50 Mb/s)',.37]};
+@@
+PT:const sug={VU:['Lava ou fumarola na hora azul','Silhueta da cratera com estrelas'],BA:['Salto da baleia com teleobjetiva','Cauda na luz lateral da manhã'],FA:['Retrato com olhar na altura dos olhos do animal','Comportamento: alimentação, filhotes, interação'],CU:['Montanha na primeira luz (alpenglow)','Escala humana: cordada na aresta'],TK:['Trilha serpenteando com pessoa pequena no quadro','Acampamento iluminado à noite'],ME:['Silhueta contra a superfície','Macro em recife'],P:['Gelo com sol baixo','Navio ou barraca para dar escala'],NF:['Proa do navio com mergulhador para escala'],PQ:['Paisagem assinatura do parque na hora dourada'],AT:['Ação em velocidade alta e ângulo baixo'],O:['Veículo levantando poeira contra o sol'],L:['Marco da trilha'],X:['Horizonte vazio e o barco ou nadador'],B2:['Estrada vista do alto com o ciclista'],E2:['Lugar histórico com detalhe que conte a história']};
+EN:const sug={VU:['Lava or fumarole at blue hour','Crater silhouette with stars'],BA:['Whale breach with a telephoto','Tail fluke in side light in the morning'],FA:['Portrait at the animal’s eye level','Behavior: feeding, young, interaction'],CU:['Mountain in first light (alpenglow)','Human scale: rope team on the ridge'],TK:['Winding trail with a small figure in the frame','Camp lit up at night'],ME:['Silhouette against the surface','Reef macro'],P:['Ice with a low sun','Ship or tent for scale'],NF:['Ship’s bow with a diver for scale'],PQ:['The park’s signature landscape at golden hour'],AT:['Action at high speed and low angle'],O:['Vehicle raising dust against the sun'],L:['Trail landmark'],X:['Empty horizon and the boat or swimmer'],B2:['Road seen from above with the cyclist'],E2:['Historic place with a detail that tells the story']};
+ES:const sug={VU:['Lava o fumarola en la hora azul','Silueta del cráter con estrellas'],BA:['Salto de la ballena con teleobjetivo','Cola con luz lateral de la mañana'],FA:['Retrato a la altura de los ojos del animal','Comportamiento: alimentación, crías, interacción'],CU:['Montaña con la primera luz (alpenglow)','Escala humana: cordada en la arista'],TK:['Sendero serpenteante con una persona pequeña en el cuadro','Campamento iluminado de noche'],ME:['Silueta contra la superficie','Macro en el arrecife'],P:['Hielo con sol bajo','Barco o carpa para dar escala'],NF:['Proa del barco con buzo para dar escala'],PQ:['El paisaje emblemático del parque en la hora dorada'],AT:['Acción a alta velocidad y ángulo bajo'],O:['Vehículo levantando polvo contra el sol'],L:['Hito del sendero'],X:['Horizonte vacío y el barco o nadador'],B2:['Camino visto desde arriba con el ciclista'],E2:['Lugar histórico con un detalle que cuente la historia']};
+@@
+PT:'<div class="perg">Esta etapa é opcional para o seu tipo de jornada. Ela aparece completa em roteiros fotográficos e cinematográficos.</div>'
+EN:'<div class="perg">This step is optional for your type of journey. It appears in full for photography and filmmaking journeys.</div>'
+ES:'<div class="perg">Esta etapa es opcional para tu tipo de jornada. Aparece completa en rutas fotográficas y cinematográficas.</div>'
+@@
+PT:luz=lz.polar==='dia'?'Sol da meia-noite: luz baixa e dourada perto da meia-noite solar.':'Noite polar: luz azul do crepúsculo ao meio-dia e chance de aurora.';
+EN:luz=lz.polar==='dia'?'Midnight sun: low, golden light around solar midnight.':'Polar night: blue twilight light at midday and a chance of aurora.';
+ES:luz=lz.polar==='dia'?'Sol de medianoche: luz baja y dorada cerca de la medianoche solar.':'Noche polar: luz azul del crepúsculo al mediodía y chance de aurora.';
+@@
+PT:luz=`Hora azul da manhã ${c2?horaSolar(c2[0],p.x):'—'} a ${horaSolar(s.nascer[0],p.x)} · hora dourada até ${g?horaSolar(g[0],p.x):'—'} · dourada da tarde a partir de ${g?horaSolar(g[1],p.x):'—'} · pôr do sol ${horaSolar(s.nascer[1],p.x)}`;
+EN:luz=`Morning blue hour ${c2?horaSolar(c2[0],p.x):'—'} to ${horaSolar(s.nascer[0],p.x)} · golden hour until ${g?horaSolar(g[0],p.x):'—'} · evening golden hour from ${g?horaSolar(g[1],p.x):'—'} · sunset ${horaSolar(s.nascer[1],p.x)}`;
+ES:luz=`Hora azul de la mañana ${c2?horaSolar(c2[0],p.x):'—'} a ${horaSolar(s.nascer[0],p.x)} · hora dorada hasta ${g?horaSolar(g[0],p.x):'—'} · dorada de la tarde desde ${g?horaSolar(g[1],p.x):'—'} · atardecer ${horaSolar(s.nascer[1],p.x)}`;
+@@
+PT:<p class="cap">Lua ${Math.round(l.il*100)}% iluminada${l.il<.25?' · noite boa para estrelas':''}</p>
+EN:<p class="cap">Moon ${Math.round(l.il*100)}% illuminated${l.il<.25?' · a good night for stars':''}</p>
+ES:<p class="cap">Luna ${Math.round(l.il*100)}% iluminada${l.il<.25?' · buena noche para estrellas':''}</p>
+@@
+PT:placeholder="Nova cena ou foto desejada"
+EN:placeholder="New scene or shot you want"
+ES:placeholder="Nueva escena o foto deseada"
+@@
+PT:${svg('mais')}Acrescentar</button></div></div>`; }).join('')}
+EN:${svg('mais')}Add</button></div></div>`; }).join('')}
+ES:${svg('mais')}Agregar</button></div></div>`; }).join('')}
+@@
+PT:<h3>Armazenamento e backup</h3>
+EN:<h3>Storage and backup</h3>
+ES:<h3>Almacenamiento y respaldo</h3>
+@@
+PT:<label class="f">Formato principal<select
+EN:<label class="f">Main format<select
+ES:<label class="f">Formato principal<select
+@@
+PT:<label class="f">Câmeras gravando<input
+EN:<label class="f">Cameras recording<input
+ES:<label class="f">Cámaras grabando<input
+@@
+PT:${c.fmt==='raw'?'Centenas de fotos por dia':'Horas gravadas por dia'}
+EN:${c.fmt==='raw'?'Hundreds of photos per day':'Hours recorded per day'}
+ES:${c.fmt==='raw'?'Cientos de fotos por día':'Horas grabadas por día'}
+@@
+PT:<span class="sec">${diasF} dias de captação · ${fmtN(gbDia)} GB por dia</span>
+EN:<span class="sec">${diasF} shooting days · ${fmtN(gbDia)} GB per day</span>
+ES:<span class="sec">${diasF} días de captura · ${fmtN(gbDia)} GB por día</span>
+@@
+PT:TB com backup 3-2-1 (três cópias)</span>
+EN:TB with 3-2-1 backup (three copies)</span>
+ES:TB con respaldo 3-2-1 (tres copias)</span>
+@@
+PT:<h3>Autorizações de imagem</h3><div class="ck">${[['im:ces','Termos de cessão de imagem para pessoas identificáveis'],['im:com','Acordo com comunidades tradicionais e indígenas antes de fotografar ou filmar'],['im:loc','Autorização de locações e de áreas protegidas'],['im:dr','Drone registrado e voo autorizado em cada local']]
+EN:<h3>Image permissions</h3><div class="ck">${[['im:ces','Image releases for identifiable people'],['im:com','Agreement with traditional and Indigenous communities before photographing or filming'],['im:loc','Location and protected-area permissions'],['im:dr','Drone registered and flights authorized at each location']]
+ES:<h3>Autorizaciones de imagen</h3><div class="ck">${[['im:ces','Cesiones de imagen para personas identificables'],['im:com','Acuerdo con comunidades tradicionales e indígenas antes de fotografiar o filmar'],['im:loc','Autorización de locaciones y de áreas protegidas'],['im:dr','Dron registrado y vuelo autorizado en cada lugar']]
+@@
+PT:regras.push(['Baleias','Respeite a distância mínima da lei local. No Brasil, embarcações devem ficar a pelo menos 100 m das baleias (Portaria Ibama 117/1996), com motor em neutro perto delas.']);
+EN:regras.push(['Whales','Respect the minimum distance set by local law. In Brazil, boats must stay at least 100 m from whales (Ibama Ordinance 117/1996), with the engine in neutral near them.']);
+ES:regras.push(['Ballenas','Respeta la distancia mínima de la ley local. En Brasil, las embarcaciones deben quedarse al menos a 100 m de las ballenas (Portaria Ibama 117/1996), con el motor en neutro cerca de ellas.']);
+@@
+PT:regras.push(['Fauna','Não alimente, não chame e não cerque animais. Com primatas, use máscara e mantenha distância: eles pegam nossas doenças.']);
+EN:regras.push(['Wildlife','Do not feed, call or surround animals. With primates, wear a mask and keep your distance: they catch our diseases.']);
+ES:regras.push(['Fauna','No alimentes, no llames y no rodees a los animales. Con primates, usa barbijo y mantén la distancia: se contagian nuestras enfermedades.']);
+@@
+PT:regras.push(['Recifes e naufrágios','Controle de flutuação, nada de tocar em coral, protetor solar seguro para recifes e nada retirado de naufrágios.']);
+EN:regras.push(['Reefs and wrecks','Buoyancy control, no touching coral, reef-safe sunscreen and nothing taken from wrecks.']);
+ES:regras.push(['Arrecifes y naufragios','Control de flotabilidad, nada de tocar el coral, protector solar seguro para arrecifes y nada retirado de los naufragios.']);
+@@
+PT:regras.push(['Polos','Siga as diretrizes da IAATO: 5 m dos pinguins, botas lavadas entre desembarques, nenhum resíduo em terra.']);
+EN:regras.push(['Polar regions','Follow IAATO guidelines: 5 m from penguins, boots washed between landings, no waste left ashore.']);
+ES:regras.push(['Polos','Sigue las pautas de IAATO: 5 m de los pingüinos, botas lavadas entre desembarcos, ningún residuo en tierra.']);
+@@
+PT:regras.push(['Montanha e trilha','Leve de volta todo o lixo, inclusive o orgânico e o papel higiênico. Fique na trilha e use banheiros secos onde houver.']);
+EN:regras.push(['Mountain and trail','Pack out all waste, including food scraps and toilet paper. Stay on the trail and use dry toilets where available.']);
+ES:regras.push(['Montaña y sendero','Lleva de vuelta toda la basura, incluso la orgánica y el papel higiénico. Quédate en el sendero y usa baños secos donde haya.']);
+@@
+PT:regras.push(['Comunidades','Peça licença antes de fotografar pessoas, contrate guias e serviços locais e respeite os lugares sagrados.']);
+EN:regras.push(['Communities','Ask permission before photographing people, hire local guides and services, and respect sacred places.']);
+ES:regras.push(['Comunidades','Pide permiso antes de fotografiar a las personas, contrata guías y servicios locales y respeta los lugares sagrados.']);
+@@
+PT:<h3>Pegada de carbono dos trajetos <span class="sim">fatores aproximados</span></h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Trecho</th><th>Como</th><th class="n">Distância</th><th class="n">CO₂ por pessoa</th></tr></thead>
+EN:<h3>Carbon footprint of the routes <span class="sim">approximate factors</span></h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Leg</th><th>How</th><th class="n">Distance</th><th class="n">CO₂ per person</th></tr></thead>
+ES:<h3>Huella de carbono de los trayectos <span class="sim">factores aproximados</span></h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Tramo</th><th>Cómo</th><th class="n">Distancia</th><th class="n">CO₂ por persona</th></tr></thead>
+@@
+PT:'<tr><td colspan="4">Sem trajetos ainda.</td></tr>'
+EN:'<tr><td colspan="4">No routes yet.</td></tr>'
+ES:'<tr><td colspan="4">Todavía no hay trayectos.</td></tr>'
+@@
+PT:<span class="sec">Total por pessoa</span>
+EN:<span class="sec">Total per person</span>
+ES:<span class="sec">Total por persona</span>
+@@
+PT:t para o grupo</span>
+EN:t for the group</span>
+ES:t para el grupo</span>
+@@
+PT:<p class="ajuda">Para reduzir: menos voos curtos, trem ou ônibus quando der, mais dias em cada lugar. Para compensar, a WAS poderia indicar projetos de restauração ligados aos lugares do mapa.</p>
+EN:<p class="ajuda">To reduce it: fewer short flights, train or bus when possible, more days at each place. To offset it, WAS could recommend restoration projects linked to places on the map.</p>
+ES:<p class="ajuda">Para reducir: menos vuelos cortos, tren o autobús cuando se pueda, más días en cada lugar. Para compensar, la WAS podría indicar proyectos de restauración ligados a los lugares del mapa.</p>
+@@
+PT:<h3>Conduta nos lugares do seu roteiro</h3>
+EN:<h3>Conduct at the places on your journey</h3>
+ES:<h3>Conducta en los lugares de tu ruta</h3>
+@@
+PT:<h3>Princípios de mínimo impacto</h3><div class="tl">${['Planeje e se prepare','Ande e acampe em superfícies resistentes','Leve seu lixo de volta','Deixe o que encontrar','Minimize o impacto de fogueiras','Respeite a vida selvagem','Seja cortês com outros visitantes']
+EN:<h3>Minimum-impact principles</h3><div class="tl">${['Plan ahead and prepare','Travel and camp on durable surfaces','Dispose of waste properly','Leave what you find','Minimize campfire impacts','Respect wildlife','Be considerate of other visitors']
+ES:<h3>Principios de mínimo impacto</h3><div class="tl">${['Planifica y prepárate','Camina y acampa en superficies resistentes','Lleva tu basura de vuelta','Deja lo que encuentres','Minimiza el impacto de las fogatas','Respeta la vida silvestre','Sé considerado con otros visitantes']
+@@
+PT:<p class="cap">Baseado nos sete princípios do Leave No Trace.</p>
+EN:<p class="cap">Based on the seven Leave No Trace principles.</p>
+ES:<p class="cap">Basado en los siete principios de Leave No Trace.</p>
+@@
+PT:<span class="tx">Assumo o compromisso de conduta WAS para esta jornada</span>
+EN:<span class="tx">I take the WAS conduct pledge for this journey</span>
+ES:<span class="tx">Asumo el compromiso de conducta WAS para esta jornada</span>
+@@
+PT:<b>Imprimir ou salvar em PDF</b><span>Dossiê completo do roteiro</span>
+EN:<b>Print or save as PDF</b><span>Full journey dossier</span>
+ES:<b>Imprimir o guardar en PDF</b><span>Dosier completo de la ruta</span>
+@@
+PT:<b>Baixar GPX</b><span>Lugares e trajeto para GPS e apps de mapa</span>
+EN:<b>Download GPX</b><span>Places and route for GPS devices and map apps</span>
+ES:<b>Descargar GPX</b><span>Lugares y trayecto para GPS y apps de mapas</span>
+@@
+PT:<b>Baixar calendário</b><span>Dia a dia na sua agenda (.ics)</span>
+EN:<b>Download calendar</b><span>Day by day in your calendar (.ics)</span>
+ES:<b>Descargar calendario</b><span>Día a día en tu agenda (.ics)</span>
+@@
+PT:<b>Copiar link do roteiro</b><span>Quem abrir recebe uma cópia</span>
+EN:<b>Copy journey link</b><span>Whoever opens it gets a copy</span>
+ES:<b>Copiar enlace de la ruta</b><span>Quien lo abra recibe una copia</span>
+@@
+PT:<b>Baixar arquivo do roteiro</b><span>Para guardar ou importar depois</span>
+EN:<b>Download journey file</b><span>To keep or import later</span>
+ES:<b>Descargar archivo de la ruta</b><span>Para guardar o importar después</span>
+@@
+PT:<b>Enviar à WAS <span class="apoio">apoiador</span></b><span>Pedir revisão de um especialista (simulado)</span>
+EN:<b>Send to WAS <span class="apoio">supporter</span></b><span>Ask an expert for a review (simulated)</span>
+ES:<b>Enviar a la WAS <span class="apoio">apoyador</span></b><span>Pedir la revisión de un especialista (simulado)</span>
+@@
+PT:<tr><td>Datas</td><td>${pl.length?fmtDL(pl[0].dt)+' a '+fmtDL(pl[pl.length-1].dt)+' · '+pl.length+' dias':'—'}</td></tr>
+EN:<tr><td>Dates</td><td>${pl.length?fmtDL(pl[0].dt)+' to '+fmtDL(pl[pl.length-1].dt)+' · '+pl.length+' days':'—'}</td></tr>
+ES:<tr><td>Fechas</td><td>${pl.length?fmtDL(pl[0].dt)+' al '+fmtDL(pl[pl.length-1].dt)+' · '+pl.length+' días':'—'}</td></tr>
+@@
+PT:<tr><td>Grupo</td><td>${T.pessoas} pessoa${T.pessoas>1?'s':''} · ${({solo:'sozinho',dupla:'em dupla',grupo:'em grupo',familia:'em família',equipe:'equipe de produção'})[T.quem]} · ritmo ${({tranquilo:'tranquilo',moderado:'moderado',intenso:'intenso'})[T.ritmo]||T.ritmo}</td></tr>
+EN:<tr><td>Group</td><td>${T.pessoas} ${T.pessoas>1?'people':'person'} · ${({solo:'solo',dupla:'as a pair',grupo:'in a group',familia:'as a family',equipe:'production crew'})[T.quem]} · ${({tranquilo:'relaxed',moderado:'moderate',intenso:'intense'})[T.ritmo]||T.ritmo} pace</td></tr>
+ES:<tr><td>Grupo</td><td>${T.pessoas} persona${T.pessoas>1?'s':''} · ${({solo:'solo',dupla:'en pareja',grupo:'en grupo',familia:'en familia',equipe:'equipo de producción'})[T.quem]} · ritmo ${({tranquilo:'tranquilo',moderado:'moderado',intenso:'intenso'})[T.ritmo]||T.ritmo}</td></tr>
+@@
+PT:<tr><td>Nível</td>
+EN:<tr><td>Level</td>
+ES:<tr><td>Nivel</td>
+@@
+PT:<tr><td>Lugares</td>
+EN:<tr><td>Places</td>
+ES:<tr><td>Lugares</td>
+@@
+PT:<tr><td>Orçamento</td><td>${fmtR(o.total)} (${fmtR(o.total/o.pes)} por pessoa) <span class="sim">simulado</span></td></tr>
+EN:<tr><td>Budget</td><td>${fmtR(o.total)} (${fmtR(o.total/o.pes)} per person) <span class="sim">simulated</span></td></tr>
+ES:<tr><td>Presupuesto</td><td>${fmtR(o.total)} (${fmtR(o.total/o.pes)} por persona) <span class="sim">simulado</span></td></tr>
+@@
+PT:<tr><td>Prontidão</td><td>${st.pct}% · ${st.docF} de ${st.docs.length} documentos em ordem · ${st.eqF} de ${st.eqT} itens de equipamento</td></tr>
+EN:<tr><td>Readiness</td><td>${st.pct}% · ${st.docF} of ${st.docs.length} documents in order · ${st.eqF} of ${st.eqT} gear items</td></tr>
+ES:<tr><td>Preparación</td><td>${st.pct}% · ${st.docF} de ${st.docs.length} documentos en regla · ${st.eqF} de ${st.eqT} ítems de equipo</td></tr>
+@@
+PT:<tr><td>Emergência</td><td>${T.contatos.map(c=>esc(c.n)+' '+esc(c.tel)).join(' · ')||'<span class="st-warn">não definido</span>'}
+EN:<tr><td>Emergency</td><td>${T.contatos.map(c=>esc(c.n)+' '+esc(c.tel)).join(' · ')||'<span class="st-warn">not set</span>'}
+ES:<tr><td>Emergencia</td><td>${T.contatos.map(c=>esc(c.n)+' '+esc(c.tel)).join(' · ')||'<span class="st-warn">sin definir</span>'}
+@@
+PT:<h3>Dia a dia</h3>
+EN:<h3>Day by day</h3>
+ES:<h3>Día a día</h3>
+@@
+PT:<td style="white-space:nowrap">Dia ${i+1}<br>
+EN:<td style="white-space:nowrap">Day ${i+1}<br>
+ES:<td style="white-space:nowrap">Día ${i+1}<br>
+@@
+PT:<h3>Documentos e licenças</h3>
+EN:<h3>Documents and permits</h3>
+ES:<h3>Documentos y permisos</h3>
+@@
+PT:({fazer:'A fazer',pedido:'Aguardando',ok:'Em ordem',na:'Não se aplica'})[s]
+EN:({fazer:'To do',pedido:'Waiting',ok:'In order',na:'Not applicable'})[s]
+ES:({fazer:'Por hacer',pedido:'En espera',ok:'En regla',na:'No corresponde'})[s]
+@@
+PT:<h3>Recursos para apoiadores <span class="sim">proposta</span></h3><p class="sec">Ideias para ligar o construtor ao modelo de apoiadores da WAS. Nada disso funciona ainda.</p>
+EN:<h3>Supporter features <span class="sim">proposal</span></h3><p class="sec">Ideas to connect the planner to the WAS supporter model. None of this works yet.</p>
+ES:<h3>Recursos para apoyadores <span class="sim">propuesta</span></h3><p class="sec">Ideas para conectar el planificador con el modelo de apoyadores de la WAS. Nada de esto funciona todavía.</p>
+@@
+PT:${['Revisão do roteiro por um especialista ou associado da WAS','Dossiê em PDF com a marca da WAS e mapas em alta resolução','Mapas offline e alertas de época e clima por e-mail','Publicar o relato da expedição no site da WAS, com fotos e trajeto, e virar associado pela atuação']
+EN:${['Journey review by a WAS expert or member','PDF dossier with WAS branding and high-resolution maps','Offline maps and season and weather alerts by email','Publish the expedition report on the WAS website, with photos and route, and become a member through your work']
+ES:${['Revisión de la ruta por un especialista o asociado de la WAS','Dosier en PDF con la marca de la WAS y mapas en alta resolución','Mapas sin conexión y alertas de época y clima por correo','Publicar el relato de la expedición en el sitio de la WAS, con fotos y trayecto, y volverse asociado por la actuación']
+@@
+PT:set.set(r.pf[1],{t:r.pf[0],s:'Explorador ligado a '+r.n,u:r.pf[1]}); if(r&&r.g) set.set(r.g,{t:'Guia: '+r.n,s:'Página completa do destino na WAS',u:r.g});
+EN:set.set(r.pf[1],{t:r.pf[0],s:'Explorer linked to '+r.n,u:r.pf[1]}); if(r&&r.g) set.set(r.g,{t:'Guide: '+r.n,s:'Full destination page on WAS',u:r.g});
+ES:set.set(r.pf[1],{t:r.pf[0],s:'Explorador ligado a '+r.n,u:r.pf[1]}); if(r&&r.g) set.set(r.g,{t:'Guía: '+r.n,s:'Página completa del destino en la WAS',u:r.g});
+@@
+PT:<h3>Para se inspirar na WAS</h3><p class="sec">Exploradores, rotas históricas e guias de destino que passam pelos lugares do seu roteiro.</p>
+EN:<h3>Get inspired on WAS</h3><p class="sec">Explorers, historic routes and destination guides connected to the places on your journey.</p>
+ES:<h3>Para inspirarte en la WAS</h3><p class="sec">Exploradores, rutas históricas y guías de destino que pasan por los lugares de tu ruta.</p>
+@@
+PT:creator="Roteiros WAS (protótipo)"
+EN:creator="WAS Journeys (prototype)"
+ES:creator="Rutas WAS (prototipo)"
+@@
+PT:SUMMARY:${e('Dia '+(i+1)+': '+d.t)}
+EN:SUMMARY:${e('Day '+(i+1)+': '+d.t)}
+ES:SUMMARY:${e('Día '+(i+1)+': '+d.t)}
+@@
+PT:const ok=()=>toast('Link copiado. Quem abrir recebe uma cópia deste roteiro.');
+EN:const ok=()=>toast('Link copied. Whoever opens it gets a copy of this journey.');
+ES:const ok=()=>toast('Enlace copiado. Quien lo abra recibe una copia de esta ruta.');
+@@
+PT:toast('Link copiado.');}catch(e){toast('Não foi possível copiar.');}
+EN:toast('Link copied.');}catch(e){toast('Could not copy.');}
+ES:toast('Enlace copiado.');}catch(e){toast('No se pudo copiar.');}
+@@
+PT:abrir(novo({nome:'Roteiro a partir do mapa'}),'mapa');
+EN:abrir(novo({nome:'Journey from the map'}),'mapa');
+ES:abrir(novo({nome:'Ruta desde el mapa'}),'mapa');
+@@
+PT:toast('Modelo copiado para os seus roteiros. Mude o que quiser.');
+EN:toast('Template copied to your journeys. Change whatever you like.');
+ES:toast('Modelo copiado a tus rutas. Cambia lo que quieras.');
+@@
+PT:toast('Roteiro criado com os lugares do mapa perto da rota.');
+EN:toast('Journey created with the map places near the route.');
+ES:toast('Ruta creada con los lugares del mapa cerca del recorrido.');
+@@
+PT:b.title='Clique de novo para apagar “'+(r?r.nome:'')+'”'; toast('Clique de novo na lixeira para apagar “'+(r?r.nome:'')+'”.');
+EN:b.title='Click again to delete “'+(r?r.nome:'')+'”'; toast('Click the bin again to delete “'+(r?r.nome:'')+'”.');
+ES:b.title='Haz clic de nuevo para borrar “'+(r?r.nome:'')+'”'; toast('Haz clic de nuevo en la papelera para borrar “'+(r?r.nome:'')+'”.');
+@@
+PT:toast('Roteiro apagado.');
+EN:toast('Journey deleted.');
+ES:toast('Ruta borrada.');
+@@
+PT:toast('Clique no mapa onde quer o ponto.');
+EN:toast('Click on the map where you want the point.');
+ES:toast('Haz clic en el mapa donde quieres el punto.');
+@@
+PT:toast(p.n+' entrou no roteiro.');
+EN:toast(p.n+' added to the journey.');
+ES:toast(p.n+' entró en la ruta.');
+@@
+PT:toast('Simulação: no produto final o roteiro iria para a curadoria da WAS.');
+EN:toast('Simulation: in the final product, the journey would go to WAS curators.');
+ES:toast('Simulación: en el producto final, la ruta iría a la curaduría de la WAS.');
+@@
+PT:'<span class="opc">opcional</span>');
+EN:'<span class="opc">optional</span>');
+ES:'<span class="opc">opcional</span>');
+@@
+PT:'<div style="padding:10px 12px;color:var(--sec)">Nada encontrado.</div>'
+EN:'<div style="padding:10px 12px;color:var(--sec)">Nothing found.</div>'
+ES:'<div style="padding:10px 12px;color:var(--sec)">No se encontró nada.</div>'
+@@
+PT:t.nome=(t.nome||'Roteiro')+' (cópia)';
+EN:t.nome=(t.nome||'Journey')+' (copy)';
+ES:t.nome=(t.nome||'Ruta')+' (copia)';
+@@
+PT:toast('Roteiro recebido por link e guardado nos seus roteiros.');
+EN:toast('Journey received by link and saved to your journeys.');
+ES:toast('Ruta recibida por enlace y guardada en tus rutas.');

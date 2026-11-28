@@ -15,10 +15,13 @@ const LAY = {}; D.layers.forEach(l => LAY[l.k] = l);
 const REL = u => (u||'').replace('https://was-mirror.webflow.io','').replace('https://www.worldadventuresociety.org','');
 D.pts.forEach(p => { if(p.g) p.g = REL(p.g); if(p.pf) p.pf[1] = REL(p.pf[1]); });
 D.rotas.forEach(r => { r.link = REL(r.link); });
-const BASE = (()=>{ const s=[...document.scripts].map(x=>x.src).find(u=>/\/roteiros\.js(\?|$)/.test(u)); return s? s.replace(/roteiros\.js.*$/,'') : ''; })();
+const BASE = (()=>{ const s=[...document.scripts].map(x=>x.src).find(u=>/\/roteiros(-en|-es)?\.js(\?|$)/.test(u)); return s? s.replace(/roteiros(-en|-es)?\.js.*$/,'') : ''; })();
 const ABS = u => (!u || /^https?:/.test(u)) ? u : (BASE ? BASE+u : '');
 D.pts.forEach(p => { if(p.ft) p.ft = ABS(p.ft); });
-const PT = {}; D.pts.forEach((p,i) => { p.i = i; PT[p.l+'|'+p.n] = p; });
+const PT = {}; D.pts.forEach((p,i) => { p.i = i; PT[p.l+'|'+(p.k||p.n)] = p; });
+const PA = {}; D.pts.forEach(p => { if(p.pa0) PA[p.pa0]=p.pa; });
+const paT = s => (s||'').split(/(,\s*| e |\/)/).map(x=>PA[x]||x).join('');
+const refDe = r => r.l+'|'+(r.k||r.n);
 const LOGO = 'https://cdn.prod.website-files.com/5c8fb586e1e6032286bcf1ef/5d1fe4f5946d402d7b64eafc_logo%20WAS%20WEBCLIP%20WEBFLOW.png';
 const SITE = 'https://was-mirror.webflow.io';
 
@@ -116,9 +119,10 @@ function trecho(i){
 }
 function altDe(p){ const r = p.ref?PT[p.ref]:null; return r ? (r.alt||r.altmax||0) : (p.alt||0); }
 function pontoDe(p){ return p.ref ? PT[p.ref] : null; }
+function nk(p){ const r=pontoDe(p); return r ? (r.k||r.n) : p.n; }
 function paises(){
   const s=new Set();
-  T.paradas.forEach(p=>{ const r=pontoDe(p); const pa=(r?r.pa:p.pa)||''; pa.split(/,| e |\//).map(x=>x.trim()).filter(Boolean).forEach(x=>s.add(x)); });
+  T.paradas.forEach(p=>{ const r=pontoDe(p); const pa=(r?(r.pa0||r.pa):p.pa)||''; pa.split(/,| e |\//).map(x=>x.trim()).filter(Boolean).forEach(x=>s.add(x)); });
   return [...s];
 }
 function addDias(iso,n){ const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d; }
@@ -226,10 +230,10 @@ const AFR=['Uganda','Ruanda','Tanzânia','Quênia','Congo','RD Congo','Repúblic
 const SCHENGEN=['Itália','Espanha','França','Portugal','Suíça','Islândia','Noruega','Suécia','Finlândia','Grécia','Alemanha','Áustria','Croácia','Eslovênia','Polônia','Dinamarca','Holanda','Bélgica'];
 function documentos(){
   const ps=paises(), ext=ps.filter(p=>!/Brasil/.test(p)), L=[];
-  const nomes=T.paradas.map(p=>p.n).join(' | ');
+  const nomes=T.paradas.map(nk).join(' | ');
   const d=(k,t,p,onde,por)=>L.push({k,t,p,onde,por});
   if(ext.length){ const vol=addDias(T.inicio,plano().length+180); d('pass','Passaporte válido','Muitos países exigem validade mínima de 6 meses depois da data de saída. Seu retorno previsto pede validade até pelo menos '+fmtDL(vol)+'.','Polícia Federal (agendamento on-line)','Destinos fora do Brasil');
-    d('visto','Vistos e autorizações eletrônicas de entrada','Exigência para brasileiros em: '+ext.join(', ')+'. Conferir caso a caso, pois as regras mudam (vistos, eTA, ESTA, eVisa).','Portal consular do Itamaraty e sites oficiais de imigração','Destinos fora do Brasil'); }
+    d('visto','Vistos e autorizações eletrônicas de entrada','Exigência para brasileiros em: '+ext.map(paT).join(', ')+'. Conferir caso a caso, pois as regras mudam (vistos, eTA, ESTA, eVisa).','Portal consular do Itamaraty e sites oficiais de imigração','Destinos fora do Brasil'); }
   if(ps.some(p=>AFR.some(a=>p.includes(a)))||ps.includes('Brasil')) d('civp','Vacina de febre amarela e CIVP','O Certificado Internacional de Vacinação ou Profilaxia pode ser exigido na entrada de alguns países e é recomendado em várias regiões do Brasil.','Anvisa (emissão do CIVP) e posto de vacinação','Áreas de febre amarela');
   if(ext.some(p=>SCHENGEN.some(s=>p.includes(s)))) d('schengen','Seguro com cobertura Schengen','Para o espaço Schengen o seguro precisa cobrir ao menos 30 mil euros em despesas médicas.','Seguradora','Destino no espaço Schengen');
   if(T.paradas.some((p,i)=>i>0 && ['carro','x4'].includes(trecho(i).m)) && ext.length) d('pid','Permissão Internacional para Dirigir','Pedida no Detran do seu estado, junto com a CNH válida.','Detran','Trechos de carro fora do Brasil');
@@ -247,7 +251,7 @@ function documentos(){
     [/Galápagos/,'gal','Ingresso em Galápagos','Taxa de ingresso no parque e cartão de controle de trânsito, comprados antes do embarque no continente.','Governo do Equador / Parque Nacional Galápagos'],
     [/Fernando de Noronha/,'fn','Taxas de Fernando de Noronha','Taxa de Preservação Ambiental por dia e ingresso do Parque Nacional Marinho.','Administração do distrito e ICMBio']
   ];
-  esp.forEach(([re,k,t,p,o])=>{ if(re.test(nomes)) d(k,t,p,o,'Paradas: '+T.paradas.filter(x=>re.test(x.n)).map(x=>x.n).join(', ')); });
+  esp.forEach(([re,k,t,p,o])=>{ if(re.test(nomes)) d(k,t,p,o,'Paradas: '+T.paradas.filter(x=>re.test(nk(x))).map(x=>x.n).join(', ')); });
   if(temL('PQ')) d('parq','Ingressos e reservas dos parques','Parques mais disputados limitam vagas, camping e trilhas. Reserve o que tiver cota assim que as datas estiverem firmes.','Órgão gestor de cada parque','Parques no roteiro');
   if(tem('cultural')&&ps.includes('Brasil')) d('funai','Terras indígenas','Visitas a terras indígenas pedem consentimento da comunidade e autorização de ingresso da Funai. Imagens exigem acordo de uso com a comunidade.','Funai e a própria comunidade','Roteiro cultural no Brasil');
   if(tem('cinema')){ d('film','Autorizações de filmagem','Gravação para uso comercial em áreas protegidas costuma exigir licença e taxa. Em cidades, procure a film commission local.','ICMBio, órgãos de parques, film commissions','Roteiro cinematográfico');
@@ -260,7 +264,7 @@ function documentos(){
 }
 
 /* ---------- orçamento (simulado) ---------- */
-function regiao(p){ const r=pontoDe(p); const pa=(r?r.pa:p.pa)||''; const x=p.x,y=p.y;
+function regiao(p){ const r=pontoDe(p); const pa=(r?(r.pa0||r.pa):p.pa)||''; const x=p.x,y=p.y;
   if((r&&r.l==='P')||y<-60||y>75) return 'POL'; if(/Brasil/.test(pa)) return 'BR';
   if(x>-82&&x<-34&&y<13) return 'SA'; if(y>13&&x<-50) return 'NA'; if(y>35&&x>-25&&x<45) return 'EU';
   if(x>-20&&x<52&&y>-36&&y<37) return 'AF'; if(x>110&&y<-10) return 'OC'; return 'AS'; }
@@ -271,7 +275,7 @@ function orcamento(){
   let transp=0, hosp=0, alim=0, guia=0, taxas=0;
   T.paradas.forEach((p,i)=>{ if(i>0){ const t=trecho(i); const c={aviao:t.km*.75+500,carro:t.km*1.1/pes*1.2,x4:t.km*2.6/pes*1.5,onibus:t.km*.3,trem:t.km*.45,barco:t.km*1.5,navio:t.km*9,pe:0,bike:0,cavalo:t.dias*350,caiaque:t.dias*300}[t.m]||0; transp+=c; } });
   pl.forEach(d=>{ const p=d.p||T.paradas[0]; if(!p) return; const ix=IDX[regiao(p)]; hosp+=ix*.55; alim+=ix*.3; const r=pontoDe(p); if(r&&(r.d>=3||['FA','P','CU','ME','NF'].includes(r.l))&&d.p) guia+=900/pes; });
-  const nm=T.paradas.map(p=>p.n).join('|');
+  const nm=T.paradas.map(nk).join('|');
   if(/Bwindi|Gorilas no Parque/.test(nm)) taxas+=4800; if(/Kilimanjaro/.test(nm)) taxas+=5500; if(/Aconcágua/.test(nm)) taxas+=4200; if(/Everest|Lhotse/.test(nm)) taxas+=60000; if(/Galápagos/.test(nm)) taxas+=1100;
   taxas+=T.paradas.filter(p=>pontoDe(p)&&pontoDe(p).l==='PQ').length*150;
   const seguro=pl.length*(nivel()>=4?85:35);
@@ -360,7 +364,7 @@ const MODELOS = [
 ];
 function stopFrom(sp){
   if(sp[0]==='livre') return {id:uid(),ref:null,n:sp[1],x:sp[2],y:sp[3],dias:sp[4],pa:sp[5],livre:true};
-  const r=PT[sp[0]+'|'+sp[1]]; if(!r) return null; return {id:uid(),ref:r.l+'|'+r.n,n:r.n,x:r.x,y:r.y,dias:sp[2]||2,l:r.l};
+  const r=PT[sp[0]+'|'+sp[1]]; if(!r) return null; return {id:uid(),ref:refDe(r),n:r.n,x:r.x,y:r.y,dias:sp[2]||2,l:r.l};
 }
 function criarModelo(m){
   const ano=new Date().getFullYear(); const hoje=new Date(); let y=ano; if(m.mes-1<=hoje.getMonth()) y++;
@@ -410,7 +414,7 @@ function criarDeRota(id){
   const sel=[]; const usados=new Set(); perto.forEach(o=>{ if(sel.length<7 && !usados.has(o.p.n)){ usados.add(o.p.n); sel.push(o.p);} });
   const t=novo({nome:'Nos passos de: '+r.n,tipos:['expedicao','cultural'],intencao:'Refazer, do jeito possível hoje, trechos da rota "'+r.n+'" ('+r.quem+', '+r.per+').',rota:r.id,quem:'dupla',pessoas:2});
   t.paradas.push({id:uid(),ref:null,n:'Início da rota',x:ini.x,y:ini.y,dias:1,livre:true,pa:''});
-  sel.forEach(p=>t.paradas.push({id:uid(),ref:p.l+'|'+p.n,n:p.n,x:p.x,y:p.y,dias:2,l:p.l}));
+  sel.forEach(p=>t.paradas.push({id:uid(),ref:refDe(p),n:p.n,x:p.x,y:p.y,dias:2,l:p.l}));
   t.paradas.push({id:uid(),ref:null,n:'Fim da rota',x:fim.x,y:fim.y,dias:1,livre:true,pa:''});
   return t;
 }
@@ -532,7 +536,7 @@ function paradasHTML(){
       <span class="info">${fmtN(t.km)} km · ${t.M.hd? t.dias+' dia'+(t.dias>1?'s':'')+' de '+t.M.n.toLowerCase() : (t.h<1?'menos de 1 h':'cerca de '+fmtN(t.h)+' h')+(t.dias?' · '+t.dias+' dia'+(t.dias>1?'s':'')+' de viagem':'')}</span>
       ${ant&&ant.l==='ME'&&t.m==='aviao'?'<span class="alerta">Intervalo pós-mergulho incluído</span>':''}</div>`; }
     return tr+`<div class="parada"><div class="num${p.livre?' livre':''}">${i+1}</div>${r&&r.ft?`<div class="ft" style="background-image:url('${esc(r.ft)}')"></div>`:''}
-      <div class="inf"><b>${esc(p.n)}</b><span class="loc">${r?esc(LAY[r.l].nome)+' · '+esc(r.pa)+(r.alt?' · '+fmtN(r.alt)+' m':'')+' · '+esc(difLabel(p)):'Ponto livre'+(p.pa?' · '+esc(p.pa):'')}</span>
+      <div class="inf"><b>${esc(p.n)}</b><span class="loc">${r?esc(LAY[r.l].nome)+' · '+esc(r.pa)+(r.alt?' · '+fmtN(r.alt)+' m':'')+' · '+esc(difLabel(p)):'Ponto livre'+(p.pa?' · '+esc(paT(p.pa)):'')}</span>
       ${r&&r.g?`<div><a href="${esc(r.g)}" target="_blank" rel="noopener" class="cap">Guia do destino na WAS ↗</a></div>`:''}</div>
       <div class="ctl"><label class="dias" title="Dias neste lugar"><input type="number" min="0" max="60" value="${p.dias|0}" data-act="dias" data-id="${p.id}" aria-label="Dias em ${esc(p.n)}"></label><span class="cap">dias</span>
       <button class="ico-btn" data-act="sobe" data-id="${p.id}" aria-label="Subir"${i===0?' disabled':''}>${svg('cima')}</button><button class="ico-btn" data-act="desce" data-id="${p.id}" aria-label="Descer"${i===T.paradas.length-1?' disabled':''}>${svg('baixo')}</button>
@@ -570,7 +574,7 @@ function desenharTrajeto(fit){
   if(ll.length>1){ for(let i=1;i<ll.length;i++){ const t=trecho(i); L.polyline([ll[i-1],ll[i]],{color:t.m==='aviao'?'#ff8f8f':'#ff3b3b',weight:t.m==='aviao'?2:3,opacity:.95,dashArray:t.m==='aviao'?'6 7':(t.M.hd?'2 6':null)}).addTo(pinos); } }
   if(fit&&ll.length) mapa.fitBounds(L.latLngBounds(ll).pad(.25),{maxZoom:7});
 }
-function popHTML(p){ const L0=LAY[p.l]; const naRota=T.paradas.some(s=>s.ref===p.l+'|'+p.n);
+function popHTML(p){ const L0=LAY[p.l]; const naRota=T.paradas.some(s=>s.ref===refDe(p));
   return `<div class="pop">${p.ft?`<div class="ft" style="background-image:url('${esc(p.ft)}')"></div>`:''}<div class="cx">
     <span class="kick" style="color:${L0.cor}">${esc(L0.nome)}</span><h4>${esc(p.n)}</h4><div class="loc">${esc([p.r,p.pa].filter(Boolean).join(' · '))}${p.alt?' · '+fmtN(p.alt)+' m':''}</div>
     <div class="tags" style="margin-top:8px"><span class="tag">${esc((L0.dif&&L0.dif[p.d])||NIVEL_N[p.d])}</span>${p.dias?`<span class="tag">${esc(p.dias)}</span>`:''}${p.km?`<span class="tag">${esc(p.km)} km</span>`:''}${p.me&&p.me.length?`<span class="tag">Melhor: ${p.me.map(m=>MESES[m-1]).join(', ')}</span>`:''}</div>
@@ -749,7 +753,7 @@ R.revisar=()=>{
     <div class="card"><span class="kick">${T.tipos.map(t=>TIPO_N[t]).join(' · ')}</span><h2 style="margin:6px 0 10px">${esc(T.nome)}</h2>${T.intencao?`<p class="lead">${esc(T.intencao)}</p>`:''}
       <div class="tab-wrap"><table class="tab"><tbody>
       <tr><td>Datas</td><td>${pl.length?fmtDL(pl[0].dt)+' a '+fmtDL(pl[pl.length-1].dt)+' · '+pl.length+' dias':'—'}</td></tr>
-      <tr><td>Grupo</td><td>${T.pessoas} pessoa${T.pessoas>1?'s':''} · ${({solo:'sozinho',dupla:'em dupla',grupo:'em grupo',familia:'em família',equipe:'equipe de produção'})[T.quem]} · ritmo ${T.ritmo}</td></tr>
+      <tr><td>Grupo</td><td>${T.pessoas} pessoa${T.pessoas>1?'s':''} · ${({solo:'sozinho',dupla:'em dupla',grupo:'em grupo',familia:'em família',equipe:'equipe de produção'})[T.quem]} · ritmo ${({tranquilo:'tranquilo',moderado:'moderado',intenso:'intenso'})[T.ritmo]||T.ritmo}</td></tr>
       <tr><td>Nível</td><td>${NIVEL_N[nivel()]}</td></tr>
       <tr><td>Lugares</td><td>${T.paradas.map((p,i)=>(i+1)+'. '+esc(p.n)).join(' · ')||'—'}</td></tr>
       <tr><td>Orçamento</td><td>${fmtR(o.total)} (${fmtR(o.total/o.pes)} por pessoa) <span class="sim">simulado</span></td></tr>
@@ -790,7 +794,7 @@ function toast(m){ let t=$('#toast'); if(!t){ t=document.createElement('div'); t
 /* ---------- eventos ---------- */
 function mudou(paradas){ save(); refreshNav(); renderLado();
   if(paradas&&passo==='mapa'){ $('#paradas').innerHTML=paradasHTML(); desenharTrajeto(false); } }
-function abrir(t,p){ T=t; passo=p||'ideia'; save(); renderApp(); window.scrollTo(0,0); }
+function abrir(t,p){ T=t; (T.paradas||[]).forEach(s=>{ const r=pontoDe(s); if(r) s.n=r.n; }); passo=p||'ideia'; save(); renderApp(); window.scrollTo(0,0); }
 document.addEventListener('click',ev=>{
   const b=ev.target.closest('[data-act]'); if(!b) return; const a=b.dataset.act;
   if(['ck','seg','cenaok','orcOk','comp'].includes(a)) return; // tratados em change
@@ -812,7 +816,7 @@ document.addEventListener('click',ev=>{
     case 'verRotas': T.verRotas=!T.verRotas; if(mapa){ T.verRotas?rotasL.addTo(mapa):mapa.removeLayer(rotasL); } b.classList.toggle('on',T.verRotas); b.classList.toggle('off',!T.verRotas); save(); break;
     case 'livre': modoLivre=true; $('#modo').classList.add('on'); toast('Clique no mapa onde quer o ponto.'); break;
     case 'livre-x': modoLivre=false; $('#modo').classList.remove('on'); break;
-    case 'add': { const p=D.pts[+b.dataset.i]; T.paradas.push({id:uid(),ref:p.l+'|'+p.n,n:p.n,x:p.x,y:p.y,dias:p.l==='CU'&&p.d>=4?10:(parseInt(p.dias)||2),l:p.l}); if(mapa) mapa.closePopup(); mudou(true); toast(p.n+' entrou no roteiro.'); break; }
+    case 'add': { const p=D.pts[+b.dataset.i]; T.paradas.push({id:uid(),ref:refDe(p),n:p.n,x:p.x,y:p.y,dias:p.l==='CU'&&p.d>=4?10:(parseInt(p.dias)||2),l:p.l}); if(mapa) mapa.closePopup(); mudou(true); toast(p.n+' entrou no roteiro.'); break; }
     case 'res': { const p=D.pts[+b.dataset.i]; $('#res').hidden=true; $('#busca').value=''; const k=p.l; let lay=T.camadas||D.layers.map(l=>l.k); if(!lay.includes(k)){ lay.push(k); T.camadas=lay; grpL[k].addTo(mapa); const c=$(`.chip.cam[data-k="${k}"]`); c&&c.classList.replace('off','on'); }
       mapa.setView([p.y,p.x],6); grpL[k].eachLayer(m=>{ const ll=m.getLatLng(); if(ll.lat===p.y&&ll.lng===p.x) m.openPopup(); }); break; }
     case 'sobe': case 'desce': { const i=T.paradas.findIndex(p=>p.id===b.dataset.id); const j=a==='sobe'?i-1:i+1; if(j<0||j>=T.paradas.length) break; [T.paradas[i],T.paradas[j]]=[T.paradas[j],T.paradas[i]]; mudou(true); break; }

@@ -1,0 +1,151 @@
+PT:d('pass','Passaporte válido','Muitos países exigem validade mínima de 6 meses depois da data de saída. Seu retorno previsto pede validade até pelo menos '+fmtDL(vol)+'.','Polícia Federal (agendamento on-line)','Destinos fora do Brasil');
+EN:d('pass','Valid passport','Many countries require at least 6 months of validity after your departure date. Your planned return calls for validity until at least '+fmtDL(vol)+'.','Passport office of your country (for Brazilians: Polícia Federal, online booking)','Destinations outside Brazil');
+ES:d('pass','Pasaporte vigente','Muchos países exigen una vigencia mínima de 6 meses después de la fecha de salida. Tu regreso previsto pide vigencia hasta por lo menos el '+fmtDL(vol)+'.','Oficina de pasaportes de tu país (para brasileños: Polícia Federal, turno en línea)','Destinos fuera de Brasil');
+@@
+PT:d('visto','Vistos e autorizações eletrônicas de entrada','Exigência para brasileiros em: '+ext.map(paT).join(', ')+'. Conferir caso a caso, pois as regras mudam (vistos, eTA, ESTA, eVisa).','Portal consular do Itamaraty e sites oficiais de imigração','Destinos fora do Brasil'); }
+EN:d('visto','Visas and electronic travel authorizations','Check the rules for your nationality in: '+ext.map(paT).join(', ')+'. Check each case, because the rules change (visas, eTA, ESTA, eVisa).','Your foreign ministry and official immigration websites','Destinations outside Brazil'); }
+ES:d('visto','Visas y autorizaciones electrónicas de entrada','Revisa las reglas para tu nacionalidad en: '+ext.map(paT).join(', ')+'. Conviene revisar caso por caso, porque las reglas cambian (visas, eTA, ESTA, eVisa).','Cancillería de tu país y sitios oficiales de inmigración','Destinos fuera de Brasil'); }
+@@
+PT:d('civp','Vacina de febre amarela e CIVP','O Certificado Internacional de Vacinação ou Profilaxia pode ser exigido na entrada de alguns países e é recomendado em várias regiões do Brasil.','Anvisa (emissão do CIVP) e posto de vacinação','Áreas de febre amarela');
+EN:d('civp','Yellow fever vaccine and international certificate','The International Certificate of Vaccination or Prophylaxis may be required to enter some countries and is recommended for several regions of Brazil.','Health authority of your country (in Brazil, Anvisa) and a vaccination center','Yellow fever areas');
+ES:d('civp','Vacuna de fiebre amarilla y certificado internacional','El Certificado Internacional de Vacunación o Profilaxis puede exigirse para entrar en algunos países y se recomienda en varias regiones de Brasil.','Autoridad sanitaria de tu país (en Brasil, Anvisa) y centro de vacunación','Zonas de fiebre amarilla');
+@@
+PT:d('schengen','Seguro com cobertura Schengen','Para o espaço Schengen o seguro precisa cobrir ao menos 30 mil euros em despesas médicas.','Seguradora','Destino no espaço Schengen');
+EN:d('schengen','Insurance with Schengen coverage','For the Schengen area, insurance must cover at least 30,000 euros in medical expenses.','Insurance company','Destination in the Schengen area');
+ES:d('schengen','Seguro con cobertura Schengen','Para el espacio Schengen el seguro debe cubrir al menos 30.000 euros en gastos médicos.','Aseguradora','Destino en el espacio Schengen');
+@@
+PT:d('pid','Permissão Internacional para Dirigir','Pedida no Detran do seu estado, junto com a CNH válida.','Detran','Trechos de carro fora do Brasil');
+EN:d('pid','International Driving Permit','Issued by the driving licence authority of your country (in Brazil, the state Detran), together with a valid licence.','Driving licence authority','Car legs outside Brazil');
+ES:d('pid','Permiso Internacional de Conducir','Se pide en la autoridad de tránsito de tu país (en Brasil, el Detran del estado), junto con la licencia vigente.','Autoridad de tránsito','Tramos en auto fuera de Brasil');
+@@
+PT:d('droneBR','Drone no Brasil: SISANT, SARPAS e Anatel','Cadastro do drone na ANAC (SISANT), pedido de voo ao DECEA (SARPAS) e homologação na Anatel. Em parques federais, autorização do ICMBio.','ANAC, DECEA, Anatel, ICMBio','Você vai levar drone');
+EN:d('droneBR','Drone in Brazil: SISANT, SARPAS and Anatel','Drone registration with ANAC (SISANT), flight request to DECEA (SARPAS) and Anatel certification. In federal parks, authorization from ICMBio.','ANAC, DECEA, Anatel, ICMBio','You are taking a drone');
+ES:d('droneBR','Dron en Brasil: SISANT, SARPAS y Anatel','Registro del dron en la ANAC (SISANT), pedido de vuelo al DECEA (SARPAS) y homologación en Anatel. En parques federales, autorización del ICMBio.','ANAC, DECEA, Anatel, ICMBio','Llevarás dron');
+@@
+PT:d('droneEXT','Drone no exterior','Cada país tem regra e registro próprios, e muitos parques nacionais proíbem voo sem licença (nos parques dos EUA é proibido).','Autoridade de aviação civil de cada país','Você vai levar drone'); }
+EN:d('droneEXT','Drone abroad','Each country has its own rules and registration, and many national parks ban flying without a permit (it is prohibited in US national parks).','Civil aviation authority of each country','You are taking a drone'); }
+ES:d('droneEXT','Dron en el exterior','Cada país tiene sus propias reglas y registro, y muchos parques nacionales prohíben volar sin licencia (en los parques de EE. UU. está prohibido).','Autoridad de aviación civil de cada país','Llevarás dron'); }
+@@
+PT:'gor','Permissão para ver gorilas','Licenças diárias limitadas, vendidas com meses de antecedência. Visita de 1 hora com guia e regras sanitárias.','Uganda Wildlife Authority ou Rwanda Development Board'
+EN:'gor','Gorilla trekking permit','Limited daily permits, sold months in advance. A 1-hour visit with a guide and health rules.','Uganda Wildlife Authority or Rwanda Development Board'
+ES:'gor','Permiso para ver gorilas','Permisos diarios limitados, vendidos con meses de anticipación. Visita de 1 hora con guía y reglas sanitarias.','Uganda Wildlife Authority o Rwanda Development Board'
+@@
+PT:'kili','Taxas do parque e guia obrigatório no Kilimanjaro','A subida só é permitida com guia e operadora licenciados, que recolhem as taxas do parque.','Operadora licenciada pela autoridade de parques da Tanzânia'
+EN:'kili','Park fees and mandatory guide on Kilimanjaro','The climb is only allowed with a licensed guide and operator, who collect the park fees.','Operator licensed by the Tanzanian parks authority'
+ES:'kili','Tasas del parque y guía obligatorio en el Kilimanjaro','La subida solo se permite con guía y operador autorizados, que cobran las tasas del parque.','Operador autorizado por la autoridad de parques de Tanzania'
+@@
+PT:'acon','Permiso de ascenso do Aconcágua','Permissão paga, com valor por temporada, retirada em Mendoza antes da subida. Exige exame médico no parque.','Parque Provincial Aconcagua (Mendoza)'
+EN:'acon','Aconcagua climbing permit','A paid permit, priced by season, picked up in Mendoza before the climb. A medical check is required in the park.','Parque Provincial Aconcagua (Mendoza)'
+ES:'acon','Permiso de ascenso al Aconcagua','Permiso pago, con valor por temporada, que se retira en Mendoza antes de la subida. Exige control médico en el parque.','Parque Provincial Aconcagua (Mendoza)'
+@@
+PT:'nepal','Permissões de trekking e escalada no Nepal','Entrada no Parque Nacional Sagarmatha e licença local; cumes exigem permissão de escalada do governo.','Departamento de Turismo do Nepal, via agência registrada'
+EN:'nepal','Trekking and climbing permits in Nepal','Entry to Sagarmatha National Park and a local permit; summits require a government climbing permit.','Nepal Department of Tourism, through a registered agency'
+ES:'nepal','Permisos de trekking y escalada en Nepal','Entrada al Parque Nacional Sagarmatha y permiso local; las cumbres exigen permiso de escalada del gobierno.','Departamento de Turismo de Nepal, a través de una agencia registrada'
+@@
+PT:'inca','Permissão da Trilha Inca','Vagas diárias limitadas, vendidas só por operadoras autorizadas, que esgotam meses antes.','Operadora autorizada pelo Ministério da Cultura do Peru'
+EN:'inca','Inca Trail permit','Limited daily places, sold only by authorized operators, which sell out months ahead.','Operator authorized by the Peruvian Ministry of Culture'
+ES:'inca','Permiso del Camino Inca','Cupos diarios limitados, vendidos solo por operadores autorizados, que se agotan meses antes.','Operador autorizado por el Ministerio de Cultura del Perú'
+@@
+PT:'doc','Reserva de Great Walk','Cabanas reservadas com antecedência; a temporada esgota rápido.','Department of Conservation da Nova Zelândia'
+EN:'doc','Great Walk booking','Huts booked in advance; the season sells out fast.','New Zealand Department of Conservation'
+ES:'doc','Reserva de Great Walk','Refugios reservados con anticipación; la temporada se agota rápido.','Department of Conservation de Nueva Zelanda'
+@@
+PT:'sval','Regras de Svalbard','Fora das áreas de visitação comuns é preciso avisar o governo local e ter seguro de busca e resgate. Ursos-polares exigem proteção e guia.','Governor of Svalbard (Sysselmesteren)'
+EN:'sval','Svalbard rules','Outside the usual visitor areas you must notify the local government and have search-and-rescue insurance. Polar bears call for protection and a guide.','Governor of Svalbard (Sysselmesteren)'
+ES:'sval','Reglas de Svalbard','Fuera de las áreas habituales de visita hay que avisar al gobierno local y tener seguro de búsqueda y rescate. Los osos polares exigen protección y guía.','Governor of Svalbard (Sysselmesteren)'
+@@
+PT:'ant','Autorização para a Antártica','Toda atividade precisa de avaliação de impacto ambiental de um país signatário do Tratado Antártico. As operadoras da IAATO cuidam disso para os passageiros.','Operadora associada à IAATO'
+EN:'ant','Antarctica authorization','Every activity needs an environmental impact assessment from a country that signed the Antarctic Treaty. IAATO operators handle this for their passengers.','IAATO member operator'
+ES:'ant','Autorización para la Antártida','Toda actividad necesita una evaluación de impacto ambiental de un país firmante del Tratado Antártico. Los operadores de IAATO se encargan de esto para los pasajeros.','Operador miembro de IAATO'
+@@
+PT:'gal','Ingresso em Galápagos','Taxa de ingresso no parque e cartão de controle de trânsito, comprados antes do embarque no continente.','Governo do Equador / Parque Nacional Galápagos'
+EN:'gal','Galápagos entry','Park entry fee and transit control card, bought before boarding on the mainland.','Government of Ecuador / Galápagos National Park'
+ES:'gal','Ingreso a Galápagos','Tasa de ingreso al parque y tarjeta de control de tránsito, compradas antes de embarcar en el continente.','Gobierno del Ecuador / Parque Nacional Galápagos'
+@@
+PT:'fn','Taxas de Fernando de Noronha','Taxa de Preservação Ambiental por dia e ingresso do Parque Nacional Marinho.','Administração do distrito e ICMBio'
+EN:'fn','Fernando de Noronha fees','Daily Environmental Preservation Fee and Marine National Park entry.','District administration and ICMBio'
+ES:'fn','Tasas de Fernando de Noronha','Tasa de Preservación Ambiental por día e ingreso al Parque Nacional Marino.','Administración del distrito e ICMBio'
+@@
+PT:d(k,t,p,o,'Paradas: '+
+EN:d(k,t,p,o,'Stops: '+
+ES:d(k,t,p,o,'Paradas: '+
+@@
+PT:d('parq','Ingressos e reservas dos parques','Parques mais disputados limitam vagas, camping e trilhas. Reserve o que tiver cota assim que as datas estiverem firmes.','Órgão gestor de cada parque','Parques no roteiro');
+EN:d('parq','Park tickets and bookings','The busiest parks limit places, camping and trails. Book anything with a quota as soon as your dates are firm.','Managing body of each park','Parks on the journey');
+ES:d('parq','Entradas y reservas de los parques','Los parques más concurridos limitan cupos, camping y senderos. Reserva lo que tenga cupo apenas las fechas estén firmes.','Organismo gestor de cada parque','Parques en la ruta');
+@@
+PT:d('funai','Terras indígenas','Visitas a terras indígenas pedem consentimento da comunidade e autorização de ingresso da Funai. Imagens exigem acordo de uso com a comunidade.','Funai e a própria comunidade','Roteiro cultural no Brasil');
+EN:d('funai','Indigenous lands','Visits to Indigenous lands require the community’s consent and an entry authorization from Funai. Images require a usage agreement with the community.','Funai and the community itself','Cultural journey in Brazil');
+ES:d('funai','Tierras indígenas','Las visitas a tierras indígenas requieren el consentimiento de la comunidad y una autorización de ingreso de la Funai. Las imágenes exigen un acuerdo de uso con la comunidad.','Funai y la propia comunidad','Ruta cultural en Brasil');
+@@
+PT:d('film','Autorizações de filmagem','Gravação para uso comercial em áreas protegidas costuma exigir licença e taxa. Em cidades, procure a film commission local.','ICMBio, órgãos de parques, film commissions','Roteiro cinematográfico');
+EN:d('film','Filming permits','Filming for commercial use in protected areas usually requires a permit and a fee. In cities, contact the local film commission.','Park authorities, film commissions (in Brazil, ICMBio)','Filmmaking journey');
+ES:d('film','Permisos de filmación','Grabar para uso comercial en áreas protegidas suele exigir licencia y tasa. En las ciudades, busca la film commission local.','Organismos de parques, film commissions (en Brasil, ICMBio)','Ruta cinematográfica');
+@@
+PT:d('cessao','Cessão de imagem e de locação','Termo assinado por quem aparece de forma identificável e por donos de locações privadas.','Modelo com o seu advogado ou produtora','Roteiro cinematográfico');
+EN:d('cessao','Image and location releases','A release signed by anyone who appears identifiably and by owners of private locations.','Template from your lawyer or production company','Filmmaking journey');
+ES:d('cessao','Cesión de imagen y de locación','Autorización firmada por quien aparece de forma identificable y por los dueños de locaciones privadas.','Modelo de tu abogado o productora','Ruta cinematográfica');
+@@
+PT:d('ata','Carnê ATA para equipamento','Documento aduaneiro que permite entrar e sair com equipamento profissional sem pagar impostos de importação.','Confederação Nacional da Indústria (emissão no Brasil)','Equipamento profissional no exterior'); }
+EN:d('ata','ATA Carnet for equipment','A customs document that lets you bring professional equipment in and out without paying import duties.','Chamber of commerce of your country (in Brazil, the CNI)','Professional equipment abroad'); }
+ES:d('ata','Cuaderno ATA para el equipo','Documento aduanero que permite entrar y salir con equipo profesional sin pagar impuestos de importación.','Cámara de comercio de tu país (en Brasil, la CNI)','Equipo profesional en el exterior'); }
+@@
+PT:d('merg','Certificações e logbook de mergulho','Leve as carteirinhas (ou o app da certificadora) e o registro de mergulhos; operadoras pedem para liberar mergulhos avançados.','Sua certificadora (PADI, SSI, NAUI, CMAS)','Paradas de mergulho');
+EN:d('merg','Diving certifications and logbook','Bring your cards (or the agency app) and your dive log; operators ask for them before advanced dives.','Your certifying agency (PADI, SSI, NAUI, CMAS)','Diving stops');
+ES:d('merg','Certificaciones y bitácora de buceo','Lleva las credenciales (o la app de la certificadora) y el registro de inmersiones; los operadores las piden para habilitar inmersiones avanzadas.','Tu certificadora (PADI, SSI, NAUI, CMAS)','Paradas de buceo');
+@@
+PT:d('menor','Autorização de viagem para menores','Quando a criança viaja sem um dos pais, é preciso autorização com firma reconhecida ou registrada no passaporte.','Cartório ou Polícia Federal','Viagem em família');
+EN:d('menor','Travel authorization for minors','When a child travels without one of the parents, a notarized authorization (or one recorded in the passport) is required.','Notary or passport office','Family trip');
+ES:d('menor','Autorización de viaje para menores','Cuando el niño viaja sin uno de los padres, se necesita una autorización con firma certificada o registrada en el pasaporte.','Escribanía o notaría, u oficina de pasaportes','Viaje en familia');
+@@
+PT:d('seguroDoc','Apólice de seguro viagem','Com coberturas compatíveis com as atividades (ver Saúde e segurança).','Seguradora','Toda jornada');
+EN:d('seguroDoc','Travel insurance policy','With coverage suited to the activities (see Health and safety).','Insurance company','Every journey');
+ES:d('seguroDoc','Póliza de seguro de viaje','Con coberturas acordes a las actividades (ver Salud y seguridad).','Aseguradora','Toda jornada');
+@@
+PT:const IDX_N={BR:'Brasil',SA:'América do Sul',NA:'América do Norte e Central',EU:'Europa',AF:'África',OC:'Oceania',AS:'Ásia',POL:'Regiões polares'};
+EN:const IDX_N={BR:'Brazil',SA:'South America',NA:'North and Central America',EU:'Europe',AF:'Africa',OC:'Oceania',AS:'Asia',POL:'Polar regions'};
+ES:const IDX_N={BR:'Brasil',SA:'América del Sur',NA:'América del Norte y Central',EU:'Europa',AF:'África',OC:'Oceanía',AS:'Asia',POL:'Regiones polares'};
+@@
+PT:const cats=[['transp','Transporte',transp],['hosp','Hospedagem',hosp],['alim','Alimentação',alim],['guia','Guias e operadoras',guia],['taxas','Taxas e permissões',taxas],['seguro','Seguro',seguro],['equip','Equipamento (compra e aluguel)',equip]];
+EN:const cats=[['transp','Transport',transp],['hosp','Lodging',hosp],['alim','Food',alim],['guia','Guides and operators',guia],['taxas','Fees and permits',taxas],['seguro','Insurance',seguro],['equip','Equipment (purchase and rental)',equip]];
+ES:const cats=[['transp','Transporte',transp],['hosp','Alojamiento',hosp],['alim','Comida',alim],['guia','Guías y operadores',guia],['taxas','Tasas y permisos',taxas],['seguro','Seguro',seguro],['equip','Equipo (compra y alquiler)',equip]];
+@@
+PT:cats.push(['prod','Produção de imagem',prod]);
+EN:cats.push(['prod','Image production',prod]);
+ES:cats.push(['prod','Producción de imagen',prod]);
+@@
+PT:A.push({n:'bad',t:'Nenhum lugar no roteiro',d:'Comece escolhendo pontos no mapa.',go:'mapa'});
+EN:A.push({n:'bad',t:'No places on the journey',d:'Start by choosing points on the map.',go:'mapa'});
+ES:A.push({n:'bad',t:'Ningún lugar en la ruta',d:'Empieza eligiendo puntos en el mapa.',go:'mapa'});
+@@
+PT:t:a.p.n+' fora da melhor época',d:'Você chega em '+MESES_L[a.m-1]+'. A WAS indica: '+
+EN:t:a.p.n+' outside the best season',d:'You arrive in '+MESES_L[a.m-1]+'. WAS recommends: '+
+ES:t:a.p.n+' fuera de la mejor época',d:'Llegas en '+MESES_L[a.m-1]+'. La WAS indica: '+
+@@
+PT:t:'Mergulho seguido de voo',d:'O plano já inclui um dia sem voar depois de '+ant.n+'.'
+EN:t:'Diving followed by a flight',d:'The plan already includes a no-fly day after '+ant.n+'.'
+ES:t:'Buceo seguido de vuelo',d:'El plan ya incluye un día sin volar después de '+ant.n+'.'
+@@
+PT:t:'Altitude sem aclimatação',d:'Há lugares acima de 3.000 m e a aclimatação está desligada.'
+EN:t:'Altitude without acclimatization',d:'There are places above 3,000 m and acclimatization is turned off.'
+ES:t:'Altura sin aclimatación',d:'Hay lugares por encima de 3.000 m y la aclimatación está desactivada.'
+@@
+PT:t:'Lugar com 0 dia',d:'Algum lugar do roteiro ainda não tem dias definidos.'
+EN:t:'Place with 0 days',d:'A place on the journey still has no days set.'
+ES:t:'Lugar con 0 días',d:'Algún lugar de la ruta todavía no tiene días definidos.'
+@@
+PT:t:'Drone em área protegida',d:'Parques e áreas de fauna quase sempre exigem autorização ou proíbem voo.'
+EN:t:'Drone in a protected area',d:'Parks and wildlife areas almost always require authorization or ban flying.'
+ES:t:'Dron en área protegida',d:'Los parques y áreas de fauna casi siempre exigen autorización o prohíben volar.'
+@@
+PT:t:'Seguro sem evacuação',d:'Roteiro de nível '+NIVEL_N[nivel()].toLowerCase()+' pede cobertura de resgate e evacuação aeromédica.'
+EN:t:'Insurance without evacuation',d:'A journey rated '+NIVEL_N[nivel()].toLowerCase()+' calls for rescue and medical air evacuation coverage.'
+ES:t:'Seguro sin evacuación',d:'Una ruta de nivel '+NIVEL_N[nivel()].toLowerCase()+' pide cobertura de rescate y evacuación aeromédica.'
+@@
+PT:t:'Sem contato de emergência',d:'Defina quem acompanha a viagem de casa.'
+EN:t:'No emergency contact',d:'Choose who will follow the trip from home.'
+ES:t:'Sin contacto de emergencia',d:'Define quién sigue el viaje desde casa.'
+@@
+PT:t:'Conduta com a fauna',d:'Leia as regras de distância e aceite o compromisso de conduta.'
+EN:t:'Wildlife conduct',d:'Read the distance rules and accept the conduct pledge.'
+ES:t:'Conducta con la fauna',d:'Lee las reglas de distancia y acepta el compromiso de conducta.'

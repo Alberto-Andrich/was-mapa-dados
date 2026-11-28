@@ -1,0 +1,279 @@
+PT:<span class="selo" title="Recurso em teste. Parte dos dados é simulada.">Em teste</span>
+EN:<span class="selo" title="Feature in testing. Part of the data is simulated.">In testing</span>
+ES:<span class="selo" title="Función en prueba. Parte de los datos es simulada.">En prueba</span>
+@@
+PT:<span class="salvo" id="salvo">Salvo neste navegador</span>
+EN:<span class="salvo" id="salvo">Saved in this browser</span>
+ES:<span class="salvo" id="salvo">Guardado en este navegador</span>
+@@
+PT:aria-label="Meus roteiros">${svg('lista')}<span class="lbl">Meus roteiros</span>
+EN:aria-label="My journeys">${svg('lista')}<span class="lbl">My journeys</span>
+ES:aria-label="Mis rutas">${svg('lista')}<span class="lbl">Mis rutas</span>
+@@
+PT:nome:'Vulcões de Java e Lombok',
+EN:nome:'Volcanoes of Java and Lombok',
+ES:nome:'Volcanes de Java y Lombok',
+@@
+PT:intencao:'Fotografar o nascer do sol no Bromo, o fogo azul do Ijen e a cratera do Rinjani, com tempo para esperar a luz certa.',
+EN:intencao:'Photograph sunrise at Bromo, the blue fire of Ijen and the crater of Rinjani, with time to wait for the right light.',
+ES:intencao:'Fotografiar el amanecer en el Bromo, el fuego azul del Ijen y el cráter del Rinjani, con tiempo para esperar la luz justa.',
+@@
+PT:t:'Fotográfica · 3 vulcões ativos'
+EN:t:'Photography · 3 active volcanoes'
+ES:t:'Fotográfica · 3 volcanes activos'
+@@
+PT:nome:'Jubartes e recifes da Bahia',
+EN:nome:'Humpbacks and reefs of Bahia',
+ES:nome:'Jorobadas y arrecifes de Bahía',
+@@
+PT:intencao:'Ver as jubartes de perto em Abrolhos e as tartarugas do Projeto Tamar, num ritmo tranquilo com as crianças.',
+EN:intencao:'See humpback whales up close in Abrolhos and the turtles of Projeto Tamar, at a relaxed pace with the kids.',
+ES:intencao:'Ver de cerca las ballenas jorobadas en Abrolhos y las tortugas del Projeto Tamar, a un ritmo tranquilo con los niños.',
+@@
+PT:t:'Contemplação · temporada das baleias'
+EN:t:'Contemplation · whale season'
+ES:t:'Contemplación · temporada de ballenas'
+@@
+PT:nome:'Kilimanjaro e os gorilas',
+EN:nome:'Kilimanjaro and the gorillas',
+ES:nome:'El Kilimanjaro y los gorilas',
+@@
+PT:intencao:'Subir ao teto da África pela rota mais tranquila e terminar com uma hora diante dos gorilas-das-montanhas.',
+EN:intencao:'Climb to the roof of Africa by the gentlest route and finish with an hour facing mountain gorillas.',
+ES:intencao:'Subir al techo de África por la ruta más tranquila y terminar con una hora frente a los gorilas de montaña.',
+@@
+PT:t:'Expedição · Sete Cumes e fauna'
+EN:t:'Expedition · Seven Summits and wildlife'
+ES:t:'Expedición · Siete Cumbres y fauna'
+@@
+PT:nome:'Nos passos de Amundsen: Ártico norueguês',
+EN:nome:'In Amundsen’s footsteps: the Norwegian Arctic',
+ES:nome:'Tras los pasos de Amundsen: el Ártico noruego',
+@@
+PT:intencao:'Documentário curto sobre o gelo que recua, filmado sob o sol da meia-noite, de Tromsø a Svalbard.',
+EN:intencao:'A short documentary about retreating ice, filmed under the midnight sun, from Tromsø to Svalbard.',
+ES:intencao:'Documental corto sobre el hielo que retrocede, filmado bajo el sol de medianoche, de Tromsø a Svalbard.',
+@@
+PT:t:'Cinematográfica · sol da meia-noite'
+EN:t:'Filmmaking · midnight sun'
+ES:t:'Cinematográfica · sol de medianoche'
+@@
+PT:nome:'Brasil Central de 4x4',
+EN:nome:'Central Brazil by 4x4',
+ES:nome:'Brasil Central en 4x4',
+@@
+PT:intencao:'Rodar o Cerrado na seca: fervedouros do Jalapão, cânions da Chapada dos Veadeiros e as cavernas de Terra Ronca.',
+EN:intencao:'Drive the Cerrado in the dry season: the bubbling springs of Jalapão, the canyons of Chapada dos Veadeiros and the caves of Terra Ronca.',
+ES:intencao:'Recorrer el Cerrado en la estación seca: los manantiales del Jalapão, los cañones de la Chapada dos Veadeiros y las cuevas de Terra Ronca.',
+@@
+PT:t:'Aventura · off-road e cavernas',
+EN:t:'Adventure · off-road and caves',
+ES:t:'Aventura · off-road y cuevas',
+@@
+PT:fn:'Saltos do Rio Preto, Chapada dos Veadeiros'
+EN:fn:'Saltos do Rio Preto, Chapada dos Veadeiros'
+ES:fn:'Saltos do Rio Preto, Chapada dos Veadeiros'
+@@
+PT:nome:'Patagônia: Torres e Fitz Roy',
+EN:nome:'Patagonia: Torres and Fitz Roy',
+ES:nome:'Patagonia: Torres y Fitz Roy',
+@@
+PT:intencao:'Fazer o W de Torres del Paine e caminhar até a Laguna de los Tres, de frente para o Fitz Roy.',
+EN:intencao:'Hike the W in Torres del Paine and walk to Laguna de los Tres, facing Fitz Roy.',
+ES:intencao:'Hacer la W de Torres del Paine y caminar hasta la Laguna de los Tres, frente al Fitz Roy.',
+@@
+PT:t:'Trekking · Patagônia'}
+EN:t:'Trekking · Patagonia'}
+ES:t:'Trekking · Patagonia'}
+@@
+PT:<div class="kick">Roteiros WAS</div><h1>Monte a sua jornada</h1>
+EN:<div class="kick">WAS Journeys</div><h1>Plan your journey</h1>
+ES:<div class="kick">Rutas WAS</div><h1>Arma tu ruta</h1>
+@@
+PT:<p class="lead">Expedições, viagens de aventura, passeios de um dia e contemplações. Escolha lugares no Mapa da aventura, siga os passos de grandes exploradores e planeje tudo num só lugar: época e luz, dia a dia, preparo, equipamento, documentos, segurança, orçamento e plano de imagens.</p>
+EN:<p class="lead">Expeditions, adventure trips, day trips and contemplative journeys. Choose places on the Adventure Map, follow in the footsteps of great explorers and plan everything in one place: season and light, day by day, training, gear, documents, safety, budget and image plan.</p>
+ES:<p class="lead">Expediciones, viajes de aventura, paseos de un día y viajes contemplativos. Elige lugares en el Mapa de la aventura, sigue los pasos de grandes exploradores y planifica todo en un solo lugar: época y luz, día a día, preparación, equipo, documentos, seguridad, presupuesto y plan de imágenes.</p>
+@@
+PT:<div class="cred">Foto:
+EN:<div class="cred">Photo:
+ES:<div class="cred">Foto:
+@@
+PT:<h3>Começar do zero</h3><p>Dê um nome, escolha o tipo de jornada e vá montando no mapa.</p>
+EN:<h3>Start from scratch</h3><p>Give it a name, choose the type of journey and build it on the map.</p>
+ES:<h3>Empezar de cero</h3><p>Ponle un nombre, elige el tipo de jornada y ve armándola en el mapa.</p>
+@@
+PT:<h3>Partir de um modelo</h3><p>Seis roteiros prontos para adaptar, feitos com lugares do mapa da WAS.</p>
+EN:<h3>Start from a template</h3><p>Six ready-made journeys to adapt, built with places from the WAS map.</p>
+ES:<h3>Partir de un modelo</h3><p>Seis rutas listas para adaptar, hechas con lugares del mapa de la WAS.</p>
+@@
+PT:<h3>Nos passos de um explorador</h3><p>Escolha uma rota histórica e a WAS sugere lugares visitáveis no caminho.</p>
+EN:<h3>In an explorer’s footsteps</h3><p>Choose a historic route and WAS suggests places you can visit along the way.</p>
+ES:<h3>Tras los pasos de un explorador</h3><p>Elige una ruta histórica y la WAS sugiere lugares para visitar en el camino.</p>
+@@
+PT:<h3>Começar pelo mapa</h3><p>${fmtN(D.pts.length)} lugares em ${D.layers.length} camadas: cumes, mergulho, vulcões, fauna e mais.</p>
+EN:<h3>Start from the map</h3><p>${fmtN(D.pts.length)} places in ${D.layers.length} layers: summits, diving, volcanoes, wildlife and more.</p>
+ES:<h3>Empezar por el mapa</h3><p>${fmtN(D.pts.length)} lugares en ${D.layers.length} capas: cumbres, buceo, volcanes, fauna y más.</p>
+@@
+PT:<h2>Meus roteiros</h2></div><p class="intro">Ficam guardados só neste navegador, neste computador.</p>
+EN:<h2>My journeys</h2></div><p class="intro">They are stored only in this browser, on this computer.</p>
+ES:<h2>Mis rutas</h2></div><p class="intro">Se guardan solo en este navegador, en esta computadora.</p>
+@@
+PT:<span>${r.paradas.length} lugares · ${(r.tipos||[]).map(t=>TIPO_N[t]).join(', ')}</span>
+EN:<span>${r.paradas.length} places · ${(r.tipos||[]).map(t=>TIPO_N[t]).join(', ')}</span>
+ES:<span>${r.paradas.length} lugares · ${(r.tipos||[]).map(t=>TIPO_N[t]).join(', ')}</span>
+@@
+PT:data-id="${r.id}">Abrir</button><button class="ico-btn" data-act="apagar" data-id="${r.id}" title="Apagar este roteiro" aria-label="Apagar">
+EN:data-id="${r.id}">Open</button><button class="ico-btn" data-act="apagar" data-id="${r.id}" title="Delete this journey" aria-label="Delete">
+ES:data-id="${r.id}">Abrir</button><button class="ico-btn" data-act="apagar" data-id="${r.id}" title="Borrar esta ruta" aria-label="Borrar">
+@@
+PT:<h2>Modelos para adaptar</h2></div>
+EN:<h2>Templates to adapt</h2></div>
+ES:<h2>Modelos para adaptar</h2></div>
+@@
+PT:<p class="intro">Cada modelo já vem com lugares, dias, trajeto e época. Tudo pode ser mudado.</p>
+EN:<p class="intro">Each template already comes with places, days, route and season. Everything can be changed.</p>
+ES:<p class="intro">Cada modelo ya trae lugares, días, trayecto y época. Todo se puede cambiar.</p>
+@@
+PT:<span class="cr">Foto: ${esc(f.fa)}
+EN:<span class="cr">Photo: ${esc(f.fa)}
+ES:<span class="cr">Foto: ${esc(f.fa)}
+@@
+PT:<h2>Nos passos de um explorador</h2></div>
+EN:<h2>In an explorer’s footsteps</h2></div>
+ES:<h2>Tras los pasos de un explorador</h2></div>
+@@
+PT:<p class="intro">As ${D.rotas.length} rotas do Mapa da aventura. Ao escolher uma, o construtor cria um roteiro com o início e o fim da rota e com os lugares do mapa que ficam perto do caminho.</p>
+EN:<p class="intro">The ${D.rotas.length} routes of the Adventure Map. When you pick one, the planner creates a journey with the start and end of the route and the map places that lie close to it.</p>
+ES:<p class="intro">Las ${D.rotas.length} rutas del Mapa de la aventura. Al elegir una, el planificador crea una ruta con el inicio y el final del recorrido y con los lugares del mapa que quedan cerca del camino.</p>
+@@
+PT:<div class="aviso-sim"><b>Recurso em teste.</b> Os lugares, fotos, melhores meses, dificuldades e rotas são os dados reais do Mapa da aventura da WAS. Nascer e pôr do sol, horas de luz e fases da lua são calculados de verdade. Custos, emissões, operadoras, regras de documentos e prazos são estimativas de exemplo, marcadas com <span class="sim">simulado</span>. Nada é enviado para servidor: os roteiros ficam guardados neste navegador.</div>
+EN:<div class="aviso-sim"><b>Feature in testing.</b> Places, photos, best months, difficulty levels and routes are the real data of the WAS Adventure Map. Sunrise and sunset, daylight hours and moon phases are actually calculated. Costs, emissions, operators, document rules and deadlines are sample estimates, marked <span class="sim">simulated</span>. Nothing is sent to a server: your journeys are stored in this browser.</div>
+ES:<div class="aviso-sim"><b>Función en prueba.</b> Los lugares, fotos, mejores meses, dificultades y rutas son los datos reales del Mapa de la aventura de la WAS. El amanecer y el atardecer, las horas de luz y las fases de la luna se calculan de verdad. Costos, emisiones, operadores, reglas de documentos y plazos son estimaciones de ejemplo, marcadas como <span class="sim">simulado</span>. Nada se envía a un servidor: las rutas se guardan en este navegador.</div>
+@@
+PT:const t=novo({nome:'Nos passos de: '+r.n,tipos:['expedicao','cultural'],intencao:'Refazer, do jeito possível hoje, trechos da rota "'+r.n+'" ('+r.quem+', '+r.per+').',
+EN:const t=novo({nome:'In the footsteps of: '+r.n,tipos:['expedicao','cultural'],intencao:'Retrace, as far as possible today, parts of the route "'+r.n+'" ('+r.quem+', '+r.per+').',
+ES:const t=novo({nome:'Tras los pasos de: '+r.n,tipos:['expedicao','cultural'],intencao:'Recorrer de nuevo, como hoy sea posible, tramos de la ruta "'+r.n+'" ('+r.quem+', '+r.per+').',
+@@
+PT:n:'Início da rota',
+EN:n:'Route start',
+ES:n:'Inicio de la ruta',
+@@
+PT:n:'Fim da rota',
+EN:n:'Route end',
+ES:n:'Fin de la ruta',
+@@
+PT:['ideia','A ideia','ideia'],['mapa','Lugares e trajeto','mapa'],['epoca','Época, luz e clima','epoca'],['dias','Dia a dia','dias'],
+EN:['ideia','The idea','ideia'],['mapa','Places and route','mapa'],['epoca','Season, light and climate','epoca'],['dias','Day by day','dias'],
+ES:['ideia','La idea','ideia'],['mapa','Lugares y trayecto','mapa'],['epoca','Época, luz y clima','epoca'],['dias','Día a día','dias'],
+@@
+PT:['preparo','Dificuldade e preparo','preparo'],['equip','Equipamento','equip'],['docs','Documentos e licenças','docs'],['saude','Saúde e segurança','saude'],
+EN:['preparo','Difficulty and training','preparo'],['equip','Gear','equip'],['docs','Documents and permits','docs'],['saude','Health and safety','saude'],
+ES:['preparo','Dificultad y preparación','preparo'],['equip','Equipo','equip'],['docs','Documentos y permisos','docs'],['saude','Salud y seguridad','saude'],
+@@
+PT:['orc','Orçamento','orc'],['equipe','Equipe e guias','equipe'],['imagens','Plano de imagens','imagens'],['conduta','Impacto e conduta','conduta'],['revisar','Revisar e compartilhar','revisar']
+EN:['orc','Budget','orc'],['equipe','Team and guides','equipe'],['imagens','Image plan','imagens'],['conduta','Impact and conduct','conduta'],['revisar','Review and share','revisar']
+ES:['orc','Presupuesto','orc'],['equipe','Equipo humano y guías','equipe'],['imagens','Plan de imágenes','imagens'],['conduta','Impacto y conducta','conduta'],['revisar','Revisar y compartir','revisar']
+@@
+PT:<nav class="nav" aria-label="Etapas do planejamento"><div class="nome-r"><b>${esc(T.nome)}</b><span>${T.paradas.length} lugares · ${plano().length} dias</span></div>
+EN:<nav class="nav" aria-label="Planning steps"><div class="nome-r"><b>${esc(T.nome)}</b><span>${T.paradas.length} places · ${plano().length} days</span></div>
+ES:<nav class="nav" aria-label="Etapas de la planificación"><div class="nome-r"><b>${esc(T.nome)}</b><span>${T.paradas.length} lugares · ${plano().length} días</span></div>
+@@
+PT:'<span class="opc">opcional</span>':''}<span class="st
+EN:'<span class="opc">optional</span>':''}<span class="st
+ES:'<span class="opc">opcional</span>':''}<span class="st
+@@
+PT:const txt={ideia:'O que você quer viver, com quem e em que ritmo. O tipo de jornada muda o que o construtor pede nas próximas etapas.',
+EN:const txt={ideia:'What you want to experience, with whom and at what pace. The type of journey changes what the planner asks for in the next steps.',
+ES:const txt={ideia:'Qué quieres vivir, con quién y a qué ritmo. El tipo de jornada cambia lo que el planificador pide en las próximas etapas.',
+@@
+PT:mapa:'Escolha lugares nas camadas do Mapa da aventura ou marque pontos livres. Defina quantos dias em cada um e como vai de um ao outro.',
+EN:mapa:'Choose places from the layers of the Adventure Map or mark your own points. Set how many days at each one and how you get from one to the next.',
+ES:mapa:'Elige lugares en las capas del Mapa de la aventura o marca puntos libres. Define cuántos días en cada uno y cómo vas de uno a otro.',
+@@
+PT:epoca:'A melhor época de cada lugar segundo a WAS, horas de luz, nascer e pôr do sol e as fases da lua nas datas da viagem.',
+EN:epoca:'The best season for each place according to WAS, daylight hours, sunrise and sunset, and the moon phases on your travel dates.',
+ES:epoca:'La mejor época de cada lugar según la WAS, horas de luz, amanecer y atardecer y las fases de la luna en las fechas del viaje.',
+@@
+PT:dias:'O roteiro dia a dia, montado a partir dos lugares e trajetos, com aclimatação, intervalos de segurança e dias de margem.',
+EN:dias:'The day-by-day plan, built from your places and routes, with acclimatization, safety intervals and buffer days.',
+ES:dias:'La ruta día a día, armada a partir de los lugares y trayectos, con aclimatación, intervalos de seguridad y días de margen.',
+@@
+PT:preparo:'O nível do roteiro, as habilidades e certificações que ele pede e um plano de treino até a partida.',
+EN:preparo:'The journey’s level, the skills and certifications it calls for and a training plan until departure.',
+ES:preparo:'El nivel de la ruta, las habilidades y certificaciones que pide y un plan de entrenamiento hasta la partida.',
+@@
+PT:equip:'Lista montada a partir dos lugares, do clima, das atividades e do tipo de jornada. Marque o que já tem.',
+EN:equip:'A list built from the places, climate, activities and type of journey. Tick what you already have.',
+ES:equip:'Lista armada a partir de los lugares, el clima, las actividades y el tipo de jornada. Marca lo que ya tienes.',
+@@
+PT:docs:'Passaporte, vistos, vacinas, permissões de parques, drone, terras indígenas e filmagem. Acompanhe a situação de cada um.',
+EN:docs:'Passport, visas, vaccines, park permits, drone, Indigenous lands and filming. Track the status of each one.',
+ES:docs:'Pasaporte, visas, vacunas, permisos de parques, dron, tierras indígenas y filmación. Sigue el estado de cada uno.',
+@@
+PT:saude:'Vacinas e cuidados, seguro com as coberturas certas, contatos de emergência e plano de comunicação.',
+EN:saude:'Vaccines and precautions, insurance with the right coverage, emergency contacts and a communication plan.',
+ES:saude:'Vacunas y cuidados, seguro con las coberturas correctas, contactos de emergencia y plan de comunicación.',
+@@
+PT:orc:'Estimativa por categoria, por pessoa e para o grupo. Ajuste cada valor quando tiver as cotações.',
+EN:orc:'Estimate by category, per person and for the group. Adjust each amount once you have quotes.',
+ES:orc:'Estimación por categoría, por persona y para el grupo. Ajusta cada valor cuando tengas las cotizaciones.',
+@@
+PT:equipe:'Quem vai, quem faz o quê e quem pode guiar. Na WAS, guias e associados poderiam ser indicados aqui.',
+EN:equipe:'Who is going, who does what and who can guide. At WAS, guides and members could be recommended here.',
+ES:equipe:'Quién va, quién hace qué y quién puede guiar. En la WAS, guías y asociados podrían recomendarse aquí.',
+@@
+PT:imagens:'Para roteiros fotográficos e de filmagem: luz em cada lugar, lista de cenas, drone, armazenamento e autorizações.',
+EN:imagens:'For photography and filmmaking journeys: light at each place, shot list, drone, storage and permissions.',
+ES:imagens:'Para rutas fotográficas y de filmación: luz en cada lugar, lista de escenas, dron, almacenamiento y autorizaciones.',
+@@
+PT:conduta:'Pegada de carbono dos trajetos, regras de conduta com a fauna e as comunidades e o compromisso de mínimo impacto.',
+EN:conduta:'Carbon footprint of the routes, rules of conduct with wildlife and communities, and the minimum-impact pledge.',
+ES:conduta:'Huella de carbono de los trayectos, reglas de conducta con la fauna y las comunidades y el compromiso de mínimo impacto.',
+@@
+PT:revisar:'O dossiê do roteiro, pronto para imprimir, salvar em PDF, levar no GPS, pôr na agenda ou compartilhar.'}[k];
+EN:revisar:'The journey dossier, ready to print, save as PDF, load on a GPS, add to your calendar or share.'}[k];
+ES:revisar:'El dosier de la ruta, listo para imprimir, guardar en PDF, llevar en el GPS, poner en la agenda o compartir.'}[k];
+@@
+PT:<div class="kick">Etapa ${i+1} de ${PASSOS.length}</div>
+EN:<div class="kick">Step ${i+1} of ${PASSOS.length}</div>
+ES:<div class="kick">Etapa ${i+1} de ${PASSOS.length}</div>
+@@
+PT:n.innerHTML=`<b>${esc(T.nome)}</b><span>${T.paradas.length} lugares · ${plano().length} dias</span>`;
+EN:n.innerHTML=`<b>${esc(T.nome)}</b><span>${T.paradas.length} places · ${plano().length} days</span>`;
+ES:n.innerHTML=`<b>${esc(T.nome)}</b><span>${T.paradas.length} lugares · ${plano().length} días</span>`;
+@@
+PT:<div><b>Prontidão do roteiro</b><span>${st.pct<40?'Começando a tomar forma':st.pct<80?'Bem encaminhado':'Quase pronto para partir'}</span></div>
+EN:<div><b>Journey readiness</b><span>${st.pct<40?'Starting to take shape':st.pct<80?'Well on its way':'Almost ready to go'}</span></div>
+ES:<div><b>Preparación de la ruta</b><span>${st.pct<40?'Empezando a tomar forma':st.pct<80?'Bien encaminada':'Casi lista para partir'}</span></div>
+@@
+PT:<span>dias${fim?' · até '+fim.getDate()+' '+MESES[fim.getMonth()]:''}</span>
+EN:<span>days${fim?' · until '+MESES[fim.getMonth()]+' '+fim.getDate():''}</span>
+ES:<span>días${fim?' · hasta el '+fim.getDate()+' '+MESES[fim.getMonth()]:''}</span>
+@@
+PT:<span>km de trajeto</span>
+EN:<span>km of travel</span>
+ES:<span>km de trayecto</span>
+@@
+PT:<span>nível do roteiro</span>
+EN:<span>journey level</span>
+ES:<span>nivel de la ruta</span>
+@@
+PT:<span>por pessoa <span class="sim" style="margin:0">simulado</span></span>
+EN:<span>per person <span class="sim" style="margin:0">simulated</span></span>
+ES:<span>por persona <span class="sim" style="margin:0">simulado</span></span>
+@@
+PT:<span>itens de equipamento</span>
+EN:<span>gear items</span>
+ES:<span>ítems de equipo</span>
+@@
+PT:<span>documentos em ordem</span>
+EN:<span>documents in order</span>
+ES:<span>documentos en regla</span>
+@@
+PT:<h3>Atenção</h3>
+EN:<h3>Heads up</h3>
+ES:<h3>Atención</h3>
+@@
+PT:'<div class="al ok"><b>Tudo certo por enquanto</b>Nenhum alerta para este roteiro.</div>'
+EN:'<div class="al ok"><b>All good for now</b>No alerts for this journey.</div>'
+ES:'<div class="al ok"><b>Todo bien por ahora</b>Ninguna alerta para esta ruta.</div>'

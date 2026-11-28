@@ -1,0 +1,243 @@
+PT:Number(n||0).toLocaleString('pt-BR',
+EN:Number(n||0).toLocaleString('en-US',
+ES:Number(n||0).toLocaleString('es-ES',
+@@
+PT:const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+EN:const MESES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ES:const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+@@
+PT:const MESES_L = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+EN:const MESES_L = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+ES:const MESES_L = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+@@
+PT:const DIAS_S = ['dom','seg','ter','qua','qui','sex','sáb'];
+EN:const DIAS_S = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+ES:const DIAS_S = ['dom','lun','mar','mié','jue','vie','sáb'];
+@@
+PT:function fmtD(d){ return DIAS_S[d.getDay()]+', '+d.getDate()+' '+MESES[d.getMonth()]; }
+EN:function fmtD(d){ return DIAS_S[d.getDay()]+', '+MESES[d.getMonth()]+' '+d.getDate(); }
+ES:function fmtD(d){ return DIAS_S[d.getDay()]+', '+d.getDate()+' '+MESES[d.getMonth()]; }
+@@
+PT:function fmtDL(d){ return d.getDate()+' de '+MESES_L[d.getMonth()]+' de '+d.getFullYear(); }
+EN:function fmtDL(d){ return MESES_L[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear(); }
+ES:function fmtDL(d){ return d.getDate()+' de '+MESES_L[d.getMonth()]+' de '+d.getFullYear(); }
+@@
+PT:s.textContent='Salvo às '+
+EN:s.textContent='Saved at '+
+ES:s.textContent='Guardado a las '+
+@@
+PT:nome:'Meu novo roteiro'
+EN:nome:'My new journey'
+ES:nome:'Mi nueva ruta'
+@@
+PT:['expedicao','Expedição'],['aventura','Aventura'],['esportiva','Esportiva'],['contemplacao','Contemplação'],
+EN:['expedicao','Expedition'],['aventura','Adventure'],['esportiva','Sport'],['contemplacao','Contemplation'],
+ES:['expedicao','Expedición'],['aventura','Aventura'],['esportiva','Deportiva'],['contemplacao','Contemplación'],
+@@
+PT:['cultural','Cultural'],['fotografica','Fotográfica'],['cinema','Cinematográfica'],['ciencia','Ciência e voluntariado'],
+EN:['cultural','Cultural'],['fotografica','Photography'],['cinema','Filmmaking'],['ciencia','Science and volunteering'],
+ES:['cultural','Cultural'],['fotografica','Fotográfica'],['cinema','Cinematográfica'],['ciencia','Ciencia y voluntariado'],
+@@
+PT:['passeio','Passeio de um dia'],['familia','Em família']
+EN:['passeio','Day trip'],['familia','Family']
+ES:['passeio','Paseo de un día'],['familia','En familia']
+@@
+PT:aviao:{n:'Avião',
+EN:aviao:{n:'Plane',
+ES:aviao:{n:'Avión',
+@@
+PT:carro:{n:'Carro',
+EN:carro:{n:'Car',
+ES:carro:{n:'Auto',
+@@
+PT:onibus:{n:'Ônibus',
+EN:onibus:{n:'Bus',
+ES:onibus:{n:'Autobús',
+@@
+PT:trem:{n:'Trem',
+EN:trem:{n:'Train',
+ES:trem:{n:'Tren',
+@@
+PT:barco:{n:'Barco',
+EN:barco:{n:'Boat',
+ES:barco:{n:'Barco',
+@@
+PT:navio:{n:'Navio de expedição',
+EN:navio:{n:'Expedition ship',
+ES:navio:{n:'Barco de expedición',
+@@
+PT:pe:{n:'A pé',
+EN:pe:{n:'On foot',
+ES:pe:{n:'A pie',
+@@
+PT:bike:{n:'Bicicleta',
+EN:bike:{n:'Bicycle',
+ES:bike:{n:'Bicicleta',
+@@
+PT:cavalo:{n:'A cavalo',
+EN:cavalo:{n:'On horseback',
+ES:cavalo:{n:'A caballo',
+@@
+PT:caiaque:{n:'Caiaque',
+EN:caiaque:{n:'Kayak',
+ES:caiaque:{n:'Kayak',
+@@
+PT:t:'Intervalo de superfície antes de voar',ds:'Pelo menos 18 a 24 horas sem voar depois de vários dias de mergulho, para reduzir o risco de doença descompressiva.'
+EN:t:'Surface interval before flying',ds:'At least 18 to 24 hours without flying after several days of diving, to reduce the risk of decompression sickness.'
+ES:t:'Intervalo de superficie antes de volar',ds:'Al menos 18 a 24 horas sin volar después de varios días de buceo, para reducir el riesgo de enfermedad descompresiva.'
+@@
+PT:t:'Deslocamento: '+t.a.n+' → '+t.b.n,ds:t.M.n+' · cerca de '+fmtN(t.km)+' km'+(t.dias>1?' · dia '+(j+1)+' de '+t.dias:'')
+EN:t:'Travel: '+t.a.n+' → '+t.b.n,ds:t.M.n+' · about '+fmtN(t.km)+' km'+(t.dias>1?' · day '+(j+1)+' of '+t.dias:'')
+ES:t:'Traslado: '+t.a.n+' → '+t.b.n,ds:t.M.n+' · unos '+fmtN(t.km)+' km'+(t.dias>1?' · día '+(j+1)+' de '+t.dias:'')
+@@
+PT:t:'Aclimatação para '+p.n,ds:'Dormir no máximo 300 a 500 m acima da noite anterior. Caminhadas leves, muita água, atenção a dor de cabeça e náusea.'
+EN:t:'Acclimatization for '+p.n,ds:'Sleep no more than 300 to 500 m above the previous night. Light walks, plenty of water, watch for headache and nausea.'
+ES:t:'Aclimatación para '+p.n,ds:'Dormir como máximo 300 a 500 m por encima de la noche anterior. Caminatas suaves, mucha agua, atención al dolor de cabeza y las náuseas.'
+@@
+PT:' (chegada '+MODOS[trecho(i).m].n.toLowerCase()+')'
+EN:' (arrival: '+MODOS[trecho(i).m].n.toLowerCase()+')'
+ES:' (llegada: '+MODOS[trecho(i).m].n.toLowerCase()+')'
+@@
+PT:t:(nd>1?'Dia '+(j+1)+' em ':'')+p.n+(j===0?chegou:'')+(j<dentro?' · subida gradual':''),ds:j===0?(pontoDe(p)?.f||''):(j<dentro?'Aclimatação dentro do próprio roteiro de subida: ganhar altitude devagar.':'')
+EN:t:(nd>1?'Day '+(j+1)+' in ':'')+p.n+(j===0?chegou:'')+(j<dentro?' · gradual ascent':''),ds:j===0?(pontoDe(p)?.f||''):(j<dentro?'Acclimatization built into the ascent itself: gain altitude slowly.':'')
+ES:t:(nd>1?'Día '+(j+1)+' en ':'')+p.n+(j===0?chegou:'')+(j<dentro?' · subida gradual':''),ds:j===0?(pontoDe(p)?.f||''):(j<dentro?'Aclimatación dentro de la propia ruta de subida: ganar altura despacio.':'')
+@@
+PT:t:'Dia de margem',ds:'Reserva para mau tempo, voos atrasados ou cansaço. Quem planeja margem volta inteiro.'
+EN:t:'Buffer day',ds:'Reserved for bad weather, delayed flights or fatigue. Those who plan a buffer come back in one piece.'
+ES:t:'Día de margen',ds:'Reserva para mal tiempo, vuelos retrasados o cansancio. Quien planea margen vuelve entero.'
+@@
+PT:['','Fácil','Moderado','Exigente','Muito exigente','Extremo'][r.d]
+EN:['','Easy','Moderate','Demanding','Very demanding','Extreme'][r.d]
+ES:['','Fácil','Moderado','Exigente','Muy exigente','Extremo'][r.d]
+@@
+PT:const NIVEL_N=['—','Leve','Moderado','Exigente','Muito exigente','Extremo'];
+EN:const NIVEL_N=['—','Light','Moderate','Demanding','Very demanding','Extreme'];
+ES:const NIVEL_N=['—','Leve','Moderado','Exigente','Muy exigente','Extremo'];
+@@
+PT:'Certificação de mergulho Open Water (ou equivalente)'
+EN:'Open Water diving certification (or equivalent)'
+ES:'Certificación de buceo Open Water (o equivalente)'
+@@
+PT:'Advanced, mergulho com corrente e boa experiência (sugestão: 50+ mergulhos registrados)'
+EN:'Advanced, drift diving and solid experience (suggested: 50+ logged dives)'
+ES:'Advanced, buceo con corriente y buena experiencia (sugerencia: más de 50 inmersiones registradas)'
+@@
+PT:'Formação técnica ou de caverna/cenote com instrutor especializado'
+EN:'Technical or cave/cenote training with a specialized instructor'
+ES:'Formación técnica o de cueva/cenote con instructor especializado'
+@@
+PT:'Certificação de mergulho compatível com a profundidade do naufrágio'
+EN:'Diving certification suited to the depth of the wreck'
+ES:'Certificación de buceo acorde a la profundidad del naufragio'
+@@
+PT:'Curso básico de alpinismo: crampons, piolet, autodetenção'
+EN:'Basic mountaineering course: crampons, ice axe, self-arrest'
+ES:'Curso básico de alpinismo: crampones, piolet, autodetención'
+@@
+PT:'Técnicas de corda, resgate em greta e experiência prévia em altitude'
+EN:'Rope techniques, crevasse rescue and previous high-altitude experience'
+ES:'Técnicas de cuerda, rescate en grieta y experiencia previa en altura'
+@@
+PT:'Navegação com mapa, bússola e GPS; autonomia em trilha remota'
+EN:'Navigation with map, compass and GPS; self-sufficiency on remote trails'
+ES:'Navegación con mapa, brújula y GPS; autonomía en senderos remotos'
+@@
+PT:'Treino de expedição polar: puxar trenó (pulka), barraca na neve, prevenção de congelamento'
+EN:'Polar expedition training: hauling a sled (pulk), camping on snow, frostbite prevention'
+ES:'Entrenamiento de expedición polar: arrastrar trineo (pulka), carpa en la nieve, prevención de congelamiento'
+@@
+PT:'Direção off-road: areia, lama, travessia de rio e resgate do veículo'
+EN:'Off-road driving: sand, mud, river crossings and vehicle recovery'
+ES:'Conducción off-road: arena, barro, cruce de ríos y rescate del vehículo'
+@@
+PT:'Mecânica básica de bicicleta e treino com a bike carregada'
+EN:'Basic bike mechanics and training with a loaded bike'
+ES:'Mecánica básica de bicicleta y entrenamiento con la bici cargada'
+@@
+PT:'Escalada: experiência no grau da via ou guia credenciado'
+EN:'Climbing: experience at the route grade or a certified guide'
+ES:'Escalada: experiencia en el grado de la vía o guía acreditado'
+@@
+PT:'Canionismo: rapel e técnicas de água, sempre com condutor credenciado'
+EN:'Canyoning: rappelling and water techniques, always with a certified guide'
+ES:'Barranquismo: rápel y técnicas de agua, siempre con guía acreditado'
+@@
+PT:'Natação segura e briefing de segurança em corredeira'
+EN:'Confident swimming and a whitewater safety briefing'
+ES:'Natación segura y charla de seguridad en rápidos'
+@@
+PT:'Voo livre ou salto: só com instrutor e escola homologada'
+EN:'Free flight or jumping: only with an instructor and an accredited school'
+ES:'Vuelo libre o salto: solo con instructor y escuela homologada'
+@@
+PT:'Treino específico da travessia (mar, rio, deserto ou natação de longa distância)'
+EN:'Training specific to the crossing (sea, river, desert or long-distance swimming)'
+ES:'Entrenamiento específico de la travesía (mar, río, desierto o natación de larga distancia)'
+@@
+PT:g('Essenciais',[['Mochila principal ou mala de expedição',1800],['Mochila de ataque (20–35 L)',700],['Lanterna de cabeça e pilhas',120],['Kit de primeiros socorros pessoal',400],['Garrafa e filtro ou pastilhas de água',350],['Protetor solar, labial e óculos escuros',250],['Power bank e cabos',350],['Bolsa estanque para documentos',80],['Canivete ou multiferramenta',120]],'Toda jornada');
+EN:g('Essentials',[['Main backpack or expedition duffel',1800],['Daypack (20–35 L)',700],['Headlamp and batteries',120],['Personal first-aid kit',400],['Bottle and water filter or tablets',350],['Sunscreen, lip balm and sunglasses',250],['Power bank and cables',350],['Dry bag for documents',80],['Pocketknife or multitool',120]],'Every journey');
+ES:g('Esenciales',[['Mochila principal o bolso de expedición',1800],['Mochila de ataque (20–35 L)',700],['Linterna frontal y pilas',120],['Botiquín personal de primeros auxilios',400],['Botella y filtro o pastillas para el agua',350],['Protector solar, labial y gafas de sol',250],['Batería externa y cables',350],['Bolsa estanca para documentos',80],['Navaja o multiherramienta',120]],'Toda jornada');
+@@
+PT:g('Frio e altitude',[['Sistema de 3 camadas (térmica, fleece, anorak impermeável)',1500],['Jaqueta de pluma',700],['Luvas finas e luvas grossas',300],['Gorro e balaclava',150],['Meias de lã merino (3 pares)',300],['Óculos de glaciar categoria 4',60],['Saco de dormir conforto -10 °C ou menos',1600]],'Há paradas frias ou acima de 2.500 m');
+EN:g('Cold and altitude',[['3-layer system (base layer, fleece, waterproof shell)',1500],['Down jacket',700],['Liner gloves and heavy gloves',300],['Beanie and balaclava',150],['Merino wool socks (3 pairs)',300],['Category 4 glacier glasses',60],['Sleeping bag, comfort -10 °C or lower',1600]],'Cold stops or stops above 2,500 m');
+ES:g('Frío y altura',[['Sistema de 3 capas (térmica, polar, chaqueta impermeable)',1500],['Chaqueta de plumas',700],['Guantes finos y guantes gruesos',300],['Gorro y pasamontañas',150],['Calcetines de lana merino (3 pares)',300],['Gafas de glaciar categoría 4',60],['Saco de dormir confort -10 °C o menos',1600]],'Hay paradas frías o por encima de 2.500 m');
+@@
+PT:g('Calor e trópicos',[['Roupa leve com proteção UV',600],['Repelente (icaridina ou DEET)',150],['Mosquiteiro',350],['Sandália de trilha',500],['Capa de chuva leve',300]],'Há paradas tropicais');
+EN:g('Heat and tropics',[['Light clothing with UV protection',600],['Insect repellent (icaridin or DEET)',150],['Mosquito net',350],['Hiking sandals',500],['Light rain poncho',300]],'Tropical stops');
+ES:g('Calor y trópicos',[['Ropa ligera con protección UV',600],['Repelente (icaridina o DEET)',150],['Mosquitero',350],['Sandalias de trekking',500],['Capa de lluvia ligera',300]],'Hay paradas tropicales');
+@@
+PT:g('Trilha e montanha',[['Bota de trekking amaciada',1400],['Bastões de caminhada',500],['Polainas',250],['Mapa offline e GPS no celular',0],['Apito e manta térmica',100]],'Trekkings, cumes ou vulcões');
+EN:g('Trail and mountain',[['Broken-in trekking boots',1400],['Trekking poles',500],['Gaiters',250],['Offline map and GPS on your phone',0],['Whistle and emergency blanket',100]],'Treks, summits or volcanoes');
+ES:g('Sendero y montaña',[['Botas de trekking ya domadas',1400],['Bastones de caminata',500],['Polainas',250],['Mapa sin conexión y GPS en el celular',0],['Silbato y manta térmica',100]],'Trekkings, cumbres o volcanes');
+@@
+PT:g('Alpinismo',[['Crampons',900],['Piolet',500],['Cadeirinha, mosquetões e cordelete',700],['Capacete',350],['Bota dupla ou de alta montanha',2400]],'Cumes técnicos');
+EN:g('Mountaineering',[['Crampons',900],['Ice axe',500],['Harness, carabiners and cord',700],['Helmet',350],['Double or high-altitude boots',2400]],'Technical summits');
+ES:g('Alpinismo',[['Crampones',900],['Piolet',500],['Arnés, mosquetones y cordino',700],['Casco',350],['Bota doble o de alta montaña',2400]],'Cumbres técnicas');
+@@
+PT:g('Mergulho',[['Máscara, snorkel e nadadeiras',1500],['Computador de mergulho',250],['Roupa de neoprene adequada à temperatura',2500],['Boia de sinalização (salsicha) e apito',200],['Logbook e certificações',50]],'Paradas de mergulho');
+EN:g('Diving',[['Mask, snorkel and fins',1500],['Dive computer',250],['Wetsuit suited to the water temperature',2500],['Surface marker buoy and whistle',200],['Logbook and certifications',50]],'Diving stops');
+ES:g('Buceo',[['Máscara, snorkel y aletas',1500],['Computadora de buceo',250],['Traje de neopreno adecuado a la temperatura',2500],['Boya de señalización y silbato',200],['Bitácora y certificaciones',50]],'Paradas de buceo');
+@@
+PT:g('Água e barco',[['Jaqueta impermeável e calça de chuva',700],['Remédio para enjoo',20],['Capa estanque para celular',60]],'Saídas de barco e travessias');
+EN:g('Water and boat',[['Waterproof jacket and rain pants',700],['Seasickness medicine',20],['Waterproof phone case',60]],'Boat trips and crossings');
+ES:g('Agua y barco',[['Chaqueta impermeable y pantalón de lluvia',700],['Remedio para el mareo',20],['Funda estanca para el celular',60]],'Salidas en barco y travesías');
+@@
+PT:g('Off-road',[['Kit de resgate: pranchas, cinta, pá',9000],['Compressor e kit de reparo de pneu',4000],['Combustível e água extras',0],['Comunicador satelital',120]],'Rotas off-road');
+EN:g('Off-road',[['Recovery kit: boards, strap, shovel',9000],['Compressor and tire repair kit',4000],['Extra fuel and water',0],['Satellite messenger',120]],'Off-road routes');
+ES:g('Off-road',[['Kit de rescate: planchas, eslinga, pala',9000],['Compresor y kit de reparación de neumáticos',4000],['Combustible y agua extra',0],['Comunicador satelital',120]],'Rutas off-road');
+@@
+PT:g('Bicicleta',[['Capacete',350],['Alforjes ou bikepacking',2200],['Câmaras, remendos e bomba',600],['Ferramenta multiuso de bike',200]],'Rotas de bike');
+EN:g('Bicycle',[['Helmet',350],['Panniers or bikepacking bags',2200],['Inner tubes, patches and pump',600],['Bike multitool',200]],'Bike routes');
+ES:g('Bicicleta',[['Casco',350],['Alforjas o bikepacking',2200],['Cámaras, parches e inflador',600],['Herramienta multiuso de bici',200]],'Rutas en bici');
+@@
+PT:g('Polar',[['Parka de expedição',1800],['Bota polar',2200],['Máscara facial e óculos de neve',250],['Garrafa térmica',450]],'Destinos polares');
+EN:g('Polar',[['Expedition parka',1800],['Polar boots',2200],['Face mask and snow goggles',250],['Insulated bottle',450]],'Polar destinations');
+ES:g('Polar',[['Parka de expedición',1800],['Botas polares',2200],['Máscara facial y antiparras de nieve',250],['Termo',450]],'Destinos polares');
+@@
+PT:const its=[['Corpo de câmera principal',750],['Corpo reserva',650],['Grande angular (14–24 mm)',650],['Zoom padrão (24–70 mm)',800],['Tripé leve de fibra de carbono',1500],['Filtros polarizador e ND',200],['Baterias extras (o frio derruba a carga)',300],['Cartões de memória (2× o previsto)',50],['Capa de chuva para câmera',150],['Kit de limpeza de sensor',100]];
+EN:const its=[['Main camera body',750],['Backup body',650],['Wide angle (14–24 mm)',650],['Standard zoom (24–70 mm)',800],['Light carbon-fiber tripod',1500],['Polarizer and ND filters',200],['Extra batteries (cold drains them)',300],['Memory cards (2× what you expect)',50],['Camera rain cover',150],['Sensor cleaning kit',100]];
+ES:const its=[['Cuerpo de cámara principal',750],['Cuerpo de reserva',650],['Gran angular (14–24 mm)',650],['Zoom estándar (24–70 mm)',800],['Trípode ligero de fibra de carbono',1500],['Filtros polarizador y ND',200],['Baterías extra (el frío baja la carga)',300],['Tarjetas de memoria (2× lo previsto)',50],['Funda de lluvia para la cámara',150],['Kit de limpieza del sensor',100]];
+@@
+PT:its.splice(4,0,['Teleobjetiva 100–400 ou 200–600 mm',2100]);
+EN:its.splice(4,0,['Telephoto 100–400 or 200–600 mm',2100]);
+ES:its.splice(4,0,['Teleobjetivo 100–400 o 200–600 mm',2100]);
+@@
+PT:its.push(['Caixa estanque e iluminação submarina',3500]);
+EN:its.push(['Underwater housing and lighting',3500]);
+ES:its.push(['Carcasa estanca e iluminación submarina',3500]);
+@@
+PT:g('Fotografia',its,'Roteiro fotográfico');
+EN:g('Photography',its,'Photography journey');
+ES:g('Fotografía',its,'Ruta fotográfica');
+@@
+PT:g('Filmagem',[['Microfone shotgun e lapelas sem fio',600],['Gravador de áudio',400],['Gimbal',1200],['Monitor externo',500],['SSDs para backup (regra 3-2-1)',300],['Notebook de ingestão',1800],['Protetor de vento (dead cat)',60]],'Roteiro cinematográfico');
+EN:g('Filming',[['Shotgun mic and wireless lavaliers',600],['Audio recorder',400],['Gimbal',1200],['External monitor',500],['Backup SSDs (3-2-1 rule)',300],['Laptop for offloading',1800],['Windshield (dead cat)',60]],'Filmmaking journey');
+ES:g('Filmación',[['Micrófono shotgun y corbateros inalámbricos',600],['Grabadora de audio',400],['Gimbal',1200],['Monitor externo',500],['SSD de respaldo (regla 3-2-1)',300],['Notebook para descargar',1800],['Protector de viento (dead cat)',60]],'Ruta cinematográfica');
+@@
+PT:g('Drone',[['Drone e 3 baterias',1300],['Controle e hélices reserva',300],['Filtros ND para drone',50],['Comprovantes de registro e autorização',0]],'Você marcou que vai levar drone');
+EN:g('Drone',[['Drone and 3 batteries',1300],['Controller and spare propellers',300],['ND filters for the drone',50],['Proof of registration and authorization',0]],'You said you are taking a drone');
+ES:g('Dron',[['Dron y 3 baterías',1300],['Control y hélices de repuesto',300],['Filtros ND para dron',50],['Comprobantes de registro y autorización',0]],'Marcaste que llevarás dron');
+@@
+PT:g('Itens que você acrescentou',T.extras.map(x=>[x,0]),'Lista pessoal');
+EN:g('Items you added',T.extras.map(x=>[x,0]),'Personal list');
+ES:g('Ítems que agregaste',T.extras.map(x=>[x,0]),'Lista personal');

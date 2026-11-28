@@ -1,0 +1,215 @@
+PT:const fases=[['Base aeróbica','Caminhada, corrida leve, bike ou natação, 3 a 4 vezes por semana, aumentando o volume aos poucos.'],['Força e resistência','Pernas, core e costas. Subidas com mochila carregada e treinos longos no fim de semana.'],['Específico','Simular a jornada: desníveis, peso real da mochila, frio, água ou altitude, conforme o roteiro.'],['Polimento','Reduzir o volume na última semana, dormir bem e revisar o equipamento.']];
+EN:const fases=[['Aerobic base','Walking, easy running, cycling or swimming, 3 to 4 times a week, building volume gradually.'],['Strength and endurance','Legs, core and back. Climbs with a loaded pack and long sessions at the weekend.'],['Specific','Simulate the journey: elevation, the real weight of your pack, cold, water or altitude, depending on the journey.'],['Taper','Reduce volume in the last week, sleep well and check your gear.']];
+ES:const fases=[['Base aeróbica','Caminata, carrera suave, bici o natación, 3 a 4 veces por semana, aumentando el volumen de a poco.'],['Fuerza y resistencia','Piernas, core y espalda. Subidas con la mochila cargada y entrenamientos largos el fin de semana.'],['Específico','Simular la jornada: desniveles, peso real de la mochila, frío, agua o altura, según la ruta.'],['Puesta a punto','Reducir el volumen en la última semana, dormir bien y revisar el equipo.']];
+@@
+PT:<h3>Nível do roteiro: ${NIVEL_N[nv]}</h3><p class="sec">O nível é o do lugar mais exigente, segundo as escalas de dificuldade de cada camada do Mapa da aventura.</p>
+EN:<h3>Journey level: ${NIVEL_N[nv]}</h3><p class="sec">The level is that of the most demanding place, according to the difficulty scales of each layer of the Adventure Map.</p>
+ES:<h3>Nivel de la ruta: ${NIVEL_N[nv]}</h3><p class="sec">El nivel es el del lugar más exigente, según las escalas de dificultad de cada capa del Mapa de la aventura.</p>
+@@
+PT:<thead><tr><th>Lugar</th><th>Camada</th><th>Dificuldade</th></tr></thead>
+EN:<thead><tr><th>Place</th><th>Layer</th><th>Difficulty</th></tr></thead>
+ES:<thead><tr><th>Lugar</th><th>Capa</th><th>Dificultad</th></tr></thead>
+@@
+PT:<h3>Habilidades e certificações</h3>
+EN:<h3>Skills and certifications</h3>
+ES:<h3>Habilidades y certificaciones</h3>
+@@
+PT:'Por causa de: '+h.p
+EN:'Because of: '+h.p
+ES:'Por: '+h.p
+@@
+PT:'<p class="sec">Nenhuma habilidade técnica exigida pelos lugares escolhidos.</p>'
+EN:'<p class="sec">No technical skills required by the places you chose.</p>'
+ES:'<p class="sec">Ninguna habilidad técnica exigida por los lugares elegidos.</p>'
+@@
+PT:<h3>Plano de treino sugerido: ${sem} semanas</h3>
+EN:<h3>Suggested training plan: ${sem} weeks</h3>
+ES:<h3>Plan de entrenamiento sugerido: ${sem} semanas</h3>
+@@
+PT:`Faltam cerca de ${falta} semanas para a partida. `+(falta<sem?'<span class="st-warn">O tempo é curto para o nível do roteiro. Considere adiar ou escolher lugares mais leves.</span>':'Dá tempo de se preparar com calma.'):'Escolha uma data de partida no futuro.'
+EN:`About ${falta} weeks to go until departure. `+(falta<sem?'<span class="st-warn">Time is short for the journey’s level. Consider postponing or choosing easier places.</span>':'There is time to prepare calmly.'):'Choose a departure date in the future.'
+ES:`Faltan unas ${falta} semanas para la partida. `+(falta<sem?'<span class="st-warn">El tiempo es corto para el nivel de la ruta. Considera postergar o elegir lugares más suaves.</span>':'Hay tiempo para prepararse con calma.'):'Elige una fecha de partida en el futuro.'
+@@
+PT:<div class="dt">Semanas ${Math.round(sem*i/4)+1} a ${Math.round(sem*(i+1)/4)}</div>
+EN:<div class="dt">Weeks ${Math.round(sem*i/4)+1} to ${Math.round(sem*(i+1)/4)}</div>
+ES:<div class="dt">Semanas ${Math.round(sem*i/4)+1} a ${Math.round(sem*(i+1)/4)}</div>
+@@
+PT:<h3>Autoavaliação</h3><div class="ck">${[['auto:sau','Fiz check-up médico e, se o roteiro passa de 3.000 m ou envolve mergulho, falei com um médico sobre isso'],['auto:car','Consigo caminhar 6 horas com mochila sem me esgotar'],['auto:nad','Sei nadar com segurança'],['auto:alt','Já estive acima de 3.000 m e sei como meu corpo reage'],['auto:ok','Li as exigências de cada lugar e acho que o grupo está à altura']]
+EN:<h3>Self-assessment</h3><div class="ck">${[['auto:sau','I had a medical check-up and, if the journey goes above 3,000 m or involves diving, I talked to a doctor about it'],['auto:car','I can walk 6 hours with a pack without getting exhausted'],['auto:nad','I can swim safely'],['auto:alt','I have been above 3,000 m and know how my body reacts'],['auto:ok','I read the requirements of each place and I think the group is up to it']]
+ES:<h3>Autoevaluación</h3><div class="ck">${[['auto:sau','Me hice un chequeo médico y, si la ruta pasa de 3.000 m o incluye buceo, lo hablé con un médico'],['auto:car','Puedo caminar 6 horas con mochila sin agotarme'],['auto:nad','Sé nadar con seguridad'],['auto:alt','Ya estuve por encima de 3.000 m y sé cómo reacciona mi cuerpo'],['auto:ok','Leí las exigencias de cada lugar y creo que el grupo está a la altura']]
+@@
+PT:<label class="f">Vai levar drone?<select data-b="drone" data-bool><option value="0"${!T.drone?' selected':''}>Não</option><option value="1"${T.drone?' selected':''}>Sim</option></select></label>
+EN:<label class="f">Taking a drone?<select data-b="drone" data-bool><option value="0"${!T.drone?' selected':''}>No</option><option value="1"${T.drone?' selected':''}>Yes</option></select></label>
+ES:<label class="f">¿Llevarás dron?<select data-b="drone" data-bool><option value="0"${!T.drone?' selected':''}>No</option><option value="1"${T.drone?' selected':''}>Sí</option></select></label>
+@@
+PT:<span class="kick">Peso estimado da lista</span>
+EN:<span class="kick">Estimated weight of the list</span>
+ES:<span class="kick">Peso estimado de la lista</span>
+@@
+PT:kg <span class="sim">simulado</span></div><span class="cap">sem roupas do dia a dia nem itens de grupo</span>
+EN:kg <span class="sim">simulated</span></div><span class="cap">excluding everyday clothes and group items</span>
+ES:kg <span class="sim">simulado</span></div><span class="cap">sin la ropa de todos los días ni los ítems del grupo</span>
+@@
+PT:<h3>Acrescentar item</h3><div class="add-item"><input type="text" id="novoItem" placeholder="Ex.: binóculo 10x42"><button class="btn peq" data-act="addItem">${svg('mais')}Acrescentar</button>
+EN:<h3>Add an item</h3><div class="add-item"><input type="text" id="novoItem" placeholder="E.g. 10x42 binoculars"><button class="btn peq" data-act="addItem">${svg('mais')}Add</button>
+ES:<h3>Agregar ítem</h3><div class="add-item"><input type="text" id="novoItem" placeholder="Ej.: binoculares 10x42"><button class="btn peq" data-act="addItem">${svg('mais')}Agregar</button>
+@@
+PT:Orientação geral montada pelos países, lugares e tipo de jornada. Regras e valores mudam: confirme sempre na fonte oficial indicada. <span class="sim">regras simplificadas</span></p>
+EN:General guidance based on the countries, places and type of journey. Rules and fees change: always confirm with the official source listed. <span class="sim">simplified rules</span></p>
+ES:Orientación general armada según los países, lugares y tipo de jornada. Las reglas y valores cambian: confirma siempre en la fuente oficial indicada. <span class="sim">reglas simplificadas</span></p>
+@@
+PT:<div class="onde">Onde: ${esc(d.onde)}</div>
+EN:<div class="onde">Where: ${esc(d.onde)}</div>
+ES:<div class="onde">Dónde: ${esc(d.onde)}</div>
+@@
+PT:aria-label="Situação">${[['fazer','A fazer'],['pedido','Pedido, aguardando'],['ok','Em ordem'],['na','Não se aplica']]
+EN:aria-label="Status">${[['fazer','To do'],['pedido','Requested, waiting'],['ok','In order'],['na','Not applicable']]
+ES:aria-label="Estado">${[['fazer','Por hacer'],['pedido','Pedido, en espera'],['ok','En regla'],['na','No corresponde']]
+@@
+PT:const cob=[['med','Despesas médicas e hospitalares'],['evac','Resgate e evacuação aeromédica'+(nv>=4?' (essencial neste roteiro)':'')],['alt','Atividades em altitude'+(alt?' até '+fmtN(alt)+' m':'')],['merg','Mergulho autônomo (seguro específico, como o DAN)'],['radical','Esportes de aventura'],['canc','Cancelamento e interrupção'],['bag','Bagagem e equipamento']];
+EN:const cob=[['med','Medical and hospital expenses'],['evac','Rescue and medical air evacuation'+(nv>=4?' (essential for this journey)':'')],['alt','High-altitude activities'+(alt?' up to '+fmtN(alt)+' m':'')],['merg','Scuba diving (specific insurance, such as DAN)'],['radical','Adventure sports'],['canc','Cancellation and interruption'],['bag','Baggage and equipment']];
+ES:const cob=[['med','Gastos médicos y hospitalarios'],['evac','Rescate y evacuación aeromédica'+(nv>=4?' (esencial en esta ruta)':'')],['alt','Actividades en altura'+(alt?' hasta '+fmtN(alt)+' m':'')],['merg','Buceo autónomo (seguro específico, como DAN)'],['radical','Deportes de aventura'],['canc','Cancelación e interrupción'],['bag','Equipaje y equipo']];
+@@
+PT:<h3>Seguro: coberturas que o roteiro pede</h3>
+EN:<h3>Insurance: coverage the journey calls for</h3>
+ES:<h3>Seguro: coberturas que pide la ruta</h3>
+@@
+PT:'<span class="por">Recomendado para este roteiro</span>'
+EN:'<span class="por">Recommended for this journey</span>'
+ES:'<span class="por">Recomendado para esta ruta</span>'
+@@
+PT:<h3>Saúde</h3>
+EN:<h3>Health</h3>
+ES:<h3>Salud</h3>
+@@
+PT:['sa:con','Consulta de medicina do viajante (4 a 8 semanas antes)'],
+EN:['sa:con','Travel medicine consultation (4 to 8 weeks before)'],
+ES:['sa:con','Consulta de medicina del viajero (4 a 8 semanas antes)'],
+@@
+PT:[['sa:alt','Plano para mal de altitude: sinais de alerta, descida imediata, medicação conversada com o médico']]
+EN:[['sa:alt','Altitude sickness plan: warning signs, immediate descent, medication discussed with a doctor']]
+ES:[['sa:alt','Plan para el mal de altura: señales de alerta, descenso inmediato, medicación conversada con el médico']]
+@@
+PT:[['sa:trop','Proteção contra mosquitos e informação sobre malária e dengue na região']]
+EN:[['sa:trop','Mosquito protection and information on malaria and dengue in the region']]
+ES:[['sa:trop','Protección contra mosquitos e información sobre malaria y dengue en la región']]
+@@
+PT:[['sa:frio','Prevenção de hipotermia e congelamento (camadas, mãos e pés secos)']]
+EN:[['sa:frio','Preventing hypothermia and frostbite (layers, dry hands and feet)']]
+ES:[['sa:frio','Prevención de hipotermia y congelamiento (capas, manos y pies secos)']]
+@@
+PT:[['sa:dci','Câmara hiperbárica mais próxima anotada e intervalo antes de voar respeitado']]
+EN:[['sa:dci','Nearest hyperbaric chamber noted and pre-flight interval respected']]
+ES:[['sa:dci','Cámara hiperbárica más cercana anotada e intervalo antes de volar respetado']]
+@@
+PT:['sa:kit','Kit de primeiros socorros do grupo e alguém com curso de primeiros socorros em área remota'],
+EN:['sa:kit','Group first-aid kit and someone trained in wilderness first aid'],
+ES:['sa:kit','Botiquín del grupo y alguien con curso de primeros auxilios en zonas remotas'],
+@@
+PT:['sa:rem','Remédios de uso contínuo em dobro, na bagagem de mão']
+EN:['sa:rem','Double supply of regular medication, in your carry-on']
+ES:['sa:rem','Medicamentos de uso continuo por duplicado, en el equipaje de mano']
+@@
+PT:<h3>Contatos de emergência</h3><p class="sec">Quem fica em casa acompanhando a viagem, e quem deve ser avisado se algo der errado.</p>
+EN:<h3>Emergency contacts</h3><p class="sec">Who stays at home following the trip, and who should be told if something goes wrong.</p>
+ES:<h3>Contactos de emergencia</h3><p class="sec">Quién se queda en casa siguiendo el viaje, y a quién hay que avisar si algo sale mal.</p>
+@@
+PT:<label class="f">Nome<input type="text" value="${esc(c.n)}"
+EN:<label class="f">Name<input type="text" value="${esc(c.n)}"
+ES:<label class="f">Nombre<input type="text" value="${esc(c.n)}"
+@@
+PT:<label class="f">Telefone<input
+EN:<label class="f">Phone<input
+ES:<label class="f">Teléfono<input
+@@
+PT:<label class="f">Relação<input
+EN:<label class="f">Relationship<input
+ES:<label class="f">Relación<input
+@@
+PT:aria-label="Remover"
+EN:aria-label="Remove"
+ES:aria-label="Quitar"
+@@
+PT:${svg('mais')}Acrescentar contato</button>
+EN:${svg('mais')}Add contact</button>
+ES:${svg('mais')}Agregar contacto</button>
+@@
+PT:<h3>Comunicação e plano de retorno</h3>
+EN:<h3>Communication and check-in plan</h3>
+ES:<h3>Comunicación y plan de regreso</h3>
+@@
+PT:<label class="f">Como vão se comunicar em área sem sinal<select data-b="com">${['Celular com chip local','Comunicador satelital (mensagens e SOS)','Telefone via satélite','Rádio da operadora']
+EN:<label class="f">How you will communicate where there is no signal<select data-b="com">${['Phone with a local SIM','Satellite messenger (messages and SOS)','Satellite phone','Operator’s radio']
+ES:<label class="f">Cómo se comunicarán en zonas sin señal<select data-b="com">${['Celular con chip local','Comunicador satelital (mensajes y SOS)','Teléfono satelital','Radio del operador']
+@@
+PT:<label class="f">Se não houver notícia em…<select data-b="checkin">${['12 horas','24 horas','48 horas']
+EN:<label class="f">If there is no news within…<select data-b="checkin">${['12 hours','24 hours','48 hours']
+ES:<label class="f">Si no hay noticias en…<select data-b="checkin">${['12 horas','24 horas','48 horas']
+@@
+PT:<p class="ajuda">O contato de emergência recebe o roteiro dia a dia e aciona o seguro, a operadora e o consulado se o grupo passar desse prazo sem dar notícia.</p>
+EN:<p class="ajuda">The emergency contact receives the day-by-day plan and alerts the insurer, the operator and the consulate if the group goes past this deadline without news.</p>
+ES:<p class="ajuda">El contacto de emergencia recibe la ruta día a día y avisa al seguro, al operador y al consulado si el grupo pasa ese plazo sin dar noticias.</p>
+@@
+PT:Estimativa de exemplo, calculada pela região de cada lugar, pelos dias, trajetos e atividades. Troque qualquer valor pela sua cotação. <span class="sim">simulado</span></p>
+EN:A sample estimate, based on the region of each place, the days, routes and activities. Replace any amount with your own quote. Amounts in Brazilian reais (R$). <span class="sim">simulated</span></p>
+ES:Estimación de ejemplo, calculada según la región de cada lugar, los días, trayectos y actividades. Cambia cualquier valor por tu cotización. Valores en reales brasileños (R$). <span class="sim">simulado</span></p>
+@@
+PT:<div class="b"><span>Reserva de 15%</span>
+EN:<div class="b"><span>15% contingency</span>
+ES:<div class="b"><span>Reserva del 15%</span>
+@@
+PT:<span class="sec">Total para ${o.pes} pessoa${o.pes>1?'s':''}</span><b>${fmtR(o.total)}</b><span class="sec">${fmtR(o.total/o.pes)} por pessoa</span>
+EN:<span class="sec">Total for ${o.pes} ${o.pes>1?'people':'person'}</span><b>${fmtR(o.total)}</b><span class="sec">${fmtR(o.total/o.pes)} per person</span>
+ES:<span class="sec">Total para ${o.pes} persona${o.pes>1?'s':''}</span><b>${fmtR(o.total)}</b><span class="sec">${fmtR(o.total/o.pes)} por persona</span>
+@@
+PT:<h3>Ajustar valores</h3>
+EN:<h3>Adjust amounts</h3>
+ES:<h3>Ajustar valores</h3>
+@@
+PT:<span class="tx">Revisei o orçamento com cotações reais</span>
+EN:<span class="tx">I reviewed the budget with real quotes</span>
+ES:<span class="tx">Revisé el presupuesto con cotizaciones reales</span>
+@@
+PT:<h3>Custo por região</h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Lugar</th><th>Região</th><th class="n">Diária de referência</th></tr></thead>
+EN:<h3>Cost by region</h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Place</th><th>Region</th><th class="n">Reference daily cost</th></tr></thead>
+ES:<h3>Costo por región</h3><div class="tab-wrap"><table class="tab"><thead><tr><th>Lugar</th><th>Región</th><th class="n">Costo diario de referencia</th></tr></thead>
+@@
+PT:const papeis=['Líder da expedição','Navegação','Primeiros socorros','Fotografia','Câmera e direção','Som','Logística','Cozinha','Participante'];
+EN:const papeis=['Expedition leader','Navigation','First aid','Photography','Camera and directing','Sound','Logistics','Cooking','Participant'];
+ES:const papeis=['Líder de la expedición','Navegación','Primeros auxilios','Fotografía','Cámara y dirección','Sonido','Logística','Cocina','Participante'];
+@@
+PT:const tipo={CU:'Guia de montanha certificado',ME:'Centro de mergulho',TK:'Guia de trekking',FA:'Guia naturalista',BA:'Operadora de observação de baleias',P:'Operadora polar (IAATO)',VU:'Guia vulcanológico',AT:'Escola e condutores credenciados',O:'Locadora 4x4 com apoio',PQ:'Condutor do parque',NF:'Centro de mergulho em naufrágios'}[r.l]||'Operadora local';
+EN:const tipo={CU:'Certified mountain guide',ME:'Dive center',TK:'Trekking guide',FA:'Naturalist guide',BA:'Whale-watching operator',P:'Polar operator (IAATO)',VU:'Volcano guide',AT:'School and certified instructors',O:'4x4 rental with support',PQ:'Park guide',NF:'Wreck diving center'}[r.l]||'Local operator';
+ES:const tipo={CU:'Guía de montaña certificado',ME:'Centro de buceo',TK:'Guía de trekking',FA:'Guía naturalista',BA:'Operador de avistaje de ballenas',P:'Operador polar (IAATO)',VU:'Guía vulcanológico',AT:'Escuela e instructores acreditados',O:'Alquiler de 4x4 con apoyo',PQ:'Guía del parque',NF:'Centro de buceo en naufragios'}[r.l]||'Operador local';
+@@
+PT:<label class="f">Nome<input type="text" value="${esc(m.n)}"
+EN:<label class="f">Name<input type="text" value="${esc(m.n)}"
+ES:<label class="f">Nombre<input type="text" value="${esc(m.n)}"
+@@
+PT:<label class="f">Papel<select
+EN:<label class="f">Role<select
+ES:<label class="f">Rol<select
+@@
+PT:<label class="f">Contato<input
+EN:<label class="f">Contact<input
+ES:<label class="f">Contacto<input
+@@
+PT:${svg('mais')}Acrescentar pessoa</button>
+EN:${svg('mais')}Add person</button>
+ES:${svg('mais')}Agregar persona</button>
+@@
+PT:<h3>Guias e operadoras sugeridos <span class="sim">exemplo</span></h3><p class="sec">No produto final, esta lista viria de uma rede curada pela WAS: operadoras avaliadas, guias credenciados e associados que já estiveram em cada lugar.</p>
+EN:<h3>Suggested guides and operators <span class="sim">example</span></h3><p class="sec">In the final product, this list would come from a network curated by WAS: reviewed operators, certified guides and members who have been to each place.</p>
+ES:<h3>Guías y operadores sugeridos <span class="sim">ejemplo</span></h3><p class="sec">En el producto final, esta lista vendría de una red curada por la WAS: operadores evaluados, guías acreditados y asociados que ya estuvieron en cada lugar.</p>
+@@
+PT:<span class="cap">Avaliação, credenciais e contato apareceriam aqui</span>
+EN:<span class="cap">Rating, credentials and contact would appear here</span>
+ES:<span class="cap">Evaluación, credenciales y contacto aparecerían aquí</span>
+@@
+PT:<div class="perg"><b>Pergunta para a WAS:</b> a indicação de guias e operadoras seria aberta a todos ou um benefício de apoiadores? Operadoras parceiras poderiam ter selo WAS de boas práticas.</div>
+EN:<div class="perg"><b>Question for WAS:</b> would guide and operator recommendations be open to everyone or a supporter benefit? Partner operators could carry a WAS good-practice seal.</div>
+ES:<div class="perg"><b>Pregunta para la WAS:</b> ¿la recomendación de guías y operadores sería abierta a todos o un beneficio para los apoyadores? Los operadores aliados podrían tener un sello WAS de buenas prácticas.</div>
+@@
+PT:T.equipe.push({n:'',papel:T.equipe.length?'Participante':'Líder da expedição',c:''});
+EN:T.equipe.push({n:'',papel:T.equipe.length?'Participant':'Expedition leader',c:''});
+ES:T.equipe.push({n:'',papel:T.equipe.length?'Participante':'Líder de la expedición',c:''});

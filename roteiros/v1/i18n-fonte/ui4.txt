@@ -1,0 +1,279 @@
+PT:<div class="marca"><span class="kick">Roteiros WAS</span>
+EN:<div class="marca"><span class="kick">WAS Journeys</span>
+ES:<div class="marca"><span class="kick">Rutas WAS</span>
+@@
+PT:<label class="f">Nome do roteiro<input
+EN:<label class="f">Journey name<input
+ES:<label class="f">Nombre de la ruta<input
+@@
+PT:<label class="f">Data de partida<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label></div></div>
+EN:<label class="f">Departure date<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label></div></div>
+ES:<label class="f">Fecha de partida<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label></div></div>
+@@
+PT:<h3>Que tipo de jornada?</h3><p class="sec">Pode escolher mais de um. O primeiro escolhido é o tipo principal.</p>
+EN:<h3>What type of journey?</h3><p class="sec">You can choose more than one. The first one you choose is the main type.</p>
+ES:<h3>¿Qué tipo de jornada?</h3><p class="sec">Puedes elegir más de uno. El primero que elijas es el tipo principal.</p>
+@@
+PT:'<span class="pr">principal</span>'
+EN:'<span class="pr">main</span>'
+ES:'<span class="pr">principal</span>'
+@@
+PT:<h3>Por que esta jornada?</h3><p class="sec">A intenção guia as escolhas difíceis. Exemplo: "ver a aurora com calma", "fazer meu primeiro cume acima de 5.000 m", "documentar a pesca artesanal".</p>
+EN:<h3>Why this journey?</h3><p class="sec">Your intention guides the hard choices. For example: "see the aurora without rushing", "reach my first summit above 5,000 m", "document artisanal fishing".</p>
+ES:<h3>¿Por qué esta jornada?</h3><p class="sec">La intención guía las decisiones difíciles. Por ejemplo: "ver la aurora con calma", "hacer mi primera cumbre por encima de 5.000 m", "documentar la pesca artesanal".</p>
+@@
+PT:placeholder="Escreva em uma ou duas frases"
+EN:placeholder="Write it in one or two sentences"
+ES:placeholder="Escríbela en una o dos frases"
+@@
+PT:<h3>Quem vai</h3>
+EN:<h3>Who is going</h3>
+ES:<h3>Quién va</h3>
+@@
+PT:[['solo','Sozinho'],['dupla','Em dupla'],['grupo','Em grupo'],['familia','Em família'],['equipe','Equipe de produção']]
+EN:[['solo','Solo'],['dupla','As a pair'],['grupo','In a group'],['familia','As a family'],['equipe','Production crew']]
+ES:[['solo','Solo'],['dupla','En pareja'],['grupo','En grupo'],['familia','En familia'],['equipe','Equipo de producción']]
+@@
+PT:<label class="f">Pessoas<input
+EN:<label class="f">People<input
+ES:<label class="f">Personas<input
+@@
+PT:<label class="f">Experiência do grupo<select data-b="exp">${[['iniciante','Iniciante'],['intermediario','Intermediária'],['experiente','Experiente'],['expert','Muito experiente']]
+EN:<label class="f">Group experience<select data-b="exp">${[['iniciante','Beginner'],['intermediario','Intermediate'],['experiente','Experienced'],['expert','Very experienced']]
+ES:<label class="f">Experiencia del grupo<select data-b="exp">${[['iniciante','Principiante'],['intermediario','Intermedia'],['experiente','Con experiencia'],['expert','Mucha experiencia']]
+@@
+PT:<label class="f">Ritmo<select data-b="ritmo">${[['tranquilo','Tranquilo'],['moderado','Moderado'],['intenso','Intenso']]
+EN:<label class="f">Pace<select data-b="ritmo">${[['tranquilo','Relaxed'],['moderado','Moderate'],['intenso','Intense']]
+ES:<label class="f">Ritmo<select data-b="ritmo">${[['tranquilo','Tranquilo'],['moderado','Moderado'],['intenso','Intenso']]
+@@
+PT:<span class="kick">Inspiração</span>
+EN:<span class="kick">Inspiration</span>
+ES:<span class="kick">Inspiración</span>
+@@
+PT:esc(r.lk||'Ler o perfil na WAS')
+EN:esc(r.lk||'Read the profile on WAS')
+ES:esc(r.lk||'Leer el perfil en la WAS')
+@@
+PT:placeholder="Buscar lugar, país ou atividade (ex.: baleia, Nepal, cânion)"
+EN:placeholder="Search for a place, country or activity (e.g. whale, Nepal, canyon)"
+ES:placeholder="Buscar lugar, país o actividad (ej.: ballena, Nepal, cañón)"
+@@
+PT:${svg('pin')}Marcar ponto livre</button>
+EN:${svg('pin')}Mark a free point</button>
+ES:${svg('pin')}Marcar punto libre</button>
+@@
+PT:</span>Rotas históricas <span class="cap">
+EN:</span>Historic routes <span class="cap">
+ES:</span>Rutas históricas <span class="cap">
+@@
+PT:<div class="mapa-modo" id="modo">Clique no mapa para marcar um ponto livre · <a href="#" data-act="livre-x">cancelar</a></div>
+EN:<div class="mapa-modo" id="modo">Click on the map to mark a free point · <a href="#" data-act="livre-x">cancel</a></div>
+ES:<div class="mapa-modo" id="modo">Haz clic en el mapa para marcar un punto libre · <a href="#" data-act="livre-x">cancelar</a></div>
+@@
+PT:<div class="vazio">Nenhum lugar ainda. Clique num ponto do mapa e use “Adicionar ao roteiro”, ou busque pelo nome.</div>
+EN:<div class="vazio">No places yet. Click a point on the map and use “Add to journey”, or search by name.</div>
+ES:<div class="vazio">Todavía no hay lugares. Haz clic en un punto del mapa y usa “Agregar a la ruta”, o busca por el nombre.</div>
+@@
+PT:<h3 style="margin:22px 0 12px">Seu trajeto</h3>
+EN:<h3 style="margin:22px 0 12px">Your route</h3>
+ES:<h3 style="margin:22px 0 12px">Tu trayecto</h3>
+@@
+PT:aria-label="Como ir"
+EN:aria-label="How to get there"
+ES:aria-label="Cómo ir"
+@@
+PT:${fmtN(t.km)} km · ${t.M.hd? t.dias+' dia'+(t.dias>1?'s':'')+' de '+t.M.n.toLowerCase() : (t.h<1?'menos de 1 h':'cerca de '+fmtN(t.h)+' h')+(t.dias?' · '+t.dias+' dia'+(t.dias>1?'s':'')+' de viagem':'')}
+EN:${fmtN(t.km)} km · ${t.M.hd? t.dias+' day'+(t.dias>1?'s':'')+' · '+t.M.n.toLowerCase() : (t.h<1?'less than 1 h':'about '+fmtN(t.h)+' h')+(t.dias?' · '+t.dias+' day'+(t.dias>1?'s':'')+' of travel':'')}
+ES:${fmtN(t.km)} km · ${t.M.hd? t.dias+' día'+(t.dias>1?'s':'')+' · '+t.M.n.toLowerCase() : (t.h<1?'menos de 1 h':'unas '+fmtN(t.h)+' h')+(t.dias?' · '+t.dias+' día'+(t.dias>1?'s':'')+' de viaje':'')}
+@@
+PT:'<span class="alerta">Intervalo pós-mergulho incluído</span>'
+EN:'<span class="alerta">Post-dive interval included</span>'
+ES:'<span class="alerta">Intervalo posbuceo incluido</span>'
+@@
+PT:'Ponto livre'+(p.pa?
+EN:'Free point'+(p.pa?
+ES:'Punto libre'+(p.pa?
+@@
+PT:class="cap">Guia do destino na WAS ↗</a>
+EN:class="cap">WAS destination guide ↗</a>
+ES:class="cap">Guía del destino en la WAS ↗</a>
+@@
+PT:<label class="dias" title="Dias neste lugar">
+EN:<label class="dias" title="Days at this place">
+ES:<label class="dias" title="Días en este lugar">
+@@
+PT:aria-label="Dias em ${esc(p.n)}"></label><span class="cap">dias</span>
+EN:aria-label="Days at ${esc(p.n)}"></label><span class="cap">days</span>
+ES:aria-label="Días en ${esc(p.n)}"></label><span class="cap">días</span>
+@@
+PT:aria-label="Subir"
+EN:aria-label="Move up"
+ES:aria-label="Subir"
+@@
+PT:aria-label="Descer"
+EN:aria-label="Move down"
+ES:aria-label="Bajar"
+@@
+PT:aria-label="Tirar do roteiro"
+EN:aria-label="Remove from journey"
+ES:aria-label="Quitar de la ruta"
+@@
+PT:'<div class="vazio" style="margin:20px">O mapa precisa de internet para carregar.</div>'
+EN:'<div class="vazio" style="margin:20px">The map needs an internet connection to load.</div>'
+ES:'<div class="vazio" style="margin:20px">El mapa necesita internet para cargar.</div>'
+@@
+PT:attribution:'Imagens © Esri, Maxar, Earthstar Geographics'
+EN:attribution:'Imagery © Esri, Maxar, Earthstar Geographics'
+ES:attribution:'Imágenes © Esri, Maxar, Earthstar Geographics'
+@@
+PT:attribution:'© colaboradores do OpenStreetMap'
+EN:attribution:'© OpenStreetMap contributors'
+ES:attribution:'© colaboradores de OpenStreetMap'
+@@
+PT:L.control.layers({'Satélite':sat,'Ruas e trilhas':ruas}
+EN:L.control.layers({'Satellite':sat,'Streets and trails':ruas}
+ES:L.control.layers({'Satélite':sat,'Calles y senderos':ruas}
+@@
+PT:const n='Ponto livre '+(
+EN:const n='Free point '+(
+ES:const n='Punto libre '+(
+@@
+PT:toast('Ponto livre adicionado. Renomeie em “Seu trajeto”.');
+EN:toast('Free point added. Rename it under “Your route”.');
+ES:toast('Punto libre agregado. Cámbiale el nombre en “Tu trayecto”.');
+@@
+PT:`<span class="tag">Melhor: ${
+EN:`<span class="tag">Best: ${
+ES:`<span class="tag">Mejor: ${
+@@
+PT:`<p><b>Espécies:</b> ${
+EN:`<p><b>Species:</b> ${
+ES:`<p><b>Especies:</b> ${
+@@
+PT:`<p class="cap">Explorador: <a
+EN:`<p class="cap">Explorer: <a
+ES:`<p class="cap">Explorador: <a
+@@
+PT:rel="noopener">Guia completo na WAS ↗</a>
+EN:rel="noopener">Full guide on WAS ↗</a>
+ES:rel="noopener">Guía completa en la WAS ↗</a>
+@@
+PT:'<span class="tag r">Já está no roteiro</span>'
+EN:'<span class="tag r">Already on the journey</span>'
+ES:'<span class="tag r">Ya está en la ruta</span>'
+@@
+PT:${svg('mais')}Adicionar ao roteiro</button>
+EN:${svg('mais')}Add to journey</button>
+ES:${svg('mais')}Agregar a la ruta</button>
+@@
+PT:`<div class="cr">Foto: ${esc(p.fa)}
+EN:`<div class="cr">Photo: ${esc(p.fa)}
+ES:`<div class="cr">Foto: ${esc(p.fa)}
+@@
+PT:const tipo=l.il<.06?'Lua nova':l.il>.94?'Lua cheia':null;
+EN:const tipo=l.il<.06?'New moon':l.il>.94?'Full moon':null;
+ES:const tipo=l.il<.06?'Luna nueva':l.il>.94?'Luna llena':null;
+@@
+PT:Melhores meses: dados do Mapa da aventura. Luz e lua: cálculo astronômico real <span class="real">real</span>. Horários em hora solar local aproximada, que pode diferir do fuso oficial em até cerca de 1 hora. Temperatura e chuva entrariam aqui no produto final, a partir de normais climatológicas.</p>
+EN:Best months: Adventure Map data. Light and moon: real astronomical calculation <span class="real">real</span>. Times are approximate local solar time, which may differ from the official time zone by up to about 1 hour. Temperature and rainfall would be added here in the final product, from climate normals.</p>
+ES:Mejores meses: datos del Mapa de la aventura. Luz y luna: cálculo astronómico real <span class="real">real</span>. Horarios en hora solar local aproximada, que puede diferir del huso oficial en hasta cerca de 1 hora. La temperatura y la lluvia se sumarían aquí en el producto final, a partir de normales climatológicas.</p>
+@@
+PT:<b>${lz.polar==='dia'?'Sol da meia-noite':'Noite polar'}</b><span>${lz.polar==='dia'?'o sol não se põe nesta data':'o sol não nasce nesta data'}</span>
+EN:<b>${lz.polar==='dia'?'Midnight sun':'Polar night'}</b><span>${lz.polar==='dia'?'the sun does not set on this date':'the sun does not rise on this date'}</span>
+ES:<b>${lz.polar==='dia'?'Sol de medianoche':'Noche polar'}</b><span>${lz.polar==='dia'?'el sol no se pone en esta fecha':'el sol no sale en esta fecha'}</span>
+@@
+PT:<span>nascer do sol</span>
+EN:<span>sunrise</span>
+ES:<span>amanecer</span>
+@@
+PT:<span>pôr do sol</span>
+EN:<span>sunset</span>
+ES:<span>atardecer</span>
+@@
+PT:<span>de luz</span>
+EN:<span>of daylight</span>
+ES:<span>de luz</span>
+@@
+PT:<span>início da hora dourada da tarde</span>
+EN:<span>start of the evening golden hour</span>
+ES:<span>inicio de la hora dorada de la tarde</span>
+@@
+PT:title="Noite, crepúsculo e dia ao longo das 24 horas"
+EN:title="Night, twilight and day across the 24 hours"
+ES:title="Noche, crepúsculo y día a lo largo de las 24 horas"
+@@
+PT:<span class="sec">chegada ${fmtD(dt)} · latitude
+EN:<span class="sec">arrival ${fmtD(dt)} · latitude
+ES:<span class="sec">llegada ${fmtD(dt)} · latitud
+@@
+PT:<span><i style="background:#1f5a3c"></i>melhor época segundo a WAS</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>mês da sua visita</span>
+EN:<span><i style="background:#1f5a3c"></i>best season according to WAS</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>month of your visit</span>
+ES:<span><i style="background:#1f5a3c"></i>mejor época según la WAS</span><span><i style="outline:2px solid #fff;outline-offset:-2px"></i>mes de tu visita</span>
+@@
+PT:font-size:15px">Você chega na melhor época.</p>
+EN:font-size:15px">You arrive in the best season.</p>
+ES:font-size:15px">Llegas en la mejor época.</p>
+@@
+PT:font-size:15px">Você chega fora da melhor época. Vale mudar a data ou a ordem dos lugares.</p>
+EN:font-size:15px">You arrive outside the best season. Consider changing the date or the order of the places.</p>
+ES:font-size:15px">Llegas fuera de la mejor época. Conviene cambiar la fecha o el orden de los lugares.</p>
+@@
+PT:'<p class="cap">Sem indicação de melhor época para este ponto.</p>'
+EN:'<p class="cap">No best-season information for this point.</p>'
+ES:'<p class="cap">Sin indicación de mejor época para este punto.</p>'
+@@
+PT:<h3>Lua durante a viagem <span class="real">real</span></h3><p class="sec">Lua nova é a melhor janela para céu estrelado e Via Láctea. Lua cheia ilumina paisagens noturnas e pode atrapalhar a observação de estrelas.</p>
+EN:<h3>Moon during the trip <span class="real">real</span></h3><p class="sec">A new moon is the best window for starry skies and the Milky Way. A full moon lights up night landscapes and can get in the way of stargazing.</p>
+ES:<h3>Luna durante el viaje <span class="real">real</span></h3><p class="sec">La luna nueva es la mejor ventana para cielos estrellados y la Vía Láctea. La luna llena ilumina los paisajes nocturnos y puede dificultar la observación de estrellas.</p>
+@@
+PT:`<span class="${t==='Lua nova'?'boa':''}">
+EN:`<span class="${t==='New moon'?'boa':''}">
+ES:`<span class="${t==='Luna nueva'?'boa':''}">
+@@
+PT:'<span>Nenhuma lua nova ou cheia nas datas da viagem.</span>'
+EN:'<span>No new or full moon on your travel dates.</span>'
+ES:'<span>Ninguna luna nueva o llena en las fechas del viaje.</span>'
+@@
+PT:<div class="vazio">Escolha pelo menos um lugar na etapa “Lugares e trajeto”.<div class="btns"><button class="btn" data-act="passo" data-p="mapa">Ir para o mapa</button></div></div>
+EN:<div class="vazio">Choose at least one place in the “Places and route” step.<div class="btns"><button class="btn" data-act="passo" data-p="mapa">Go to the map</button></div></div>
+ES:<div class="vazio">Elige al menos un lugar en la etapa “Lugares y trayecto”.<div class="btns"><button class="btn" data-act="passo" data-p="mapa">Ir al mapa</button></div></div>
+@@
+PT:<label class="f">Data de partida<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label>
+EN:<label class="f">Departure date<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label>
+ES:<label class="f">Fecha de partida<input type="date" data-b="inicio" value="${esc(T.inicio)}"></label>
+@@
+PT:<label class="f">Dias de margem no fim<input
+EN:<label class="f">Buffer days at the end<input
+ES:<label class="f">Días de margen al final<input
+@@
+PT:<label class="f">Aclimatação automática<select data-b="aclim" data-bool><option value="1"${T.aclim?' selected':''}>Ligada (acima de 3.000 m)</option><option value="0"${!T.aclim?' selected':''}>Desligada</option></select></label></div>
+EN:<label class="f">Automatic acclimatization<select data-b="aclim" data-bool><option value="1"${T.aclim?' selected':''}>On (above 3,000 m)</option><option value="0"${!T.aclim?' selected':''}>Off</option></select></label></div>
+ES:<label class="f">Aclimatación automática<select data-b="aclim" data-bool><option value="1"${T.aclim?' selected':''}>Activada (por encima de 3.000 m)</option><option value="0"${!T.aclim?' selected':''}>Desactivada</option></select></label></div>
+@@
+PT:<p class="ajuda">O plano se refaz sozinho quando você muda lugares, dias ou trajetos. As anotações de cada dia ficam guardadas.</p>
+EN:<p class="ajuda">The plan rebuilds itself when you change places, days or routes. Your notes for each day are kept.</p>
+ES:<p class="ajuda">El plan se rehace solo cuando cambias lugares, días o trayectos. Las notas de cada día quedan guardadas.</p>
+@@
+PT:border-radius:50%"></i>no lugar</span>
+EN:border-radius:50%"></i>at the place</span>
+ES:border-radius:50%"></i>en el lugar</span>
+@@
+PT:border-radius:50%"></i>deslocamento</span>
+EN:border-radius:50%"></i>travel</span>
+ES:border-radius:50%"></i>traslado</span>
+@@
+PT:border-radius:50%"></i>aclimatação</span>
+EN:border-radius:50%"></i>acclimatization</span>
+ES:border-radius:50%"></i>aclimatación</span>
+@@
+PT:border-radius:50%"></i>margem e segurança</span>
+EN:border-radius:50%"></i>buffer and safety</span>
+ES:border-radius:50%"></i>margen y seguridad</span>
+@@
+PT:<div class="dt">Dia ${i+1} · ${fmtD(d.dt)}</div>
+EN:<div class="dt">Day ${i+1} · ${fmtD(d.dt)}</div>
+ES:<div class="dt">Día ${i+1} · ${fmtD(d.dt)}</div>
+@@
+PT:placeholder="Anotação do dia: hospedagem, horário, contato…"
+EN:placeholder="Note for the day: lodging, times, contact…"
+ES:placeholder="Nota del día: alojamiento, horario, contacto…"
