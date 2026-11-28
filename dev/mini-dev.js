@@ -434,7 +434,8 @@ function montar(M){
     (cfg.ar||[]).filter(a=>a.lg).forEach(a=>{kx++;kh+='<span><i class="sq" style="background:'+(a.c||'#d9b44a')+'55;outline:1.5px solid '+(a.c||'#d9b44a')+';width:20px;border-radius:6px"></i>'+esc(lo(a.lg))+'</span>'});
     (cfg.kx||[]).forEach(x=>{kx++;kh+='<span><i class="'+(x[0]==='ln'?'ln':'sq')+'" style="background:'+x[1]+'"></i>'+esc(lo(x[2]))+'</span>'});
     // v47 (Alberto, 27/11): legenda nunca repetida. Se a de baixo só repete a do canto (sem rotas, áreas ou itens extras), ela não entra.
-    if(kx){kk.innerHTML=kh;const fc=M.fig.querySelector('figcaption');M.fig.insertBefore(kk,fc&&fc.parentNode===M.fig?fc:null)}
+    // v51: quando a legenda de baixo entra, a do canto sai (ela repetiria camada e citados); a de baixo também aparece na tela cheia
+    if(kx){kk.innerHTML=kh;const fc=M.fig.querySelector('figcaption');M.fig.insertBefore(kk,fc&&fc.parentNode===M.fig?fc:null);lg.remove()}
 
     M.linhas=linhas;if(cfg.pol) capaPolar(M);
     botoes(M);eventos(M);projecao(M);
