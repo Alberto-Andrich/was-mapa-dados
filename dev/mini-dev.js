@@ -281,9 +281,10 @@ function gestoGlobal(){if(GG) return;GG={x:null,y:null,M:null};const d=document;
   const acha=(x,y)=>{if(x==null||y==null) return null;const el=d.elementFromPoint(x,y);const b=el&&el.closest&&el.closest('.wmm');return b?(window.__wmm||[]).find(m=>m.box===b&&m.gesto):null};
   d.addEventListener('gesturestart',e=>{const x=e.clientX||GG.x,y=e.clientY||GG.y;let M=acha(e.clientX||null,e.clientY||null)||acha(GG.x,GG.y);
     if(!M&&e.target&&e.target.closest){const b=e.target.closest('.wmm');M=b?(window.__wmm||[]).find(m=>m.box===b&&m.gesto):null}
-    if(!M){GG.M=null;return}e.preventDefault();GG.M=M.gesto.ini(x,y)?M:null},{passive:false,capture:true});
-  d.addEventListener('gesturechange',e=>{if(!GG.M) return;e.preventDefault();GG.M.gesto.muda(e.scale)},{passive:false,capture:true});
-  d.addEventListener('gestureend',e=>{if(!GG.M) return;e.preventDefault();GG.M.gesto.fim();GG.M=null},{passive:false,capture:true});
+    if(!M){GG.M=null;GG.on=0;return}e.preventDefault();GG.on=1;GG.M=M.gesto.ini(x,y)?M:null},{passive:false,capture:true});
+  // com dedos na tela (nt>0) o MapLibre faz o zoom; aqui só impedimos o zoom da página
+  d.addEventListener('gesturechange',e=>{if(!GG.on) return;e.preventDefault();if(GG.M) GG.M.gesto.muda(e.scale)},{passive:false,capture:true});
+  d.addEventListener('gestureend',e=>{if(!GG.on) return;e.preventDefault();if(GG.M) GG.M.gesto.fim();GG.M=null;GG.on=0},{passive:false,capture:true});
 }
 
 function MiniMapa(fig,cfg){
