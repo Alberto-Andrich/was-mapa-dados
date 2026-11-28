@@ -20,3 +20,9 @@ Contém só dados geográficos do mapa. Nada de dados pessoais, senhas ou chaves
 | mapa-divisas-estados.json | Divisas de estados e províncias | Natural Earth (domínio público) |
 
 Cada versão publicada recebe uma tag (v1, v2…). O site aponta sempre para uma tag fixa, então mudar um arquivo aqui não altera o site até a tag nova ser usada.
+
+## Limite de tamanho (jsDelivr)
+O jsDelivr só serve commits cujo conjunto de arquivos tenha até 50 MB (acima disso responde 403 "Package size exceeded 50 MB").
+Mantenha o repositório abaixo de 45 MB: rode `python3 ferramentas/tamanho.py` antes de cada push.
+Fontes brutas (Wikidata, extratos, candidatos de fotos) NÃO entram aqui: ficam em
+/mnt/project-files/mapa-aventura/fichas-areas/fontes/ (a pasta `fontes` do repositório é um atalho para lá).
