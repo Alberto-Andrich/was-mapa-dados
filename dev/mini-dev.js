@@ -288,6 +288,16 @@ function gestoGlobal(){if(GG) return;GG={x:null,y:null,M:null};const d=document;
   d.addEventListener('gestureend',e=>{if(!GG.on) return;e.preventDefault();if(GG.M) GG.M.gesto.fim();GG.M=null;GG.on=0},{passive:false,capture:true});
 }
 
+// v56: diagnóstico de gestos (só com ?wmmdiag na URL): painel fixo com os eventos que o navegador entrega e se a página bloqueou o zoom
+if(/wmmdiag/.test(location.search)&&!window.__wmmDiag){window.__wmmDiag=1;const pn=document.createElement('pre');
+  pn.style.cssText='position:fixed;left:8px;bottom:8px;z-index:2147483647;max-width:min(560px,94vw);max-height:46vh;overflow:auto;margin:0;background:rgba(0,0,0,.88);color:#9f9;font:12px/1.35 monospace;padding:8px;border:1px solid #3a3;white-space:pre-wrap;pointer-events:none';
+  const L=[];const mv=document.querySelector('meta[name=viewport]');const cab='WAS diag v56 | '+navigator.userAgent.replace(/^.*?\) /,'').slice(0,60)+'\nviewport: '+(mv?mv.content:'(sem meta)')+' | toque:'+matchMedia('(pointer:coarse)').matches+'/'+matchMedia('(any-pointer:fine)').matches;
+  const vv=window.visualViewport;const pinta=()=>{pn.textContent=cab+'\nzoom da página (visualViewport.scale): '+(vv?vv.scale.toFixed(2):'?')+'\n'+L.join('\n')};
+  const sobre=e=>{const x=e.clientX!=null?e.clientX:(GG&&GG.x),y=e.clientY!=null?e.clientY:(GG&&GG.y);const el=x!=null?document.elementFromPoint(x,y):null;return el&&el.closest&&el.closest('.wmm')?'MAPA':'fora'};
+  const reg=e=>{const t=e.type;if(t==='wheel'&&!e.ctrlKey&&L.length&&/^wheel /.test(L[0])) return;setTimeout(()=>{L.unshift(t+(t==='wheel'?' ctrl='+e.ctrlKey+' dy='+Math.round(e.deltaY):'')+(e.scale!=null?' scale='+(+e.scale).toFixed(2):'')+(e.touches?' dedos='+e.touches.length:'')+(e.pointerType?' tipo='+e.pointerType:'')+' | '+sobre(e)+' | bloqueado='+e.defaultPrevented);L.length=Math.min(L.length,14);pinta()},0)};
+  ['wheel','gesturestart','gesturechange','gestureend','touchstart','touchmove','pointerdown'].forEach(k=>addEventListener(k,reg,{capture:true,passive:true}));
+  if(vv) vv.addEventListener('resize',pinta);const pr=()=>{document.body.appendChild(pn);pinta()};document.body?pr():addEventListener('DOMContentLoaded',pr)}
+
 function MiniMapa(fig,cfg){
   const S={fig,cfg,pts:[],ordem:[],aberto:-1,alvo:null};
   const img=fig.querySelector('img');
