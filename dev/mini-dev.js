@@ -95,7 +95,8 @@ function carregaML(){if(window.maplibregl) return Promise.resolve();if(carregaML
 .wmm .maplibregl-ctrl-attrib{font-size:10px;background:rgba(10,14,19,.6)!important;color:#9aa6b2}
 .wmm .maplibregl-ctrl-attrib a{color:#9aa6b2}
 .wmm .maplibregl-ctrl-attrib-button{filter:invert(1)}
-.wmm .maplibregl-cooperative-gesture-screen{background:rgba(5,8,12,.55);color:#fff;font-size:18px;z-index:6}
+/* v55 (Alberto 28/11): ao rolar a página com o cursor sobre o mapa a tela não escurece; aviso de zoom só com texto (mesma regra do Mapa da aventura) */
+.wmm .maplibregl-cooperative-gesture-screen{background:none!important;color:#fff;font-size:17px;z-index:6;text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9);pointer-events:none}
 .wmm-bts{position:absolute;left:12px;bottom:58px;z-index:4;display:flex;flex-direction:column;gap:8px}
 .wmm-bt{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(17,22,29,.92);border:1px solid #2a3340;color:#fff;transition:background .15s}
 .wmm-zs{position:relative;width:44px;box-sizing:border-box;background:rgba(17,22,29,.92);border:1px solid #2a3340;cursor:pointer;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
