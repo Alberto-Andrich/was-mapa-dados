@@ -273,6 +273,19 @@ function textoFicha(k,d){
   if(d.meses&&d.meses.length&&d.meses.length<12) ext.push(t('Melhores meses')+': '+d.meses.slice().sort((a,b)=>a-b).map(m=>MESES[m-1]).join(', '));
   return {meta,tx,ext:ext.join(' · ')}}
 
+// v54: pinça do trackpad (Safari no iPad e no Mac). O WebKit manda gesturestart/gesturechange/gestureend, às vezes com alvo fora do mapa;
+// guardamos a última posição do cursor e, se ela estiver sobre a caixa de um mapa da WAS, a pinça vai para esse mapa e a página não amplia.
+let GG=null;
+function gestoGlobal(){if(GG) return;GG={x:null,y:null,M:null};const d=document;
+  const pos=e=>{GG.x=e.clientX;GG.y=e.clientY};d.addEventListener('pointermove',pos,{passive:true,capture:true});d.addEventListener('mousemove',pos,{passive:true,capture:true});
+  const acha=(x,y)=>{if(x==null||y==null) return null;const el=d.elementFromPoint(x,y);const b=el&&el.closest&&el.closest('.wmm');return b?(window.__wmm||[]).find(m=>m.box===b&&m.gesto):null};
+  d.addEventListener('gesturestart',e=>{const x=e.clientX||GG.x,y=e.clientY||GG.y;let M=acha(e.clientX||null,e.clientY||null)||acha(GG.x,GG.y);
+    if(!M&&e.target&&e.target.closest){const b=e.target.closest('.wmm');M=b?(window.__wmm||[]).find(m=>m.box===b&&m.gesto):null}
+    if(!M){GG.M=null;return}e.preventDefault();GG.M=M.gesto.ini(x,y)?M:null},{passive:false,capture:true});
+  d.addEventListener('gesturechange',e=>{if(!GG.M) return;e.preventDefault();GG.M.gesto.muda(e.scale)},{passive:false,capture:true});
+  d.addEventListener('gestureend',e=>{if(!GG.M) return;e.preventDefault();GG.M.gesto.fim();GG.M=null},{passive:false,capture:true});
+}
+
 function MiniMapa(fig,cfg){
   const S={fig,cfg,pts:[],ordem:[],aberto:-1,alvo:null};
   const img=fig.querySelector('img');
@@ -334,9 +347,8 @@ function montar(M){
    box.addEventListener('touchmove',e=>{if(!tp||e.touches.length<2) return;e.preventDefault();vai(tp.z+Math.log2(dist(e.touches)/tp.d),meio(e.touches))},{passive:false,capture:true});
    const solta=e=>{nt=e.touches?e.touches.length:0;if(nt<2&&tp){tp=null;fim()}};
    box.addEventListener('touchend',solta,{passive:true,capture:true});box.addEventListener('touchcancel',solta,{passive:true,capture:true});
-   box.addEventListener('gesturestart',e=>{e.preventDefault();if(nt){g=null;return}g={z:map.getZoom(),pt:pto(e.clientX||null,e.clientY||null)}},{passive:false,capture:true});
-   box.addEventListener('gesturechange',e=>{e.preventDefault();if(!g||nt) return;vai(g.z+Math.log2(e.scale||1),g.pt)},{passive:false,capture:true});
-   box.addEventListener('gestureend',e=>{e.preventDefault();if(g){g=null;fim()}},{passive:false,capture:true});
+   // v54 (Alberto 28/11: no trackpad do iPad a pinça ainda dava zoom na página): os gesture* do Safari são tratados no documento (gestoGlobal), pelo mapa que está sob o cursor
+   M.gesto={ini:(x,y)=>{if(nt) return 0;g={z:map.getZoom(),pt:pto(x,y)};return 1},muda:sc=>{if(!g||nt) return;vai(g.z+Math.log2(sc||1),g.pt)},fim:()=>{if(g){g=null;fim()}},ativo:()=>!!g};gestoGlobal();
    box.addEventListener('wheel',e=>{if(!e.ctrlKey) return;e.preventDefault();e.stopPropagation();if(g) return;
      const dy=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?400:1);
      vai(map.getZoom()-Math.max(-1,Math.min(1,dy*(Math.abs(dy)<50?0.012:0.004))),pto(e.clientX,e.clientY));fim()},{passive:false,capture:true});}
