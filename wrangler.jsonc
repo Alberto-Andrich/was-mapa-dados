@@ -1,0 +1,7 @@
+// Cloudflare Worker que só serve os arquivos estáticos deste repositório (dados do Mapa da aventura da WAS).
+// Sem o limite de 50 MB do jsDelivr. CORS liberado em _headers.
+{
+  "name": "was-mapa-dados",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./" }
+}

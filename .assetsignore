@@ -1,0 +1,10 @@
+.git
+.github
+fontes
+src
+dev
+ferramentas
+revisao
+wrangler.jsonc
+.assetsignore
+node_modules
