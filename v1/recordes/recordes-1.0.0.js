@@ -57,6 +57,7 @@ var css=".rx{--rl:#262d37;--rm:#9aa3ad;--rt:#e6e6e6;--rw:#fff;--rr:#b90000;--rb:
 +".rx-nav{position:sticky;top:var(--rx-top,64px);z-index:5;background:rgba(0,0,0,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--rl)}"
 +".rx-nav .rx-wrap{display:flex;gap:8px;overflow-x:auto;padding:12px 0;scrollbar-width:none}"
 +".rx-nav .rx-wrap::-webkit-scrollbar{display:none}"
++"@media (min-width:1200px){.rx-nav .rx-wrap{flex-wrap:wrap;justify-content:center;overflow:visible}}"
 +".rx-chip{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;min-height:44px;padding:0 16px;border:1px solid var(--rl);border-radius:22px;background:transparent;color:var(--rt);font:600 14px/1 Montserrat,system-ui,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background .2s,border-color .2s}"
 +".rx-chip small{font:400 12px/1 Lato,sans-serif;color:var(--rm)}"
 +".rx-chip:hover,.rx-chip.on{border-color:var(--rr);background:var(--rr);color:#fff}.rx-chip:hover small,.rx-chip.on small{color:#fff}"
@@ -138,7 +139,7 @@ function compartilhar(r){
   if(navigator.share){navigator.share({title:tit,text:r.v[L]+' · '+tit,url:url}).catch(function(){});return}
   try{navigator.clipboard.writeText(url).then(function(){toast(t('copiado'))},function(){prompt('',url)})}catch(e){prompt('',url)}
 }
-function topo(){var b=document.querySelector('.wn-bar,.menu-topbar,[class*="MENU-TopBar"]');var h=b?Math.round(b.getBoundingClientRect().height):64;document.documentElement.style.setProperty('--rx-top',(h>0&&h<160?h:64)+'px')}
+function topo(){var m=0;[].forEach.call(document.querySelectorAll('body *'),function(e){if(e.closest&&e.closest('.rx'))return;var cs=getComputedStyle(e);if(cs.position!=='fixed'&&cs.position!=='sticky')return;if(cs.display==='none'||cs.visibility==='hidden')return;var b=e.getBoundingClientRect();if(b.top<=2&&b.bottom>0&&b.bottom<200&&b.width>40&&b.height<200)m=Math.max(m,b.bottom)});document.documentElement.style.setProperty('--rx-top',Math.round(m||64)+'px')}
 
 function pagina(el,d){
   var cats={},cnt={};d.cats.forEach(function(c){cats[c.id]=c.n[L];cnt[c.id]=0});d.r.forEach(function(r){cnt[r.c]++});
@@ -183,4 +184,5 @@ function iniciar(){
   });
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar);else iniciar();
+window.addEventListener('resize',function(){clearTimeout(window.__rxT);window.__rxT=setTimeout(topo,200)});
 })();
