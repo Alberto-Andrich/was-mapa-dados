@@ -320,13 +320,26 @@ function montar(M){
   M.map=map;M.coop=toque;(window.__wmm=window.__wmm||[]).push(M);
   map.touchZoomRotate.disableRotation();map.scrollZoom.setWheelZoomRate(1/300);
   // v20 (Alberto 27/11): pinça no trackpad do iPad chega como gesturestart/gesturechange do Safari (sem toques); o MapLibre não trata esses eventos
-  {let nt=0,g=null;const cv=map.getCanvasContainer();
-   cont.addEventListener('touchstart',e=>{nt=e.touches.length},{passive:true,capture:true});
-   cont.addEventListener('touchend',e=>{nt=e.touches.length},{passive:true,capture:true});
-   cont.addEventListener('touchcancel',()=>{nt=0},{passive:true,capture:true});
-   cont.addEventListener('gesturestart',e=>{e.preventDefault();if(nt){g=null;return}const r=cont.getBoundingClientRect(),pt=[(e.clientX||r.left+r.width/2)-r.left,(e.clientY||r.top+r.height/2)-r.top];g={z:map.getZoom(),ll:map.unproject(pt),pt}},{passive:false});
-   cont.addEventListener('gesturechange',e=>{e.preventDefault();if(!g||nt) return;const z=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),g.z+Math.log2(e.scale||1)));map.jumpTo({zoom:z,around:g.ll})},{passive:false});
-   cont.addEventListener('gestureend',e=>{e.preventDefault();if(g){g=null;map.fire('moveend')}},{passive:false});}
+  // v53 (Alberto 28/11): com o cursor ou os dedos em QUALQUER parte do mapa (também sobre a ficha, a legenda e os botões) a pinça dá zoom só no mapa, nunca na página.
+  //  - trackpad no Chrome/Edge/Firefox e Ctrl+roda: evento wheel com ctrlKey; - trackpad no Safari (Mac e iPad): gesture*; - dedos na tela fora do desenho do mapa: pinça própria.
+  {let nt=0,g=null,tp=null,wt=0;const cv=map.getCanvasContainer();
+   const pto=(x,y)=>{const r=cont.getBoundingClientRect();return [Math.max(0,Math.min(r.width,(x==null?r.left+r.width/2:x)-r.left)),Math.max(0,Math.min(r.height,(y==null?r.top+r.height/2:y)-r.top))]};
+   const vai=(z,pt)=>{M.mexeu=1;z=Math.max(map.getMinZoom(),Math.min(map.getMaxZoom(),z));try{map.stop()}catch(e){}map.jumpTo({zoom:z,around:map.unproject(pt)})};
+   const fim=()=>{clearTimeout(wt);wt=setTimeout(()=>map.fire('moveend'),180)};
+   const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)||1;
+   const meio=t=>pto((t[0].clientX+t[1].clientX)/2,(t[0].clientY+t[1].clientY)/2);
+   const noDesenho=t=>[...t].every(x=>cv.contains(x.target));
+   box.addEventListener('touchstart',e=>{nt=e.touches.length;
+     if(nt>=2&&!noDesenho(e.touches)){e.preventDefault();tp={d:dist(e.touches),z:map.getZoom()}}else tp=null},{passive:false,capture:true});
+   box.addEventListener('touchmove',e=>{if(!tp||e.touches.length<2) return;e.preventDefault();vai(tp.z+Math.log2(dist(e.touches)/tp.d),meio(e.touches))},{passive:false,capture:true});
+   const solta=e=>{nt=e.touches?e.touches.length:0;if(nt<2&&tp){tp=null;fim()}};
+   box.addEventListener('touchend',solta,{passive:true,capture:true});box.addEventListener('touchcancel',solta,{passive:true,capture:true});
+   box.addEventListener('gesturestart',e=>{e.preventDefault();if(nt){g=null;return}g={z:map.getZoom(),pt:pto(e.clientX||null,e.clientY||null)}},{passive:false,capture:true});
+   box.addEventListener('gesturechange',e=>{e.preventDefault();if(!g||nt) return;vai(g.z+Math.log2(e.scale||1),g.pt)},{passive:false,capture:true});
+   box.addEventListener('gestureend',e=>{e.preventDefault();if(g){g=null;fim()}},{passive:false,capture:true});
+   box.addEventListener('wheel',e=>{if(!e.ctrlKey) return;e.preventDefault();e.stopPropagation();if(g) return;
+     const dy=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?400:1);
+     vai(map.getZoom()-Math.max(-1,Math.min(1,dy*(Math.abs(dy)<50?0.012:0.004))),pto(e.clientX,e.clientY));fim()},{passive:false,capture:true});}
   const ajusta=()=>{estreitoM();if(M.plano){const z=zAt(0);if(Math.abs(z-map.getMinZoom())>0.02) map.setMinZoom(z);return}if(cfg.pol){const z=zAt(map.getCenter().lat);if(Math.abs(z-map.getMinZoom())>0.02) map.setMinZoom(z);return}const z=zMin();if(Math.abs(z-map.getMinZoom())>0.02){map.setMinZoom(z);try{map.setProjection(proj(z))}catch(e){}}};
   if(cfg.pol) map.on('moveend',ajusta);
   const estreitoM=()=>box.classList.toggle('estreito',box.clientWidth<640);
